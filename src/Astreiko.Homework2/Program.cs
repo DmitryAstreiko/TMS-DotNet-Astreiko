@@ -4,7 +4,7 @@ namespace Astreiko.Homework2
 {
     class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             //version 1
             WorkWithDate1();
@@ -17,48 +17,69 @@ namespace Astreiko.Homework2
 
         public static void WorkWithDate1()
         {
-            Console.Write("Version 1. Enter date (format date - yyyy-mm-dd): ");
-            string inPutdate = Console.ReadLine().ToString().Trim();
+            Console.WriteLine("Version 1. Bad idea.");
 
-            if (inPutdate.Length != 10)
-            {
-                Console.WriteLine("Uncorrect date!");
-                return;
-            }
+            var check = true;
 
-            if ((inPutdate.IndexOf("-") != 4) || (inPutdate.Substring(5).IndexOf("-") != 2))
+            var inputDate = String.Empty;
+
+            while (check)
             {
-                Console.WriteLine("Uncorrect date!");
-                return;
+                Console.Write("Enter date (format date - yyyy-mm-dd): ");
+                inputDate = Console.ReadLine().Trim();
+
+                if (inputDate.Length == 10)
+                {
+                    if ((inputDate.IndexOf("-") != 4) || (inputDate.Substring(5).IndexOf("-") != 2))
+                    {
+                        Console.WriteLine("Uncorrect date!");
+                    }
+                    else
+                    {
+                        check = false;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Uncorrect date!");
+                }
             }
 
             try
             {
-                var dateTimeNew = Convert.ToDateTime(inPutdate);
+                var dateTimeNew = Convert.ToDateTime(inputDate);
                 var valueDay = dateTimeNew.DayOfWeek;
                 Console.WriteLine($"Day is - {valueDay}");
             }
             catch
             {
                 Console.WriteLine("Uncorrect date!");
-                return;
             }           
         }
 
         public static void WorkWithDate2()
         {
-            Console.Write("Version 2. Enter date: ");
-            try
-            {
-                var inPutDate = DateTime.Parse(Console.ReadLine());
+            Console.WriteLine("Version 2. Excellent.");
 
-                Console.WriteLine($"Day is - {inPutDate.DayOfWeek}");
-            }
-            catch
+            var check = true;
+
+            while (check)
             {
-                Console.WriteLine("Uncorrect date!");
-                return;
+                Console.Write("Enter date: ");
+                try
+                {
+                    var inPutDate = DateTime.Parse(Console.ReadLine());
+
+                    Console.WriteLine($"Day is - {inPutDate.DayOfWeek}");
+
+                    check = false;
+                }
+                catch
+                {
+                    Console.WriteLine("Uncorrect date!");
+                }
             }
+           
         }
     }
 }
