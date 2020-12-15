@@ -54,47 +54,98 @@ namespace Astreiko.Homework3
             DateTime inputFirstDate = new DateTime();
             DateTime inputFinishDate = new DateTime();
 
-            Console.Write("Enter start date : ");
+            //var cycleCheck = true;
 
-            var resDateFirst = GetDate(Console.ReadLine());
+            //while (cycleCheck)
+            //{
+            //    Console.Write("Enter start date : ");
 
-            if (resDateFirst.resParse == true) inputFirstDate = resDateFirst.resDate;
-            else
+            //    var resDateFirst = GetDate(Console.ReadLine());
+
+            //    if (resDateFirst.resParse == true)
+            //    {
+            //        inputFirstDate = resDateFirst.resDate;
+            //        cycleCheck = false;
+            //    }
+            //    else
+            //    {
+            //        Console.ForegroundColor = ConsoleColor.Red;
+            //        Console.WriteLine("Error! Wrong date entered");
+            //        Console.ResetColor();
+            //    }
+            //}
+
+            //cycleCheck = true;
+
+            //while (cycleCheck)
+            //{
+            //    Console.Write("Enter finish date : ");
+
+            //    var resDateEnd = GetDate(Console.ReadLine());
+
+            //    if (resDateEnd.resParse == true)
+            //    {
+            //        inputFinishDate = resDateEnd.resDate;
+            //        cycleCheck = false;
+            //    }
+            //    else
+            //    {
+            //        Console.ForegroundColor = ConsoleColor.Red;
+            //        Console.WriteLine("Error! Wrong date entered");
+            //        Console.ResetColor();
+            //    }
+            //}
+
+            var daysPeriod = GetDaysForPeriod();
+            inputFirstDate = daysPeriod.firstDate;
+            inputFinishDate = daysPeriod.secondDate;
+
+            var cycleCheck = true;
+
+            while (cycleCheck)
             {
-                Console.WriteLine("Error! Wrong date entered");                
-                return;
+                if (!CheckStartFinish(inputFirstDate, inputFinishDate))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Error! START must become earlier than FINISH date.");
+                    Console.ResetColor();
+
+                    daysPeriod = GetDaysForPeriod();
+                    inputFirstDate = daysPeriod.firstDate;
+                    inputFinishDate = daysPeriod.secondDate;
+                }
+                else cycleCheck = false;
             }
-
-            Console.Write("Enter finish date : ");
-
-            var resDateEnd = GetDate(Console.ReadLine());
-
-            if (resDateEnd.resParse == true) inputFinishDate = resDateEnd.resDate;
-            else
-            {
-                Console.WriteLine("Error! Wrong date entered");
-                return;
-            }
-
-            if (!CheckStartFinish(inputFirstDate, inputFinishDate)) return;
 
             Console.WriteLine("---------------------------------------");
             Console.WriteLine($"Start date - {inputFirstDate}");
             Console.WriteLine($"Finish date - {inputFinishDate}");
-            Console.WriteLine("---------------------------------------");
+            Console.WriteLine("---------------------------------------");            
 
-            Console.Write("Enter DAY to search (in english) - : ");
+            var selectedDay = string.Empty;
 
-            var selectedDay = GetSelectDay(Console.ReadLine());
+            cycleCheck = true;
 
-            if (selectedDay == null)
+            while (cycleCheck)
             {
-                Console.WriteLine("Error. Wrong date entered.");
-                return;
-            }
+                Console.Write("Enter DAY to search (in english) - : ");
 
-            Console.WriteLine($"DAY entered - {selectedDay}");
-            Console.WriteLine("---------------------------------------");
+                selectedDay = GetSelectDay(Console.ReadLine());
+
+                if (selectedDay != null)
+                {
+                    Console.WriteLine($"DAY entered - {selectedDay}");
+                    Console.WriteLine("---------------------------------------");
+                    cycleCheck = false;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Error. Wrong date entered.");
+                    Console.ResetColor();                   
+                }
+                                
+            }
 
             var listFullDays = GetFullDates(inputFirstDate, inputFinishDate);
 
@@ -122,6 +173,56 @@ namespace Astreiko.Homework3
             return (vRes, inputDateRes);
         }
 
+        private static (DateTime firstDate, DateTime secondDate) GetDaysForPeriod()
+        {
+            DateTime inputFirstDate = new DateTime();
+            DateTime inputFinishDate = new DateTime();
+
+            var cycleCheck = true;
+
+            while (cycleCheck)
+            {
+                Console.Write("Enter start date : ");
+
+                var resDateFirst = GetDate(Console.ReadLine());
+
+                if (resDateFirst.resParse == true)
+                {
+                    inputFirstDate = resDateFirst.resDate;
+                    cycleCheck = false;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Error! Wrong date entered");
+                    Console.ResetColor();
+                }
+            }
+
+            cycleCheck = true;
+
+            while (cycleCheck)
+            {
+                Console.Write("Enter finish date : ");
+
+                var resDateEnd = GetDate(Console.ReadLine());
+
+                if (resDateEnd.resParse == true)
+                {
+                    inputFinishDate = resDateEnd.resDate;
+                    cycleCheck = false;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Error! Wrong date entered");
+                    Console.ResetColor();
+                }
+            }
+
+            return (inputFirstDate, inputFinishDate);
+        }
+
         private static bool CheckStartFinish(DateTime firstDate, DateTime endDate)
         {
             var vRes = true;
@@ -129,7 +230,6 @@ namespace Astreiko.Homework3
             if (firstDate > endDate)
             {
                 vRes = false;
-                Console.WriteLine("Error! START must become earlier then FINISH date.");
             }
 
             return vRes;
