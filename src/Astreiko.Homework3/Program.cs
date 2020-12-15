@@ -5,10 +5,6 @@ namespace Astreiko.Homework3
 {
     class Program
     {
-        private static DateTime inputFirstDate { get; set; }
-
-        private static DateTime inputFinishDate { get; set; }
-
         private enum Days
         {
             Monday = 1,
@@ -22,117 +18,115 @@ namespace Astreiko.Homework3
 
         static void Main(string[] args)
         {
-            //if(!InputDates()) return;
-
-            //if (!CheckStartFinish()) return;
-
-            //Console.WriteLine("---------------------------------------");
-            //Console.WriteLine($"Start date - {inputFirstDate}");
-            //Console.WriteLine($"Start date - {inputFinishDate}");
-            //Console.WriteLine("---------------------------------------");
-
+            BusinessLogic();
+            
             //var www = CheckInputDay();
 
             //Console.WriteLine($"{www}");
 
-            DateTime start;
+            //DateTime start;
 
-            DateTime end;
+            //DateTime end;
 
-            while (true)
-            {
-                DateTime.TryParse(Console.ReadLine(), out start);
+            //while (true)
+            //{
+            //    DateTime.TryParse(Console.ReadLine(), out start);
 
-                end = DateTime.Parse(Console.ReadLine());
+            //    end = DateTime.Parse(Console.ReadLine());
 
-                if (start > end)
-                {
-                    Console.WriteLine("Ошибка.Попробуйте снова.");
-                    break;
-                }
-            }
+            //    if (start > end)
+            //    {
+            //        Console.WriteLine("Ошибка.Попробуйте снова.");
+            //        break;
+            //    }
+            //}
 
-            var dayOfWeek = Console.ReadLine();
+            //var dayOfWeek = Console.ReadLine();
 
-            var list = GetDaysByUserInput(start, end, dayOfWeek);
+            //var list = GetDaysByUserInput(start, end, dayOfWeek);
 
-            Console.ReadKey();
-        } 
-
-        //private static string CheckInputDay()
-        //{
-        //    string vRes = "123";
-        //    Console.Write("Enter DAY to search - ");
-
-        //    var inputDay = Console.ReadLine();
-
-        //    if (inputDay.Equals(Enum.Parse(Days.Monday))) 
-        //    { 
-        //        vRes = Days.Monday.ToString(); 
-        //    }
-
-        //    //string qqq;
-        //    //Enum.TryParse(inputDay, out qqq)
-
-        //    ////Name myName;
-        //    //if (Enum.TryParse<Name>(nameString, out myName))
-        //    //{
-        //    //    switch (myName) { case John: ... }
-        //    //}
-
-        //    return vRes;
-        //}
-
-        static List<DateTime> GetDaysByUserInput(DateTime start, DateTime end, string dayOfWeek)
-        {
-            var filterDays = new List<DateTime>();
-
-            //while(true)
-            // {
-            //     start = start.AddDays(1);
-            // }
-
-            // for (int i = 0; ; i++)
-            // {
-            //     if (end >= start)
-            //     {
-            //         if (start.DayOfWeek.ToString() == dayOfWeek)
-            //         {
-            //             filterDays.Add(start);
-
-            //         }
-            //         start = start.AddDays(1);
-            //         continue;
-            //     }
-
-            //     break;
-            // }
-
-            while (end >= start)
-            {
-                if (start.DayOfWeek.ToString() == dayOfWeek)
-                {
-                    filterDays.Add(start);
-                }
-                start = start.AddDays(1);
-            }
-
-            foreach (var row in filterDays)
-            {
-                Console.WriteLine();
-            }
-
-            Console.WriteLine("----------");
-            Console.WriteLine($"{filterDays.Count}");
-
-            return filterDays;
+            //Console.ReadKey();
         }
 
-        private static bool CheckStartFinish()
+        private static void BusinessLogic() 
+        {
+
+            DateTime inputFirstDate = new DateTime();
+            DateTime inputFinishDate = new DateTime();
+
+            Console.Write("Enter start date : ");
+
+            var resDateFirst = GetDate(Console.ReadLine());
+
+            if (resDateFirst.resParse == true) inputFirstDate = resDateFirst.resDate;
+            else
+            {
+                Console.WriteLine("Error! Wrong date entered");                
+                return;
+            }
+
+            Console.Write("Enter finish date : ");
+
+            var resDateEnd = GetDate(Console.ReadLine());
+
+            if (resDateEnd.resParse == true) inputFinishDate = resDateEnd.resDate;
+            else
+            {
+                Console.WriteLine("Error! Wrong date entered");
+                return;
+            }
+
+            if (!CheckStartFinish(inputFirstDate, inputFinishDate)) return;
+
+            Console.WriteLine("---------------------------------------");
+            Console.WriteLine($"Start date - {inputFirstDate}");
+            Console.WriteLine($"Finish date - {inputFinishDate}");
+            Console.WriteLine("---------------------------------------");
+
+            Console.Write("Enter DAY to search (in english) - : ");
+
+            var selectedDay = GetSelectDay(Console.ReadLine());
+
+            if (selectedDay == null)
+            {
+                Console.WriteLine("Error. Wrong date entered.");
+                return;
+            }
+
+            Console.WriteLine($"DAY entered - {selectedDay}");
+            Console.WriteLine("---------------------------------------");
+
+            var listFullDays = GetFullDates(inputFirstDate, inputFinishDate);
+
+            var listFindedDays = GetFindedDates(selectedDay, listFullDays);
+
+            ShowToConsole(listFindedDays, selectedDay);
+
+            Console.ReadKey();
+        }
+
+        private static (bool resParse, DateTime resDate) GetDate(string inputText)
+        {
+            var vRes = true;
+            DateTime inputDateRes = new DateTime(0001, 01, 01);
+
+            try
+            {
+                inputDateRes = DateTime.Parse(inputText);
+            }
+            catch
+            {                
+                vRes = false;
+            }
+
+            return (vRes, inputDateRes);
+        }
+
+        private static bool CheckStartFinish(DateTime firstDate, DateTime endDate)
         {
             var vRes = true;
 
-            if (inputFirstDate > inputFinishDate)
+            if (firstDate > endDate)
             {
                 vRes = false;
                 Console.WriteLine("Error! START must become earlier then FINISH date.");
@@ -141,27 +135,104 @@ namespace Astreiko.Homework3
             return vRes;
         }
 
-        private static bool InputDates()
+        private static string GetSelectDay(string searchRow)
         {
-            var vRes = true;
-            try
-            {
-                Console.Write("Enter start date : ");
+            string vRes = null;
 
-                inputFirstDate = DateTime.Parse(Console.ReadLine());
-
-                Console.Write("Enter finish date : ");
-
-                inputFinishDate = DateTime.Parse(Console.ReadLine());
-            }
-            catch
-            {
-                Console.WriteLine("Error! Wrong date entered");
-                vRes = false;
-            }
+            if (searchRow.ToLower().Equals(nameof(Days.Monday).ToLower())) vRes = nameof(Days.Monday);
+            else if (searchRow.ToLower().Equals(nameof(Days.Tuesday).ToLower())) vRes = nameof(Days.Tuesday);
+            else if (searchRow.ToLower().Equals(nameof(Days.Wednesday).ToLower())) vRes = nameof(Days.Wednesday);
+            else if (searchRow.ToLower().Equals(nameof(Days.Thursday).ToLower())) vRes = nameof(Days.Thursday);
+            else if (searchRow.ToLower().Equals(nameof(Days.Friday).ToLower())) vRes = nameof(Days.Friday);
+            else if (searchRow.ToLower().Equals(nameof(Days.Saturday).ToLower())) vRes = nameof(Days.Saturday);
+            else if (searchRow.ToLower().Equals(nameof(Days.Sunday).ToLower())) vRes = nameof(Days.Sunday);
 
             return vRes;
         }
+
+        private static List<DateTime> GetFullDates(DateTime start, DateTime end)
+        {
+            var listDates = new List<DateTime>();
+
+            while(start < end)
+            {
+                listDates.Add(start);
+                start = start.AddDays(1);
+            }
+
+            return listDates;
+        }
+
+        private static List<DateTime> GetFindedDates(string rowSearch, List<DateTime> listSource) 
+        {
+            var listFinded = new List<DateTime>();
+
+            foreach (var rowDate in listSource)
+            {
+                if (rowDate.DayOfWeek.ToString() == rowSearch)
+                {
+                    listFinded.Add(rowDate);
+                }
+            }
+            return listFinded;
+        }
+
+        private static void ShowToConsole(List<DateTime> sourceList, string daySearch)
+        {
+            foreach (var rowList in sourceList)
+            {
+                Console.WriteLine($"{rowList} - {daySearch}");
+            }
+
+            Console.WriteLine();
+
+            Console.WriteLine($"Count days in period - {sourceList.Count}");
+        }
+
+        //static List<DateTime> GetDaysByUserInput(DateTime start, DateTime end, string dayOfWeek)
+        //{
+        //    var filterDays = new List<DateTime>();
+
+        //    //while(true)
+        //    // {
+        //    //     start = start.AddDays(1);
+        //    // }
+
+        //    // for (int i = 0; ; i++)
+        //    // {
+        //    //     if (end >= start)
+        //    //     {
+        //    //         if (start.DayOfWeek.ToString() == dayOfWeek)
+        //    //         {
+        //    //             filterDays.Add(start);
+
+        //    //         }
+        //    //         start = start.AddDays(1);
+        //    //         continue;
+        //    //     }
+
+        //    //     break;
+        //    // }
+
+        //    while (end >= start)
+        //    {
+        //        if (start.DayOfWeek.ToString() == dayOfWeek)
+        //        {
+        //            filterDays.Add(start);
+        //        }
+        //        start = start.AddDays(1);
+        //    }
+
+        //    foreach (var row in filterDays)
+        //    {
+        //        Console.WriteLine();
+        //    }
+
+        //    Console.WriteLine("----------");
+        //    Console.WriteLine($"{filterDays.Count}");
+
+        //    return filterDays;
+        //}
 
     }
 }
