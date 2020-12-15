@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Astreiko.Homework3
 {
-    class Program
+    internal class Program
     {
         private enum Days
         {
@@ -16,89 +16,11 @@ namespace Astreiko.Homework3
             Sunday = 7
         }
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            BusinessLogic();
-            
-            //var www = CheckInputDay();
-
-            //Console.WriteLine($"{www}");
-
-            //DateTime start;
-
-            //DateTime end;
-
-            //while (true)
-            //{
-            //    DateTime.TryParse(Console.ReadLine(), out start);
-
-            //    end = DateTime.Parse(Console.ReadLine());
-
-            //    if (start > end)
-            //    {
-            //        Console.WriteLine("Ошибка.Попробуйте снова.");
-            //        break;
-            //    }
-            //}
-
-            //var dayOfWeek = Console.ReadLine();
-
-            //var list = GetDaysByUserInput(start, end, dayOfWeek);
-
-            //Console.ReadKey();
-        }
-
-        private static void BusinessLogic() 
-        {
-
-            DateTime inputFirstDate = new DateTime();
-            DateTime inputFinishDate = new DateTime();
-
-            //var cycleCheck = true;
-
-            //while (cycleCheck)
-            //{
-            //    Console.Write("Enter start date : ");
-
-            //    var resDateFirst = GetDate(Console.ReadLine());
-
-            //    if (resDateFirst.resParse == true)
-            //    {
-            //        inputFirstDate = resDateFirst.resDate;
-            //        cycleCheck = false;
-            //    }
-            //    else
-            //    {
-            //        Console.ForegroundColor = ConsoleColor.Red;
-            //        Console.WriteLine("Error! Wrong date entered");
-            //        Console.ResetColor();
-            //    }
-            //}
-
-            //cycleCheck = true;
-
-            //while (cycleCheck)
-            //{
-            //    Console.Write("Enter finish date : ");
-
-            //    var resDateEnd = GetDate(Console.ReadLine());
-
-            //    if (resDateEnd.resParse == true)
-            //    {
-            //        inputFinishDate = resDateEnd.resDate;
-            //        cycleCheck = false;
-            //    }
-            //    else
-            //    {
-            //        Console.ForegroundColor = ConsoleColor.Red;
-            //        Console.WriteLine("Error! Wrong date entered");
-            //        Console.ResetColor();
-            //    }
-            //}
-
             var daysPeriod = GetDaysForPeriod();
-            inputFirstDate = daysPeriod.firstDate;
-            inputFinishDate = daysPeriod.secondDate;
+            var inputFirstDate = daysPeriod.firstDate;
+            var inputFinishDate = daysPeriod.secondDate;
 
             var cycleCheck = true;
 
@@ -118,9 +40,9 @@ namespace Astreiko.Homework3
             }
 
             Console.WriteLine("---------------------------------------");
-            Console.WriteLine($"Start date - {inputFirstDate}");
-            Console.WriteLine($"Finish date - {inputFinishDate}");
-            Console.WriteLine("---------------------------------------");            
+            Console.WriteLine($"Start date - {inputFirstDate.ToShortDateString()}");
+            Console.WriteLine($"Finish date - {inputFinishDate.ToShortDateString()}");
+            Console.WriteLine("---------------------------------------");
 
             var selectedDay = string.Empty;
 
@@ -142,16 +64,16 @@ namespace Astreiko.Homework3
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Error. Wrong date entered.");
-                    Console.ResetColor();                   
+                    Console.ResetColor();
                 }
-                                
+
             }
 
             var listFullDays = GetFullDates(inputFirstDate, inputFinishDate);
 
-            var listFindedDays = GetFindedDates(selectedDay, listFullDays);
+            var listFundedDays = GetFoundedDates(selectedDay, listFullDays);
 
-            ShowToConsole(listFindedDays, selectedDay);
+            ShowToConsole(listFundedDays, selectedDay);
 
             Console.ReadKey();
         }
@@ -159,7 +81,7 @@ namespace Astreiko.Homework3
         private static (bool resParse, DateTime resDate) GetDate(string inputText)
         {
             var vRes = true;
-            DateTime inputDateRes = new DateTime(0001, 01, 01);
+            var inputDateRes = new DateTime(0001, 01, 01);
 
             try
             {
@@ -175,8 +97,8 @@ namespace Astreiko.Homework3
 
         private static (DateTime firstDate, DateTime secondDate) GetDaysForPeriod()
         {
-            DateTime inputFirstDate = new DateTime();
-            DateTime inputFinishDate = new DateTime();
+            var inputFirstDate = new DateTime();
+            var inputFinishDate = new DateTime();
 
             var cycleCheck = true;
 
@@ -225,12 +147,7 @@ namespace Astreiko.Homework3
 
         private static bool CheckStartFinish(DateTime firstDate, DateTime endDate)
         {
-            var vRes = true;
-
-            if (firstDate > endDate)
-            {
-                vRes = false;
-            }
+            var vRes = !(firstDate > endDate);
 
             return vRes;
         }
@@ -263,76 +180,30 @@ namespace Astreiko.Homework3
             return listDates;
         }
 
-        private static List<DateTime> GetFindedDates(string rowSearch, List<DateTime> listSource) 
+        private static List<DateTime> GetFoundedDates(string rowSearch, List<DateTime> listSource) 
         {
-            var listFinded = new List<DateTime>();
+            var listFunded = new List<DateTime>();
 
             foreach (var rowDate in listSource)
             {
                 if (rowDate.DayOfWeek.ToString() == rowSearch)
                 {
-                    listFinded.Add(rowDate);
+                    listFunded.Add(rowDate);
                 }
             }
-            return listFinded;
+            return listFunded;
         }
 
         private static void ShowToConsole(List<DateTime> sourceList, string daySearch)
         {
             foreach (var rowList in sourceList)
             {
-                Console.WriteLine($"{rowList} - {daySearch}");
+                Console.WriteLine($"{rowList.ToShortDateString()} - {daySearch}");
             }
 
             Console.WriteLine();
 
             Console.WriteLine($"Count days in period - {sourceList.Count}");
         }
-
-        //static List<DateTime> GetDaysByUserInput(DateTime start, DateTime end, string dayOfWeek)
-        //{
-        //    var filterDays = new List<DateTime>();
-
-        //    //while(true)
-        //    // {
-        //    //     start = start.AddDays(1);
-        //    // }
-
-        //    // for (int i = 0; ; i++)
-        //    // {
-        //    //     if (end >= start)
-        //    //     {
-        //    //         if (start.DayOfWeek.ToString() == dayOfWeek)
-        //    //         {
-        //    //             filterDays.Add(start);
-
-        //    //         }
-        //    //         start = start.AddDays(1);
-        //    //         continue;
-        //    //     }
-
-        //    //     break;
-        //    // }
-
-        //    while (end >= start)
-        //    {
-        //        if (start.DayOfWeek.ToString() == dayOfWeek)
-        //        {
-        //            filterDays.Add(start);
-        //        }
-        //        start = start.AddDays(1);
-        //    }
-
-        //    foreach (var row in filterDays)
-        //    {
-        //        Console.WriteLine();
-        //    }
-
-        //    Console.WriteLine("----------");
-        //    Console.WriteLine($"{filterDays.Count}");
-
-        //    return filterDays;
-        //}
-
     }
 }
