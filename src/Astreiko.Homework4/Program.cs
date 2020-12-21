@@ -18,7 +18,8 @@ namespace Astreiko.Homework4
 
             var check = true;
 
-            while (check) {
+            while (check)
+            {
 
                 switch (currentAction)
                 {
@@ -55,6 +56,9 @@ namespace Astreiko.Homework4
             Console.ReadKey();
         }
 
+        /// <summary>
+        /// Создание события
+        /// </summary>
         private static void CreateEvent()
         {
             Console.Write("Enter description :");
@@ -64,7 +68,7 @@ namespace Astreiko.Homework4
 
             var inputStartDate = DateTime.Now;
 
-            while (check) 
+            while (check)
             {
                 try
                 {
@@ -100,7 +104,7 @@ namespace Astreiko.Homework4
                     Console.WriteLine();
                     Console.ResetColor();
                 }
-            }           
+            }
 
             Console.Write("Enter status : ");
             var inputStatus = Console.ReadLine().Trim();
@@ -108,6 +112,13 @@ namespace Astreiko.Homework4
             AddEventToList(inputDesc, inputStartDate, inputFinishDate, inputStatus);
         }
 
+        /// <summary>
+        /// Добавление события в лист событий
+        /// </summary>
+        /// <param name="description">Описание события</param>
+        /// <param name="startDate">Дата начала события</param>
+        /// <param name="finishDate">Дата окончания события</param>
+        /// <param name="status">Статус события</param>
         private static void AddEventToList(string description, DateTime startDate, DateTime finishDate, string status)
         {
             var newEvent = new Events();
@@ -120,6 +131,9 @@ namespace Astreiko.Homework4
             CurrentListEvents.Add(newEvent);
         }
 
+        /// <summary>
+        /// Отображение событий
+        /// </summary>
         private static void ShowEvents()
         {
             Console.WriteLine("------CALENDAR------");
@@ -173,7 +187,10 @@ namespace Astreiko.Homework4
             };
         }
 
-
+        /// <summary>
+        /// Тип выбора из консоли
+        /// </summary>
+        /// <returns></returns>
         static private TypeAction GetAction()
         {
             TypeAction vRes = 0;
@@ -196,7 +213,7 @@ namespace Astreiko.Homework4
 
                 var inputText = Console.ReadLine();
 
-                if (inputText == "A" || inputText == "a") 
+                if (inputText == "A" || inputText == "a")
                 {
                     vRes = TypeAction.Add;
                     check = false;
@@ -230,9 +247,7 @@ namespace Astreiko.Homework4
                     Console.WriteLine();
                 }
             }
-
             return vRes;
-
         }
     }
 }

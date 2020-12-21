@@ -4,6 +4,9 @@ using System.Text;
 
 namespace Astreiko.Homework4
 {
+    /// <summary>
+    /// Тип действия
+    /// </summary>
     public enum TypeAction
     {
         Add = 1,
