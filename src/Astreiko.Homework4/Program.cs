@@ -20,7 +20,6 @@ namespace Astreiko.Homework4
 
             while (check)
             {
-
                 switch (currentAction)
                 {
                     case TypeAction.Add:
@@ -37,6 +36,8 @@ namespace Astreiko.Homework4
                         }
                     case TypeAction.Delete:
                         {
+                            DeleteEvent();
+                            currentAction = GetAction();
                             break;
                         }
                     case TypeAction.Show:
@@ -59,6 +60,44 @@ namespace Astreiko.Homework4
         }
 
         /// <summary>
+        /// Удаление события
+        /// </summary>
+        private static void DeleteEvent()
+        {
+            var checkDel = true;
+
+            while (checkDel)
+            {
+                Console.Write("Input id for delete : ");
+
+                var searchId = Console.ReadLine().Trim();
+
+                var searchEvent = CheckEvent(searchId);
+
+                if (searchEvent.BoolResult)
+                {
+                    Console.WriteLine("Event found.");
+                    Console.WriteLine();
+
+                    CurrentListEvents.RemoveAll(x => x.Id == searchId);
+
+                    checkDel = false;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Event does not find. Please try again.");
+                    Console.WriteLine();
+                    Console.ResetColor();
+
+                    Console.Write("You want continious? (y - default or n)");
+
+                    if (Console.ReadLine().Trim() == "n") { checkDel = false; }
+                };
+            }
+        }
+
+        /// <summary>
         /// Редактирование события
         /// </summary>
         private static void EditEvent() 
@@ -67,7 +106,7 @@ namespace Astreiko.Homework4
 
             while (checkEdit)
             {
-                Console.Write("Input id for search : ");
+                Console.Write("Input id for edit : ");
 
                 var searchId = Console.ReadLine().Trim();
 
@@ -75,7 +114,7 @@ namespace Astreiko.Homework4
 
                 if (searchEvent.BoolResult)
                 {
-                    Console.WriteLine("Event was found.");
+                    Console.WriteLine("Event found.");
                     Console.WriteLine();
 
                     Console.Write("Enter description :");
