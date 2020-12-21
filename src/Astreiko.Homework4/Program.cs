@@ -16,14 +16,15 @@ namespace Astreiko.Homework4
 
             var currentAction = GetAction();
 
-            //var check = true;
+            var check = true;
 
-            //while (check) {
+            while (check) {
 
                 switch (currentAction)
                 {
                     case TypeAction.Add:
                         {
+                            CreateEvent();
                             break;
                         }
                     case TypeAction.Edit:
@@ -37,20 +38,67 @@ namespace Astreiko.Homework4
                     case TypeAction.Show:
                         {
                             ShowEvents();
+                            currentAction = GetAction();
                             break;
                         }
                     case TypeAction.Close:
                         {
-                            //check = false;
+                            check = false;
                             Console.WriteLine();
                             Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine("Выход из приложения.");
                             break;
                         }
-               // }
+                }
+            }
+            Console.ReadKey();
+        }
+
+        private static void CreateEvent()
+        {
+            Console.Write("Enter description :");
+            var inputDesc = Console.ReadLine().Trim();
+
+            var check = true;
+
+            while (check) 
+            {
+                try
+                {
+                    Console.Write("Enter start date : ");
+                    var inputStartDate = DateTime.Parse(Console.ReadLine());
+                    check = false;
+                }
+                catch
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Input date uncorrect!");
+                    Console.WriteLine();
+                    Console.ResetColor();
+                }
             }
 
-            Console.ReadKey();
+            check = true;
+
+            while (check)
+            {
+                try
+                {
+                    Console.Write("Enter finish date : ");
+                    var inputFinishDate = DateTime.Parse(Console.ReadLine());
+                    check = false;
+                }
+                catch
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Input date uncorrect!");
+                    Console.WriteLine();
+                    Console.ResetColor();
+                }
+            }           
+
+            Console.Write("Enter status : ");
+            var inputStatus = Console.ReadLine().Trim();
         }
 
         private static void ShowEvents()
