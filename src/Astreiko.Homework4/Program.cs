@@ -25,6 +25,7 @@ namespace Astreiko.Homework4
                     case TypeAction.Add:
                         {
                             CreateEvent();
+                            currentAction = GetAction();
                             break;
                         }
                     case TypeAction.Edit:
@@ -61,12 +62,14 @@ namespace Astreiko.Homework4
 
             var check = true;
 
+            var inputStartDate = DateTime.Now;
+
             while (check) 
             {
                 try
                 {
                     Console.Write("Enter start date : ");
-                    var inputStartDate = DateTime.Parse(Console.ReadLine());
+                    inputStartDate = DateTime.Parse(Console.ReadLine());
                     check = false;
                 }
                 catch
@@ -80,12 +83,14 @@ namespace Astreiko.Homework4
 
             check = true;
 
+            var inputFinishDate = DateTime.Now;
+
             while (check)
             {
                 try
                 {
                     Console.Write("Enter finish date : ");
-                    var inputFinishDate = DateTime.Parse(Console.ReadLine());
+                    inputFinishDate = DateTime.Parse(Console.ReadLine());
                     check = false;
                 }
                 catch
@@ -99,6 +104,20 @@ namespace Astreiko.Homework4
 
             Console.Write("Enter status : ");
             var inputStatus = Console.ReadLine().Trim();
+
+            AddEventToList(inputDesc, inputStartDate, inputFinishDate, inputStatus);
+        }
+
+        private static void AddEventToList(string description, DateTime startDate, DateTime finishDate, string status)
+        {
+            var newEvent = new Events();
+            newEvent.Id = new Random().Next(1, 100000).ToString();
+            newEvent.Description = description;
+            newEvent.StartDate = startDate;
+            newEvent.EndDate = finishDate;
+            newEvent.Status = status;
+
+            CurrentListEvents.Add(newEvent);
         }
 
         private static void ShowEvents()
