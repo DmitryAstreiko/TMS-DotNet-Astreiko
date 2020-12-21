@@ -31,6 +31,30 @@ namespace Astreiko.Homework4
                         }
                     case TypeAction.Edit:
                         {
+                            var checkEdit = true;
+
+                            while (checkEdit)
+                            {
+                                Console.WriteLine("Input id for search : ");
+
+                                var searchId = Console.ReadLine().Trim();
+
+                                if (CheckEvent(searchId))
+                                {
+
+                                }
+                                else 
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.WriteLine("Event does not find. Please try again.");
+                                    Console.WriteLine();
+                                    Console.ResetColor();
+
+                                    Console.WriteLine("You want continious? (y - default or n)");
+
+                                    if (Console.ReadLine().Trim() == "n") { checkEdit = false; }
+                                };
+                            }
                             break;
                         }
                     case TypeAction.Delete:
@@ -54,6 +78,22 @@ namespace Astreiko.Homework4
                 }
             }
             Console.ReadKey();
+        }
+
+        /// <summary>
+        /// Прверка существования введенного идентификатора события
+        /// </summary>
+        /// <returns></returns>
+        private static bool CheckEvent(string searchId)
+        {
+            var vRes = false;            
+
+            foreach (var row in CurrentListEvents)
+            {
+                if (row.Id == searchId) { vRes = true; }
+            }
+
+            return vRes;
         }
 
         /// <summary>
