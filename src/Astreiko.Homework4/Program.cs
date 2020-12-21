@@ -81,6 +81,8 @@ namespace Astreiko.Homework4
 
                     CurrentListEvents.RemoveAll(x => x.Id == searchId);
 
+                    Console.WriteLine("Event deleted.");
+                    Console.WriteLine();
                     checkDel = false;
                 }
                 else
@@ -100,7 +102,7 @@ namespace Astreiko.Homework4
         /// <summary>
         /// Редактирование события
         /// </summary>
-        private static void EditEvent() 
+        private static void EditEvent()
         {
             var checkEdit = true;
 
@@ -117,7 +119,7 @@ namespace Astreiko.Homework4
                     Console.WriteLine("Event found.");
                     Console.WriteLine();
 
-                    Console.Write("Enter description :");
+                    Console.Write("Enter description : ");
                     CurrentListEvents[searchEvent.NumberRow].Description = Console.ReadLine().Trim();
 
                     var inputDate = CheckDate();
@@ -127,6 +129,8 @@ namespace Astreiko.Homework4
 
                     Console.Write("Enter status : ");
                     CurrentListEvents[searchEvent.NumberRow].Status = Console.ReadLine().Trim();
+
+                    Console.WriteLine("Event edited.");
 
                     checkEdit = false;
                 }
@@ -166,7 +170,7 @@ namespace Astreiko.Homework4
         /// </summary>
         private static void CreateEvent()
         {
-            Console.Write("Enter description :");
+            Console.Write("Enter description : ");
             var inputDesc = Console.ReadLine().Trim();
 
             var inputDate = CheckDate();
@@ -237,7 +241,10 @@ namespace Astreiko.Homework4
         private static void AddEventToList(string description, DateTime startDate, DateTime finishDate, string status)
         {
             var newEvent = new Events();
-            newEvent.Id = new Random().Next(1, 100000).ToString();
+
+            var generator = new RandomGenerator();
+
+            newEvent.Id = generator.RandomPassword();
             newEvent.Description = description;
             newEvent.StartDate = startDate;
             newEvent.EndDate = finishDate;
