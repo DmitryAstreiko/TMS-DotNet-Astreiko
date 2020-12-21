@@ -31,30 +31,8 @@ namespace Astreiko.Homework4
                         }
                     case TypeAction.Edit:
                         {
-                            var checkEdit = true;
-
-                            while (checkEdit)
-                            {
-                                Console.WriteLine("Input id for search : ");
-
-                                var searchId = Console.ReadLine().Trim();
-
-                                if (CheckEvent(searchId))
-                                {
-
-                                }
-                                else 
-                                {
-                                    Console.ForegroundColor = ConsoleColor.Red;
-                                    Console.WriteLine("Event does not find. Please try again.");
-                                    Console.WriteLine();
-                                    Console.ResetColor();
-
-                                    Console.WriteLine("You want continious? (y - default or n)");
-
-                                    if (Console.ReadLine().Trim() == "n") { checkEdit = false; }
-                                };
-                            }
+                            EditEvent();
+                            currentAction = GetAction();
                             break;
                         }
                     case TypeAction.Delete:
@@ -81,19 +59,67 @@ namespace Astreiko.Homework4
         }
 
         /// <summary>
+        /// Редактирование события
+        /// </summary>
+        private static void EditEvent() 
+        {
+            var checkEdit = true;
+
+            while (checkEdit)
+            {
+                Console.Write("Input id for search : ");
+
+                var searchId = Console.ReadLine().Trim();
+
+                var searchEvent = CheckEvent(searchId);
+
+                if (searchEvent.BoolResult)
+                {
+                    Console.WriteLine("Event was found.");
+                    Console.WriteLine();
+
+                    Console.Write("Enter description :");
+                    CurrentListEvents[searchEvent.NumberRow].Description = Console.ReadLine().Trim();
+
+                    var inputDate = CheckDate();
+                    CurrentListEvents[searchEvent.NumberRow].StartDate = inputDate.StartDate;
+
+                    CurrentListEvents[searchEvent.NumberRow].EndDate = inputDate.EndDate;
+
+                    Console.Write("Enter status : ");
+                    CurrentListEvents[searchEvent.NumberRow].Status = Console.ReadLine().Trim();
+
+                    checkEdit = false;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Event does not find. Please try again.");
+                    Console.WriteLine();
+                    Console.ResetColor();
+
+                    Console.Write("You want continious? (y - default or n)");
+
+                    if (Console.ReadLine().Trim() == "n") { checkEdit = false; }
+                };
+            }
+        }
+
+        /// <summary>
         /// Прверка существования введенного идентификатора события
         /// </summary>
         /// <returns></returns>
-        private static bool CheckEvent(string searchId)
+        private static (bool BoolResult, int NumberRow) CheckEvent(string searchId)
         {
-            var vRes = false;            
+            var vResB = false;
+            var vResI = 0;
 
-            foreach (var row in CurrentListEvents)
+            for (int i = 0; i < CurrentListEvents.Count; i++)
             {
-                if (row.Id == searchId) { vRes = true; }
+                if (CurrentListEvents[i].Id == searchId) { vResB = true; vResI = i; };
             }
 
-            return vRes;
+            return (vResB, vResI);
         }
 
         /// <summary>
@@ -104,6 +130,20 @@ namespace Astreiko.Homework4
             Console.Write("Enter description :");
             var inputDesc = Console.ReadLine().Trim();
 
+            var inputDate = CheckDate();
+
+            Console.Write("Enter status : ");
+            var inputStatus = Console.ReadLine().Trim();
+
+            AddEventToList(inputDesc, inputDate.StartDate, inputDate.EndDate, inputStatus);
+        }
+
+        /// <summary>
+        /// Получение введенных дат
+        /// </summary>
+        /// <returns></returns>
+        private static (DateTime StartDate, DateTime EndDate) CheckDate()
+        {
             var check = true;
 
             var inputStartDate = DateTime.Now;
@@ -145,11 +185,7 @@ namespace Astreiko.Homework4
                     Console.ResetColor();
                 }
             }
-
-            Console.Write("Enter status : ");
-            var inputStatus = Console.ReadLine().Trim();
-
-            AddEventToList(inputDesc, inputStartDate, inputFinishDate, inputStatus);
+            return (inputStartDate, inputFinishDate);
         }
 
         /// <summary>
@@ -218,10 +254,10 @@ namespace Astreiko.Homework4
 
                 new Events()
                 {
-                    Id = "730d5",
-                    Description = "event2",
-                    StartDate = new DateTime(2020, 05, 02),
-                    EndDate = new DateTime(2020, 12, 31),
+                    Id = "533720",
+                    Description = "event3",
+                    StartDate = new DateTime(2020, 09, 12),
+                    EndDate = new DateTime(2021, 02, 25),
                     Status = "ToDo"
                 }
             };
