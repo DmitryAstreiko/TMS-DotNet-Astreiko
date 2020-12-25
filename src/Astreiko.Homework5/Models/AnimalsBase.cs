@@ -15,13 +15,28 @@ namespace Astreiko.Homework5.Models
         public string Name { get; set; }
 
         /// <summary>
-        /// Максимальный вес животного
+        /// Вес животного
         /// </summary>
-        public string MaxWeight { get; set; }
+        public string Weight { get; set; }
 
         /// <summary>
         /// Возраст животного
         /// </summary>
         public double Age { get; set; }
+
+        /// <summary>
+        /// Как говорит
+        /// </summary>
+        public string WhatSay { get; set; }
+
+        /// <summary>
+        /// Как быстро двигается
+        /// </summary>
+        public string WhatTraffic { get; set; }
+
+        /// <summary>
+        /// Что ест
+        /// </summary>
+        public string WhatEat { get; set; }
     }
 }
