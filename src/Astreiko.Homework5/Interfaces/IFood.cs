@@ -9,6 +9,6 @@ namespace Astreiko.Homework5.Interfaces
     /// </summary>
     public interface IFood
     {
-        void WhatEat();
+        void Eat();
     }
 }

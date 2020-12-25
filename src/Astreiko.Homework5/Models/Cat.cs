@@ -17,7 +17,7 @@ namespace Astreiko.Homework5.Models
             Console.WriteLine("About 5 km/h");
         }
 
-        public void WhatEat()
+        public void Eat()
         {
             Console.WriteLine("Milk, fish, mouse ...");
         }
