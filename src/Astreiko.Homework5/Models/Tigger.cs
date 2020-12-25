@@ -7,19 +7,31 @@ namespace Astreiko.Homework5.Models
 {
     public class Tigger : AnimalsBase, IVoice, ITraffic, IFood
     {
+        /// <summary>
+        /// Конструктор с параметрами по умолчанию
+        /// </summary>
+        public Tigger()
+        {
+            WhatSay = "RRRRRRR";
+
+            WhatTraffic = "More 100 km/h";
+
+            WhatEat = "All animals";
+        }
+
         public void Say()
         {
-            Console.WriteLine("RRRRRR");
+            Console.WriteLine($"{WhatSay}");
         }
 
         public void Traffic()
         {
-            Console.WriteLine("more 100 km/h");
+            Console.WriteLine($"{WhatTraffic}");
         }
 
         public void Eat()
         {
-            Console.WriteLine("All animals");
+            Console.WriteLine($"{WhatEat}");
         }
     }
 }
