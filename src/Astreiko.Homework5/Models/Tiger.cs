@@ -5,12 +5,12 @@ using System.Text;
 
 namespace Astreiko.Homework5.Models
 {
-    public class Tigger : AnimalsBase, IVoice, ITraffic, IFood
+    public class Tiger : AnimalsBase, IVoice, ITraffic, IFood
     {
         /// <summary>
         /// Конструктор с параметрами по умолчанию
         /// </summary>
-        public Tigger()
+        public Tiger()
         {
             WhatSay = "RRRRRRR";
 

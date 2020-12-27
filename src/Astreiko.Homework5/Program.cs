@@ -10,7 +10,7 @@ namespace Astreiko.Homework5
         public static List<Cat> ListCat;
         public static List<Elephant> ListElephant;
         public static List<Giraffe> ListGiraffe;
-        public static List<Tigger> ListTigger;
+        public static List<Tiger> ListTiger;
 
         static void Main(string[] args)
         {
@@ -58,15 +58,15 @@ namespace Astreiko.Homework5
 
         private static void ShowListAnimals()
         {
-            if (ListTigger.Count != 0)
+            if (ListTiger.Count != 0)
             {
-                foreach (var rowTiger in ListTigger)
+                foreach (var rowTiger in ListTiger)
                 {
                     Console.ForegroundColor = ConsoleColor.Blue;
-                    Console.WriteLine($"-----{nameof(Tigger)} : {rowTiger.Name}-----");
+                    Console.WriteLine($"-----{nameof(Tiger)} : {rowTiger.Name}-----");
                     Console.ResetColor();
-                    Console.WriteLine($"{nameof(Tigger.Age)} = {rowTiger.Age}.");
-                    Console.WriteLine($"{nameof(Tigger.Weight)} = {rowTiger.Weight}.");
+                    Console.WriteLine($"{nameof(Tiger.Age)} = {rowTiger.Age}.");
+                    Console.WriteLine($"{nameof(Tiger.Weight)} = {rowTiger.Weight}.");
                     rowTiger.Eat();
                     rowTiger.Say();
                     rowTiger.Traffic();
@@ -150,9 +150,9 @@ namespace Astreiko.Homework5
 
         private static void AddDefaultAnimals()
         {
-            ListTigger = new List<Tigger>();
+            ListTiger = new List<Tiger>();
 
-            var tig = new Tigger()
+            var tig = new Tiger()
             {
                 Age = 0.5,
                 Name = "Yaguar",
@@ -162,9 +162,31 @@ namespace Astreiko.Homework5
                 WhatEat = "Meat"
             };
 
-            ListTigger.Add(tig);
+            ListTiger.Add(tig);
 
-            
+            ListElephant = new List<Elephant>();
+
+            var el = new Elephant()
+            {
+                Age = 1.6,
+                Name = "Big mam",
+                Weight = 1500,
+                WhatTraffic = "35 kn/h"
+            };
+
+            ListElephant.Add(el);
+
+            ListGiraffe = new List<gira>();
+
+            var el = new Elephant()
+            {
+                Age = 1.6,
+                Name = "Big mam",
+                Weight = 1500,
+                WhatTraffic = "35 kn/h"
+            };
+
+            ListElephant.Add(el);
         }
 
     }
