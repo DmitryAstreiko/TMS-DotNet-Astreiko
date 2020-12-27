@@ -642,9 +642,9 @@ namespace Astreiko.Homework5
             var gr = new Giraffe()
             {
                 Age = 1.6,
-                Name = "Big mam",
-                Weight = 1500,
-                WhatTraffic = "35 kn/h"
+                Name = "Big Sanny",
+                Weight = 820,
+                WhatTraffic = "26 kn/h"
             };
 
             ListGiraffe.Add(gr);
