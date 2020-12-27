@@ -72,9 +72,7 @@ namespace Astreiko.Homework5
                     break;
 
                 case KindAnimals.Elephant:
-                    //var currentElephant = GetPropertiesElephant();
-
-                    //ListBear.Add(GetPropertiesElephant());
+                    ListElephant.Add(GetPropertiesElephant());
                     break;
 
                 case KindAnimals.Giraffe:
@@ -83,6 +81,70 @@ namespace Astreiko.Homework5
                 case KindAnimals.Tiger:
                     break;
             }
+        }
+
+        private static Elephant GetPropertiesElephant()
+        {
+            var elephant = new Elephant();
+
+            Console.Write("Enter Name : ");
+            elephant.Name = Console.ReadLine();
+
+
+            var check = true;
+            double vAge = 0;
+
+            while (check)
+            {
+                Console.Write("Enter Age : ");
+                try
+                {
+                    vAge = double.Parse(Console.ReadLine().Trim().Replace(".", ","));
+                    check = false;
+                }
+                catch
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine("Uncorrect number. Try again.");
+                    Console.ResetColor();
+                }
+            }
+
+            elephant.Age = vAge;
+
+
+            check = true;
+            double vWeight = 0;
+
+            while (check)
+            {
+                Console.Write("Enter Weight : ");
+
+                try
+                {
+                    vWeight = double.Parse(Console.ReadLine().Trim().Replace(".", ","));
+                    check = false;
+                }
+                catch
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine("Uncorrect number. Try again.");
+                    Console.ResetColor();
+                }
+            }
+
+            elephant.Weight = vWeight;
+
+            Console.Write("Enter what eat : ");
+            elephant.WhatEat = Console.ReadLine();
+
+            Console.Write("Enter what say : ");
+            elephant.WhatSay = Console.ReadLine();
+
+            Console.Write("Enter what traffic : ");
+            elephant.WhatTraffic = Console.ReadLine();
+
+            return elephant;
         }
 
         private static Cat GetPropertiesCat()
