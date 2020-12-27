@@ -9,17 +9,17 @@ namespace Astreiko.Homework5.Models
     {
         public void Say()
         {
-            Console.WriteLine("GEEEEEEEE");
+            if (!string.IsNullOrEmpty(WhatSay)) Console.WriteLine($"{nameof(Say)} = {WhatSay}.");
         }
 
         public void Traffic()
         {
-            Console.WriteLine("About 60 km/h");
+            if (!string.IsNullOrEmpty(WhatTraffic)) Console.WriteLine($"{nameof(Traffic)} = {WhatTraffic}.");
         }
 
         public void Eat()
         {
-            Console.WriteLine("Honey ...");
+            if (!string.IsNullOrEmpty(WhatEat)) Console.WriteLine($"{nameof(Eat)} = {WhatEat}.");
         }
     }
 }
