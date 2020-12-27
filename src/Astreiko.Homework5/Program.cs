@@ -64,39 +64,17 @@ namespace Astreiko.Homework5
             switch (SelectedKind())
             {
                 case KindAnimals.Cat:
-
-                    var currentCat = GetPropertiesCat();
-
-                    var cat = new Cat()
-                    {
-                        Age = currentCat.Age,
-                        Name = currentCat.Name,
-                        Weight = currentCat.Weight,
-                        WhatSay = currentCat.WhatSay,
-                        WhatTraffic = currentCat.WhatTraffic,
-                        WhatEat = currentCat.WhatEat
-                    };
-
-                    ListCat.Add(cat);
+                    ListCat.Add(GetPropertiesCat());
                     break;
 
                 case KindAnimals.Bear:
-                    var currentBear = GetPropertiesBear();
-
-                    var bear = new Bear()
-                    {
-                        Age = currentBear.Age,
-                        Name = currentBear.Name,
-                        Weight = currentBear.Weight,
-                        WhatSay = currentBear.WhatSay,
-                        WhatTraffic = currentBear.WhatTraffic,
-                        WhatEat = currentBear.WhatEat
-                    };
-
-                    ListBear.Add(bear);
+                    ListBear.Add(GetPropertiesBear());
                     break;
 
                 case KindAnimals.Elephant:
+                    //var currentElephant = GetPropertiesElephant();
+
+                    //ListBear.Add(GetPropertiesElephant());
                     break;
 
                 case KindAnimals.Giraffe:
