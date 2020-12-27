@@ -1,8 +1,7 @@
-﻿using Astreiko.Homework5.Models;
+﻿using Astreiko.Homework5.Helper;
+using Astreiko.Homework5.Models;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using Astreiko.Homework5.Helper;
 
 namespace Astreiko.Homework5
 {
@@ -52,9 +51,9 @@ namespace Astreiko.Homework5
                         Console.ResetColor();
                         ShowMenu();
                         break;
-                } 
+                }
             }
-            
+
             Console.ReadKey();
         }
 
@@ -64,8 +63,99 @@ namespace Astreiko.Homework5
 
             switch (SelectedKind())
             {
+                case KindAnimals.Cat:
 
+                    var currentCat = GetPropertiesCat();
+
+                    var cat = new Cat()
+                    {
+                        Age = currentCat.Age,
+                        Name = currentCat.Name,
+                        Weight = currentCat.Weight,
+                        WhatSay = currentCat.WhatSay,
+                        WhatTraffic = currentCat.WhatTraffic,
+                        WhatEat = currentCat.WhatEat
+                    };
+
+                    ListCat.Add(cat);
+                    break;
+
+                case KindAnimals.Bear:
+                    break;
+
+                case KindAnimals.Elephant:
+                    break;
+
+                case KindAnimals.Giraffe:
+                    break;
+
+                case KindAnimals.Tiger:
+                    break;
             }
+        }
+
+        private static Cat GetPropertiesCat()
+        {
+            var cat = new Cat();
+
+            Console.Write("Enter Name : ");
+            cat.Name = Console.ReadLine();
+
+
+            var check = true;
+            double vAge = 0;
+
+            while (check)
+            {
+                Console.Write("Enter Age : ");
+                try
+                {
+                    vAge = double.Parse(Console.ReadLine().Trim().Replace(".", ","));
+                    check = false;
+                }
+                catch
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine("Uncorrect number. Try again.");
+                    Console.ResetColor();
+                }
+            }
+
+            cat.Age = vAge;
+
+
+            check = true;
+            double vWeight = 0;
+
+            while (check)
+            {
+                Console.Write("Enter Weight : ");
+
+                try
+                {
+                    vWeight = double.Parse(Console.ReadLine().Trim().Replace(".",","));
+                    check = false;
+                }
+                catch
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine("Uncorrect number. Try again.");
+                    Console.ResetColor();
+                }
+            }
+
+            cat.Weight = vWeight;
+
+            Console.Write("Enter what eat : ");
+            cat.WhatEat = Console.ReadLine();
+
+            Console.Write("Enter what say : ");
+            cat.WhatSay = Console.ReadLine();
+
+            Console.Write("Enter what traffic : ");
+            cat.WhatTraffic = Console.ReadLine();
+
+            return cat;
         }
 
         private static KindAnimals SelectedKind()
@@ -153,8 +243,8 @@ namespace Astreiko.Homework5
                     rowTiger.Traffic();
                     Console.WriteLine();
                 }
-            } 
-            
+            }
+
             if (ListCat.Count != 0)
             {
                 foreach (var rowCat in ListCat)
@@ -171,7 +261,7 @@ namespace Astreiko.Homework5
                 }
 
             }
-            
+
             if (ListBear.Count != 0)
             {
                 foreach (var rowBear in ListBear)
@@ -188,7 +278,7 @@ namespace Astreiko.Homework5
                 }
 
             }
-            
+
             if (ListElephant.Count != 0)
             {
                 foreach (var rowEl in ListElephant)
@@ -204,7 +294,7 @@ namespace Astreiko.Homework5
                     Console.WriteLine();
                 }
             }
-            
+
             if (ListGiraffe.Count != 0)
             {
                 foreach (var rowGiraffe in ListGiraffe)
