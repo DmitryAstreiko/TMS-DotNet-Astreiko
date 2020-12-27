@@ -81,6 +81,19 @@ namespace Astreiko.Homework5
                     break;
 
                 case KindAnimals.Bear:
+                    var currentBear = GetPropertiesBear();
+
+                    var bear = new Bear()
+                    {
+                        Age = currentBear.Age,
+                        Name = currentBear.Name,
+                        Weight = currentBear.Weight,
+                        WhatSay = currentBear.WhatSay,
+                        WhatTraffic = currentBear.WhatTraffic,
+                        WhatEat = currentBear.WhatEat
+                    };
+
+                    ListBear.Add(bear);
                     break;
 
                 case KindAnimals.Elephant:
@@ -156,6 +169,70 @@ namespace Astreiko.Homework5
             cat.WhatTraffic = Console.ReadLine();
 
             return cat;
+        }
+
+        private static Bear GetPropertiesBear()
+        {
+            var bear = new Bear();
+
+            Console.Write("Enter Name : ");
+            bear.Name = Console.ReadLine();
+
+
+            var check = true;
+            double vAge = 0;
+
+            while (check)
+            {
+                Console.Write("Enter Age : ");
+                try
+                {
+                    vAge = double.Parse(Console.ReadLine().Trim().Replace(".", ","));
+                    check = false;
+                }
+                catch
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine("Uncorrect number. Try again.");
+                    Console.ResetColor();
+                }
+            }
+
+            bear.Age = vAge;
+
+
+            check = true;
+            double vWeight = 0;
+
+            while (check)
+            {
+                Console.Write("Enter Weight : ");
+
+                try
+                {
+                    vWeight = double.Parse(Console.ReadLine().Trim().Replace(".", ","));
+                    check = false;
+                }
+                catch
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine("Uncorrect number. Try again.");
+                    Console.ResetColor();
+                }
+            }
+
+            bear.Weight = vWeight;
+
+            Console.Write("Enter what eat : ");
+            bear.WhatEat = Console.ReadLine();
+
+            Console.Write("Enter what say : ");
+            bear.WhatSay = Console.ReadLine();
+
+            Console.Write("Enter what traffic : ");
+            bear.WhatTraffic = Console.ReadLine();
+
+            return bear;
         }
 
         private static KindAnimals SelectedKind()
