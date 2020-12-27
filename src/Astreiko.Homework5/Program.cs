@@ -1,6 +1,8 @@
 ﻿using Astreiko.Homework5.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using Astreiko.Homework5.Helper;
 
 namespace Astreiko.Homework5
 {
@@ -60,7 +62,61 @@ namespace Astreiko.Homework5
         {
             ShowMenuAnimals();
 
+            switch (SelectedKind())
+            {
 
+            }
+        }
+
+        private static KindAnimals SelectedKind()
+        {
+            var vRes = KindAnimals.None;
+
+            var check = true;
+
+            while (check)
+            {
+                Console.WriteLine();
+                Console.Write("Please press any key : ");
+
+                var inputKind = Console.ReadLine().Trim();
+
+                switch (inputKind)
+                {
+                    case "c":
+                        vRes = KindAnimals.Cat;
+                        check = false;
+                        break;
+                    case "b":
+                        vRes = KindAnimals.Bear;
+                        check = false;
+                        break;
+                    case "e":
+                        vRes = KindAnimals.Elephant;
+                        check = false;
+                        break;
+                    case "g":
+                        vRes = KindAnimals.Giraffe;
+                        check = false;
+                        break;
+                    case "t":
+                        vRes = KindAnimals.Tiger;
+                        check = false;
+                        break;
+                    case "x":
+                        vRes = KindAnimals.None;
+                        check = false;
+                        break;
+                    default:
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.WriteLine("Uncorrect key.");
+                        Console.ResetColor();
+                        ShowMenuAnimals();
+                        break;
+                }
+            }
+
+            return vRes;
         }
 
         private static void ShowMenuAnimals()
@@ -78,7 +134,7 @@ namespace Astreiko.Homework5
 
             Console.WriteLine("Add Tigger - press t");
 
-            Console.WriteLine("Exit - press c");
+            Console.WriteLine("Exit - press x");
         }
 
         private static void ShowListAnimals()
