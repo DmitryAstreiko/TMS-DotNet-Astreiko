@@ -80,8 +80,73 @@ namespace Astreiko.Homework5
                     break;
 
                 case KindAnimals.Tiger:
+                    ListTiger.Add(GetPropertiesTiger());
                     break;
             }
+        }
+
+        private static Tiger GetPropertiesTiger()
+        {
+            var animal = new Tiger();
+
+            Console.Write("Enter Name : ");
+            animal.Name = Console.ReadLine();
+
+
+            var check = true;
+            double vAge = 0;
+
+            while (check)
+            {
+                Console.Write("Enter Age : ");
+                try
+                {
+                    vAge = double.Parse(Console.ReadLine().Trim().Replace(".", ","));
+                    check = false;
+                }
+                catch
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine("Uncorrect number. Try again.");
+                    Console.ResetColor();
+                }
+            }
+
+            animal.Age = vAge;
+
+
+            check = true;
+            double vWeight = 0;
+
+            while (check)
+            {
+                Console.Write("Enter Weight : ");
+
+                try
+                {
+                    vWeight = double.Parse(Console.ReadLine().Trim().Replace(".", ","));
+                    check = false;
+                }
+                catch
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine("Uncorrect number. Try again.");
+                    Console.ResetColor();
+                }
+            }
+
+            animal.Weight = vWeight;
+
+            Console.Write("Enter what eat : ");
+            animal.WhatEat = Console.ReadLine();
+
+            Console.Write("Enter what say : ");
+            animal.WhatSay = Console.ReadLine();
+
+            Console.Write("Enter what traffic : ");
+            animal.WhatTraffic = Console.ReadLine();
+
+            return animal;
         }
 
         private static Giraffe GetPropertiesGiraffe()
