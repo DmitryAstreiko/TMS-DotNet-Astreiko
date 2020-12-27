@@ -86,10 +86,10 @@ namespace Astreiko.Homework5
 
         private static Giraffe GetPropertiesGiraffe()
         {
-            var giraffe = new Giraffe();
+            var animal = new Giraffe();
 
             Console.Write("Enter Name : ");
-            giraffe.Name = Console.ReadLine();
+            animal.Name = Console.ReadLine();
 
 
             var check = true;
@@ -111,7 +111,7 @@ namespace Astreiko.Homework5
                 }
             }
 
-            giraffe.Age = vAge;
+            animal.Age = vAge;
 
 
             check = true;
@@ -134,26 +134,26 @@ namespace Astreiko.Homework5
                 }
             }
 
-            giraffe.Weight = vWeight;
+            animal.Weight = vWeight;
 
             Console.Write("Enter what eat : ");
-            giraffe.WhatEat = Console.ReadLine();
+            animal.WhatEat = Console.ReadLine();
 
             Console.Write("Enter what say : ");
-            giraffe.WhatSay = Console.ReadLine();
+            animal.WhatSay = Console.ReadLine();
 
             Console.Write("Enter what traffic : ");
-            giraffe.WhatTraffic = Console.ReadLine();
+            animal.WhatTraffic = Console.ReadLine();
 
-            return giraffe;
+            return animal;
         }
 
         private static Elephant GetPropertiesElephant()
         {
-            var elephant = new Elephant();
+            var animal = new Elephant();
 
             Console.Write("Enter Name : ");
-            elephant.Name = Console.ReadLine();
+            animal.Name = Console.ReadLine();
 
 
             var check = true;
@@ -175,7 +175,7 @@ namespace Astreiko.Homework5
                 }
             }
 
-            elephant.Age = vAge;
+            animal.Age = vAge;
 
 
             check = true;
@@ -198,26 +198,26 @@ namespace Astreiko.Homework5
                 }
             }
 
-            elephant.Weight = vWeight;
+            animal.Weight = vWeight;
 
             Console.Write("Enter what eat : ");
-            elephant.WhatEat = Console.ReadLine();
+            animal.WhatEat = Console.ReadLine();
 
             Console.Write("Enter what say : ");
-            elephant.WhatSay = Console.ReadLine();
+            animal.WhatSay = Console.ReadLine();
 
             Console.Write("Enter what traffic : ");
-            elephant.WhatTraffic = Console.ReadLine();
+            animal.WhatTraffic = Console.ReadLine();
 
-            return elephant;
+            return animal;
         }
 
         private static Cat GetPropertiesCat()
         {
-            var cat = new Cat();
+            var animal = new Cat();
 
             Console.Write("Enter Name : ");
-            cat.Name = Console.ReadLine();
+            animal.Name = Console.ReadLine();
 
 
             var check = true;
@@ -239,7 +239,7 @@ namespace Astreiko.Homework5
                 }
             }
 
-            cat.Age = vAge;
+            animal.Age = vAge;
 
 
             check = true;
@@ -262,26 +262,26 @@ namespace Astreiko.Homework5
                 }
             }
 
-            cat.Weight = vWeight;
+            animal.Weight = vWeight;
 
             Console.Write("Enter what eat : ");
-            cat.WhatEat = Console.ReadLine();
+            animal.WhatEat = Console.ReadLine();
 
             Console.Write("Enter what say : ");
-            cat.WhatSay = Console.ReadLine();
+            animal.WhatSay = Console.ReadLine();
 
             Console.Write("Enter what traffic : ");
-            cat.WhatTraffic = Console.ReadLine();
+            animal.WhatTraffic = Console.ReadLine();
 
-            return cat;
+            return animal;
         }
 
         private static Bear GetPropertiesBear()
         {
-            var bear = new Bear();
+            var animal = new Bear();
 
             Console.Write("Enter Name : ");
-            bear.Name = Console.ReadLine();
+            animal.Name = Console.ReadLine();
 
 
             var check = true;
@@ -303,7 +303,7 @@ namespace Astreiko.Homework5
                 }
             }
 
-            bear.Age = vAge;
+            animal.Age = vAge;
 
 
             check = true;
@@ -326,18 +326,18 @@ namespace Astreiko.Homework5
                 }
             }
 
-            bear.Weight = vWeight;
+            animal.Weight = vWeight;
 
             Console.Write("Enter what eat : ");
-            bear.WhatEat = Console.ReadLine();
+            animal.WhatEat = Console.ReadLine();
 
             Console.Write("Enter what say : ");
-            bear.WhatSay = Console.ReadLine();
+            animal.WhatSay = Console.ReadLine();
 
             Console.Write("Enter what traffic : ");
-            bear.WhatTraffic = Console.ReadLine();
+            animal.WhatTraffic = Console.ReadLine();
 
-            return bear;
+            return animal;
         }
 
         private static KindAnimals SelectedKind()
