@@ -62,10 +62,11 @@ namespace Astreiko.Homework5
             {
                 foreach (var rowTigger in ListTigger)
                 {
-                    Console.ForegroundColor = ConsoleColor.DarkBlue;
+                    Console.ForegroundColor = ConsoleColor.Blue;
                     Console.WriteLine($"-----{nameof(Tigger)} : {rowTigger.Name}-----");
                     Console.ResetColor();
                     Console.WriteLine($"{nameof(Tigger.Age)} = {rowTigger.Age}.");
+                    Console.WriteLine($"{nameof(Tigger.Weight)} = {rowTigger.Weight}.");
                     rowTigger.Eat();
                     rowTigger.Say();
                     rowTigger.Traffic();
@@ -111,7 +112,8 @@ namespace Astreiko.Homework5
                 Name = "Yaguar",
                 Weight = 250,
                 WhatSay = "RRR-RRR",
-                WhatTraffic = "High speed"
+                WhatTraffic = "High speed",
+                WhatEat = "Meat"
             };
 
             ListTigger.Add(tig);

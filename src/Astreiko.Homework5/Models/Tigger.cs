@@ -21,17 +21,17 @@ namespace Astreiko.Homework5.Models
 
         public void Say()
         {
-            Console.WriteLine($"{WhatSay}");
+            Console.WriteLine($"{nameof(Say)} = {WhatSay}.");
         }
 
         public void Traffic()
         {
-            Console.WriteLine($"{WhatTraffic}");
+            Console.WriteLine($"{nameof(Traffic)} = {WhatTraffic}.");
         }
 
         public void Eat()
         {
-            Console.WriteLine($"{WhatEat}");
+            Console.WriteLine($"{nameof(Eat)} = {WhatEat}.");
         }
     }
 }
