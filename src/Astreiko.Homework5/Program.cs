@@ -60,34 +60,80 @@ namespace Astreiko.Homework5
         {
             if (ListTigger.Count != 0)
             {
-                foreach (var rowTigger in ListTigger)
+                foreach (var rowTiger in ListTigger)
                 {
                     Console.ForegroundColor = ConsoleColor.Blue;
-                    Console.WriteLine($"-----{nameof(Tigger)} : {rowTigger.Name}-----");
+                    Console.WriteLine($"-----{nameof(Tigger)} : {rowTiger.Name}-----");
                     Console.ResetColor();
-                    Console.WriteLine($"{nameof(Tigger.Age)} = {rowTigger.Age}.");
-                    Console.WriteLine($"{nameof(Tigger.Weight)} = {rowTigger.Weight}.");
-                    rowTigger.Eat();
-                    rowTigger.Say();
-                    rowTigger.Traffic();
+                    Console.WriteLine($"{nameof(Tigger.Age)} = {rowTiger.Age}.");
+                    Console.WriteLine($"{nameof(Tigger.Weight)} = {rowTiger.Weight}.");
+                    rowTiger.Eat();
+                    rowTiger.Say();
+                    rowTiger.Traffic();
                     Console.WriteLine();
                 }
             }
             else if (ListCat.Count != 0)
             {
-                
+                foreach (var rowCat in ListCat)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine($"-----{nameof(Cat)} : {rowCat.Name}-----");
+                    Console.ResetColor();
+                    Console.WriteLine($"{nameof(Cat.Age)} = {rowCat.Age}.");
+                    Console.WriteLine($"{nameof(Cat.Weight)} = {rowCat.Weight}.");
+                    rowCat.Eat();
+                    rowCat.Say();
+                    rowCat.Traffic();
+                    Console.WriteLine();
+                }
+
             }
             else if (ListBear.Count != 0)
             {
+                foreach (var rowBear in ListBear)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine($"-----{nameof(Bear)} : {rowBear.Name}-----");
+                    Console.ResetColor();
+                    Console.WriteLine($"{nameof(Bear.Age)} = {rowBear.Age}.");
+                    Console.WriteLine($"{nameof(Bear.Weight)} = {rowBear.Weight}.");
+                    rowBear.Eat();
+                    rowBear.Say();
+                    rowBear.Traffic();
+                    Console.WriteLine();
+                }
 
             }
             else if (ListElephant.Count != 0)
             {
-
+                foreach (var rowEl in ListElephant)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine($"-----{nameof(Elephant)} : {rowEl.Name}-----");
+                    Console.ResetColor();
+                    Console.WriteLine($"{nameof(Elephant.Age)} = {rowEl.Age}.");
+                    Console.WriteLine($"{nameof(Elephant.Weight)} = {rowEl.Weight}.");
+                    rowEl.Eat();
+                    rowEl.Say();
+                    rowEl.Traffic();
+                    Console.WriteLine();
+                }
             }
             else if (ListGiraffe.Count != 0)
             {
-
+                foreach (var rowGiraffe in ListGiraffe)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine($"-----{nameof(Giraffe)} : {rowGiraffe.Name}-----");
+                    Console.ResetColor();
+                    Console.WriteLine($"{nameof(Giraffe.Age)} = {rowGiraffe.Age}.");
+                    Console.WriteLine($"{nameof(Giraffe.Weight)} = {rowGiraffe.Weight}.");
+                    rowGiraffe.Eat();
+                    rowGiraffe.Say();
+                    rowGiraffe.Traffic();
+                    Console.WriteLine();
+                }
             }
         }
 
