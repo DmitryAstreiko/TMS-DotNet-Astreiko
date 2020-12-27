@@ -35,7 +35,7 @@ namespace Astreiko.Homework5
                         ShowMenu();
                         break;
                     case "a":
-
+                        AddAnimals();
                         ShowMenu();
                         break;
                     case "c":
@@ -56,13 +56,38 @@ namespace Astreiko.Homework5
             Console.ReadKey();
         }
 
+        private static void AddAnimals()
+        {
+            ShowMenuAnimals();
+
+
+        }
+
+        private static void ShowMenuAnimals()
+        {
+            Console.WriteLine("--------------------------");
+            Console.WriteLine("Menu add animals : ");
+
+            Console.WriteLine("Add Bear - press b");
+
+            Console.WriteLine("Add Cat - press c");
+
+            Console.WriteLine("Add Elephant - press e");
+
+            Console.WriteLine("Add Giraffe - press g");
+
+            Console.WriteLine("Add Tigger - press t");
+
+            Console.WriteLine("Exit - press c");
+        }
+
         private static void ShowListAnimals()
         {
             if (ListTiger.Count != 0)
             {
                 foreach (var rowTiger in ListTiger)
                 {
-                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.ForegroundColor = ConsoleColor.DarkGreen;
                     Console.WriteLine($"-----{nameof(Tiger)} : {rowTiger.Name}-----");
                     Console.ResetColor();
                     Console.WriteLine($"{nameof(Tiger.Age)} = {rowTiger.Age}.");
@@ -78,7 +103,7 @@ namespace Astreiko.Homework5
             {
                 foreach (var rowCat in ListCat)
                 {
-                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.ForegroundColor = ConsoleColor.DarkGreen;
                     Console.WriteLine($"-----{nameof(Cat)} : {rowCat.Name}-----");
                     Console.ResetColor();
                     Console.WriteLine($"{nameof(Cat.Age)} = {rowCat.Age}.");
@@ -95,7 +120,7 @@ namespace Astreiko.Homework5
             {
                 foreach (var rowBear in ListBear)
                 {
-                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.ForegroundColor = ConsoleColor.DarkGreen;
                     Console.WriteLine($"-----{nameof(Bear)} : {rowBear.Name}-----");
                     Console.ResetColor();
                     Console.WriteLine($"{nameof(Bear.Age)} = {rowBear.Age}.");
@@ -112,7 +137,7 @@ namespace Astreiko.Homework5
             {
                 foreach (var rowEl in ListElephant)
                 {
-                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.ForegroundColor = ConsoleColor.DarkGreen;
                     Console.WriteLine($"-----{nameof(Elephant)} : {rowEl.Name}-----");
                     Console.ResetColor();
                     Console.WriteLine($"{nameof(Elephant.Age)} = {rowEl.Age}.");
@@ -128,7 +153,7 @@ namespace Astreiko.Homework5
             {
                 foreach (var rowGiraffe in ListGiraffe)
                 {
-                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.ForegroundColor = ConsoleColor.DarkGreen;
                     Console.WriteLine($"-----{nameof(Giraffe)} : {rowGiraffe.Name}-----");
                     Console.ResetColor();
                     Console.WriteLine($"{nameof(Giraffe.Age)} = {rowGiraffe.Age}.");
