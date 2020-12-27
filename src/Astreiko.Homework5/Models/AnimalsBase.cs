@@ -17,7 +17,7 @@ namespace Astreiko.Homework5.Models
         /// <summary>
         /// Вес животного
         /// </summary>
-        public string Weight { get; set; }
+        public double Weight { get; set; }
 
         /// <summary>
         /// Возраст животного

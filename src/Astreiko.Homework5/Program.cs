@@ -6,9 +6,15 @@ namespace Astreiko.Homework5
 {
     class Program
     {
+        public static List<Bear> ListBear;
+        public static List<Cat> ListCat;
+        public static List<Elephant> ListElephant;
+        public static List<Giraffe> ListGiraffe;
+        public static List<Tigger> ListTigger;
+
         static void Main(string[] args)
         {
-            
+            AddDefaultAnimals();
 
             ShowMenu();
 
@@ -24,7 +30,8 @@ namespace Astreiko.Homework5
                 switch (inputChar)
                 {
                     case "s":
-
+                        ShowListAnimals();
+                        Console.WriteLine();
                         ShowMenu();
                         break;
                     case "a":
@@ -49,6 +56,40 @@ namespace Astreiko.Homework5
             Console.ReadKey();
         }
 
+        private static void ShowListAnimals()
+        {
+            if (ListTigger.Count != 0)
+            {
+                foreach (var rowTigger in ListTigger)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkBlue;
+                    Console.WriteLine($"-----{nameof(Tigger)} : {rowTigger.Name}-----");
+                    Console.ResetColor();
+                    Console.WriteLine($"{nameof(Tigger.Age)} = {rowTigger.Age}.");
+                    rowTigger.Eat();
+                    rowTigger.Say();
+                    rowTigger.Traffic();
+                    Console.WriteLine();
+                }
+            }
+            else if (ListCat.Count != 0)
+            {
+                
+            }
+            else if (ListBear.Count != 0)
+            {
+
+            }
+            else if (ListElephant.Count != 0)
+            {
+
+            }
+            else if (ListGiraffe.Count != 0)
+            {
+
+            }
+        }
+
         private static void ShowMenu()
         {
             Console.WriteLine("Menu operations : ");
@@ -59,5 +100,24 @@ namespace Astreiko.Homework5
 
             Console.WriteLine("Exit - press c");
         }
+
+        private static void AddDefaultAnimals()
+        {
+            ListTigger = new List<Tigger>();
+
+            var tig = new Tigger()
+            {
+                Age = 0.5,
+                Name = "Yaguar",
+                Weight = 250,
+                WhatSay = "RRR-RRR",
+                WhatTraffic = "High speed"
+            };
+
+            ListTigger.Add(tig);
+
+            
+        }
+
     }
 }
