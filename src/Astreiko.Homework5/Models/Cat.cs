@@ -5,6 +5,9 @@ using System.Text;
 
 namespace Astreiko.Homework5.Models
 {
+    /// <summary>
+    /// Class Cat
+    /// </summary>
     public class Cat : AnimalsBase, IVoice, ITraffic, IFood
     {
         public void Say()

@@ -4,6 +4,9 @@ using System.Text;
 
 namespace Astreiko.Homework5.Helper
 {
+    /// <summary>
+    /// Kind animals
+    /// </summary>
     public enum KindAnimals
     {
         Bear = 1,

@@ -5,7 +5,7 @@ using System.Text;
 namespace Astreiko.Homework5.Interfaces
 {
     /// <summary>
-    /// Как разговаривает
+    /// What say animals (Как разговаривает)
     /// </summary>
     public interface IVoice
     {

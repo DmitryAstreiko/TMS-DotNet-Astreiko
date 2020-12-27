@@ -5,7 +5,7 @@ using System.Text;
 namespace Astreiko.Homework5.Interfaces
 {
     /// <summary>
-    /// Скорость движения
+    /// What traffic animals (Скорость движения)
     /// </summary>
     public interface ITraffic
     {

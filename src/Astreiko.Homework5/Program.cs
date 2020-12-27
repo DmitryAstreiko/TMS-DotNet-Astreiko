@@ -57,6 +57,9 @@ namespace Astreiko.Homework5
             Console.ReadKey();
         }
 
+        /// <summary>
+        /// Add animals to a specific list
+        /// </summary>
         private static void AddAnimals()
         {
             ShowMenuAnimals();
@@ -85,6 +88,10 @@ namespace Astreiko.Homework5
             }
         }
 
+        /// <summary>
+        /// Get properties for class Tiger
+        /// </summary>
+        /// <returns>class Tiger</returns>
         private static Tiger GetPropertiesTiger()
         {
             var animal = new Tiger();
@@ -149,6 +156,10 @@ namespace Astreiko.Homework5
             return animal;
         }
 
+        /// <summary>
+        /// Get properties for class Giraffe
+        /// </summary>
+        /// <returns>class Giraffe</returns>
         private static Giraffe GetPropertiesGiraffe()
         {
             var animal = new Giraffe();
@@ -213,6 +224,10 @@ namespace Astreiko.Homework5
             return animal;
         }
 
+        /// <summary>
+        /// Get properties for class Elephant
+        /// </summary>
+        /// <returns>class Elephant</returns>
         private static Elephant GetPropertiesElephant()
         {
             var animal = new Elephant();
@@ -277,6 +292,10 @@ namespace Astreiko.Homework5
             return animal;
         }
 
+        /// <summary>
+        /// Get properties for class Cat
+        /// </summary>
+        /// <returns>class Cat</returns>
         private static Cat GetPropertiesCat()
         {
             var animal = new Cat();
@@ -316,7 +335,7 @@ namespace Astreiko.Homework5
 
                 try
                 {
-                    vWeight = double.Parse(Console.ReadLine().Trim().Replace(".",","));
+                    vWeight = double.Parse(Console.ReadLine().Trim().Replace(".", ","));
                     check = false;
                 }
                 catch
@@ -341,6 +360,10 @@ namespace Astreiko.Homework5
             return animal;
         }
 
+        /// <summary>
+        /// Get properties for class Bear
+        /// </summary>
+        /// <returns>class Bear</returns>
         private static Bear GetPropertiesBear()
         {
             var animal = new Bear();
@@ -405,6 +428,10 @@ namespace Astreiko.Homework5
             return animal;
         }
 
+        /// <summary>
+        /// Get selected kind animals
+        /// </summary>
+        /// <returns></returns>
         private static KindAnimals SelectedKind()
         {
             var vRes = KindAnimals.None;
@@ -456,6 +483,9 @@ namespace Astreiko.Homework5
             return vRes;
         }
 
+        /// <summary>
+        /// show menu with public animals
+        /// </summary>
         private static void ShowMenuAnimals()
         {
             Console.WriteLine("--------------------------");
@@ -474,6 +504,9 @@ namespace Astreiko.Homework5
             Console.WriteLine("Exit - press x");
         }
 
+        /// <summary>
+        /// Show list with all added animals, sorted by animals
+        /// </summary>
         private static void ShowListAnimals()
         {
             if (ListTiger.Count != 0)
@@ -559,6 +592,9 @@ namespace Astreiko.Homework5
             }
         }
 
+        /// <summary>
+        /// show main menu with exist operations
+        /// </summary>
         private static void ShowMenu()
         {
             Console.WriteLine("Menu operations : ");
@@ -570,6 +606,9 @@ namespace Astreiko.Homework5
             Console.WriteLine("Exit - press c");
         }
 
+        /// <summary>
+        /// Add default rows to list to all kind animals
+        /// </summary>
         private static void AddDefaultAnimals()
         {
             ListTiger = new List<Tiger>();

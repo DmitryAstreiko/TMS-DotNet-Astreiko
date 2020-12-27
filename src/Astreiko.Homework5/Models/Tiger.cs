@@ -3,6 +3,9 @@ using System;
 
 namespace Astreiko.Homework5.Models
 {
+    /// <summary>
+    /// Class Tiger
+    /// </summary>
     public class Tiger : AnimalsBase, IVoice, ITraffic, IFood
     {
         public void Say()
