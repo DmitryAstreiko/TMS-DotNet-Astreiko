@@ -72,8 +72,9 @@ namespace Astreiko.Homework5
                     rowTiger.Traffic();
                     Console.WriteLine();
                 }
-            }
-            else if (ListCat.Count != 0)
+            } 
+            
+            if (ListCat.Count != 0)
             {
                 foreach (var rowCat in ListCat)
                 {
@@ -89,7 +90,8 @@ namespace Astreiko.Homework5
                 }
 
             }
-            else if (ListBear.Count != 0)
+            
+            if (ListBear.Count != 0)
             {
                 foreach (var rowBear in ListBear)
                 {
@@ -105,7 +107,8 @@ namespace Astreiko.Homework5
                 }
 
             }
-            else if (ListElephant.Count != 0)
+            
+            if (ListElephant.Count != 0)
             {
                 foreach (var rowEl in ListElephant)
                 {
@@ -120,7 +123,8 @@ namespace Astreiko.Homework5
                     Console.WriteLine();
                 }
             }
-            else if (ListGiraffe.Count != 0)
+            
+            if (ListGiraffe.Count != 0)
             {
                 foreach (var rowGiraffe in ListGiraffe)
                 {
@@ -176,9 +180,9 @@ namespace Astreiko.Homework5
 
             ListElephant.Add(el);
 
-            ListGiraffe = new List<gira>();
+            ListGiraffe = new List<Giraffe>();
 
-            var el = new Elephant()
+            var gr = new Giraffe()
             {
                 Age = 1.6,
                 Name = "Big mam",
@@ -186,7 +190,44 @@ namespace Astreiko.Homework5
                 WhatTraffic = "35 kn/h"
             };
 
-            ListElephant.Add(el);
+            ListGiraffe.Add(gr);
+
+            ListCat = new List<Cat>();
+
+            var cat = new Cat()
+            {
+                Age = 0.3,
+                Name = "Murzik",
+                Weight = 0.4,
+                WhatTraffic = "2 kn/h",
+                WhatSay = "MRRR-mRRR"
+            };
+
+            ListCat.Add(cat);
+
+            cat = new Cat()
+            {
+                Age = 1,
+                Name = "Snow",
+                Weight = 2.5,
+                WhatTraffic = "Slovly",
+                WhatSay = "FrFrFR"
+            };
+
+            ListCat.Add(cat);
+
+            ListBear = new List<Bear>();
+
+            var bear = new Bear()
+            {
+                Age = 5.6,
+                Name = "Big Bear",
+                Weight = 346,
+                WhatTraffic = "20 kn/h",
+                WhatEat = "Apple, bananas, fish"
+            };
+
+            ListBear.Add(bear);
         }
 
     }
