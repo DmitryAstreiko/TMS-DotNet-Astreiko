@@ -6,6 +6,10 @@ namespace Astreiko.Homework6
     {
         public static decimal CurrentBalance { get; set; } = 0M;
 
+        public static decimal USDToBYN { get; set; } = 2.51M;
+
+        public static decimal EUROToBYN { get; set; } = 3.11M;
+
         static void Main(string[] args)
         {
             Func<decimal, decimal, decimal> funcSum = (x, y) => (x + y);
@@ -33,6 +37,9 @@ namespace Astreiko.Homework6
                         CurrentBalance = funcSum(CurrentBalance, addSum);
                         break;
                     case "w":
+                        ShowMenuCurrency();
+
+
 
                         break;
                     case "d":
@@ -57,6 +64,19 @@ namespace Astreiko.Homework6
             }
 
             Console.ReadKey();
+        }
+
+        private static void ShowMenuCurrency()
+        {
+            Console.WriteLine();
+            Console.WriteLine("Choose currency : ");
+            Console.ForegroundColor = ConsoleColor.Green;            
+            Console.WriteLine("BYN - [b]");
+            Console.WriteLine($"USD (1 USD = {USDToBYN} BYN) - [u]");
+            Console.WriteLine($"EURO (1 EURO = {EUROToBYN} BYN) - [e]");
+            Console.WriteLine("Cancel - [c]");
+            Console.ResetColor();
+            Console.WriteLine("-----");
         }
 
         private static decimal GetSum(string TextComment)
