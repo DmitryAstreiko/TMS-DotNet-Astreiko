@@ -8,7 +8,7 @@ namespace Astreiko.Homework6
 
         static void Main(string[] args)
         {
-            CurrentBalance += GetStartSum();
+            CurrentBalance += GetSum("Enter start sum[BYN]: ");
             Console.WriteLine("-----");
 
             ShowMainMenu();
@@ -24,6 +24,8 @@ namespace Astreiko.Homework6
                 switch (inputChoose)
                 {
                     case "a":
+                        //Console.Write("Enter sum to add [BYN] : ");
+
 
                         break;
                     case "w":
@@ -53,30 +55,30 @@ namespace Astreiko.Homework6
             Console.ReadKey();
         }
 
-        private static decimal GetStartSum()
+        private static decimal GetSum(string TextComment)
         {
             var check = true;
 
-            var startSum = 0M;
+            var sum = 0M;
 
             while (check)
             {
-                Console.Write("Enter start sum [BYN]: ");
+                Console.Write($"{TextComment}");
 
                 try
                 {
-                    startSum = decimal.Parse(Console.ReadLine().Trim().Replace(".", ","));
+                    sum = decimal.Parse(Console.ReadLine().Trim().Replace(".", ","));
                     check = false;
                 }
                 catch
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Entered uncorect start sum. Please try again.");
+                    Console.WriteLine("Entered uncorect sum. Please try again.");
                     Console.ResetColor();
                 }
             }
 
-            return startSum;
+            return sum;
         }
 
         private static void ShowMainMenu()
