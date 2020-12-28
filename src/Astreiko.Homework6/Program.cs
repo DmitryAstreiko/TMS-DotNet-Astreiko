@@ -8,7 +8,7 @@ namespace Astreiko.Homework6
 
         static void Main(string[] args)
         {
-            CurrentBalance += GetSum("Enter start sum[BYN]: ");
+            CurrentBalance += GetSum("Enter start sum [BYN]: ");
             Console.WriteLine("-----");
 
             ShowMainMenu();
@@ -24,9 +24,10 @@ namespace Astreiko.Homework6
                 switch (inputChoose)
                 {
                     case "a":
-                        //Console.Write("Enter sum to add [BYN] : ");
-
-
+                        var addSum = GetSum("Enter sum to add [BYN] : ");
+                        Console.WriteLine($"You add {addSum} to your account.");
+                        Console.WriteLine("-----");
+                        CurrentBalance += addSum;
                         break;
                     case "w":
 
