@@ -16,8 +16,7 @@ namespace Astreiko.Homework6
             var check = true;
 
             while (check)
-            {
-                Console.WriteLine();
+            {               
                 Console.Write("Please choose the operation : ");
 
                 var inputChoose = Console.ReadLine().Trim();
@@ -28,9 +27,14 @@ namespace Astreiko.Homework6
 
                         break;
                     case "w":
+
                         break;
                     case "d":
-
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine($"Actual balance - {CurrentBalance}");
+                        Console.ResetColor();
+                        Console.WriteLine("-----");
+                        ShowMainMenu();
                         break;
                     case "e":
                         Console.ForegroundColor = ConsoleColor.Green;
@@ -61,7 +65,7 @@ namespace Astreiko.Homework6
 
                 try
                 {
-                    startSum = decimal.Parse(Console.ReadLine().Trim());
+                    startSum = decimal.Parse(Console.ReadLine().Trim().Replace(".", ","));
                     check = false;
                 }
                 catch
