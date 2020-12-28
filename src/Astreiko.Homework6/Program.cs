@@ -38,9 +38,9 @@ namespace Astreiko.Homework6
                         break;
                     case "w":
                         ShowMenuCurrency();
-
-
-
+                        WorkWithSum();
+                        Console.WriteLine("-----");
+                        ShowMainMenu();
                         break;
                     case "d":
                         Console.ForegroundColor = ConsoleColor.Green;
@@ -64,6 +64,45 @@ namespace Astreiko.Homework6
             }
 
             Console.ReadKey();
+        }
+
+        private static void WorkWithSum()
+        {
+            Func<decimal, decimal, decimal> funcSubst = (x, y) => (x - y);
+            Func<decimal, decimal, decimal, decimal> funcSubstWithConst = (x, y, k) => (x - y * k);
+
+            var check = true;
+
+            while (check)
+            {
+                Console.Write("Select currency : ");
+                var input = Console.ReadLine().Trim();
+
+                switch (input)
+                {
+                    case "b":
+                        CurrentBalance = funcSubst(CurrentBalance, GetSum("Enter sum to withdrawal [BYN] : "));
+                        check = false;
+                        break;
+                    case "u":
+                        CurrentBalance = funcSubstWithConst(CurrentBalance, GetSum("Enter sum to withdrawal [USD] : "), USDToBYN);
+                        check = false;
+                        break;
+                    case "e":
+                        CurrentBalance = funcSubstWithConst(CurrentBalance, GetSum("Enter sum to withdrawal [EURO] : "), EUROToBYN);
+                        check = false;
+                        break;
+                    case "c":
+                        check = false;
+                        break;
+                    default:
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Entered uncorect char. Please try again.");
+                        Console.ResetColor();
+                        break;
+                }
+            }
+
         }
 
         private static void ShowMenuCurrency()
