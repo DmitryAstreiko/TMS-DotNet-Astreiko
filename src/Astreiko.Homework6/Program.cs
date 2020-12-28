@@ -23,7 +23,7 @@ namespace Astreiko.Homework6
             var check = true;
 
             while (check)
-            {               
+            {
                 Console.Write("Please choose the operation : ");
 
                 var inputChoose = Console.ReadLine().Trim();
@@ -73,23 +73,25 @@ namespace Astreiko.Homework6
 
             var check = true;
 
+            var tempBalance = CurrentBalance;
+
             while (check)
             {
                 Console.Write("Select currency : ");
-                var input = Console.ReadLine().Trim();
+                var input = Console.ReadLine().Trim();               
 
                 switch (input)
-                {
+                {                                
                     case "b":
-                        CurrentBalance = funcSubst(CurrentBalance, GetSum("Enter sum to withdrawal [BYN] : "));
+                        CheckSum(funcSubst(tempBalance, GetSum("Enter sum to withdrawal [BYN] : ")));
                         check = false;
                         break;
                     case "u":
-                        CurrentBalance = funcSubstWithConst(CurrentBalance, GetSum("Enter sum to withdrawal [USD] : "), USDToBYN);
+                        CheckSum(funcSubstWithConst(CurrentBalance, GetSum("Enter sum to withdrawal [USD] : "), USDToBYN));
                         check = false;
                         break;
                     case "e":
-                        CurrentBalance = funcSubstWithConst(CurrentBalance, GetSum("Enter sum to withdrawal [EURO] : "), EUROToBYN);
+                        CheckSum(funcSubstWithConst(CurrentBalance, GetSum("Enter sum to withdrawal [EURO] : "), EUROToBYN));
                         check = false;
                         break;
                     case "c":
@@ -102,14 +104,27 @@ namespace Astreiko.Homework6
                         break;
                 }
             }
+        }
 
+        private static void CheckSum(decimal checkSum)
+        {
+            if (checkSum >= 0)
+            {
+                CurrentBalance = checkSum;
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Entered summa is greater then current balance. Operation is not possible.");
+                Console.ResetColor();
+            }
         }
 
         private static void ShowMenuCurrency()
         {
             Console.WriteLine();
             Console.WriteLine("Choose currency : ");
-            Console.ForegroundColor = ConsoleColor.Green;            
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("BYN - [b]");
             Console.WriteLine($"USD (1 USD = {USDToBYN} BYN) - [u]");
             Console.WriteLine($"EURO (1 EURO = {EUROToBYN} BYN) - [e]");
