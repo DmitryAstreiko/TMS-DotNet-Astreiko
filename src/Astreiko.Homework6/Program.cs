@@ -8,7 +8,10 @@ namespace Astreiko.Homework6
 
         static void Main(string[] args)
         {
-            CurrentBalance += GetSum("Enter start sum [BYN]: ");
+            Func<decimal, decimal, decimal> funcSum = (x, y) => (x + y);
+
+            CurrentBalance = funcSum(CurrentBalance, GetSum("Enter start sum [BYN]: "));
+
             Console.WriteLine("-----");
 
             ShowMainMenu();
@@ -27,7 +30,7 @@ namespace Astreiko.Homework6
                         var addSum = GetSum("Enter sum to add [BYN] : ");
                         Console.WriteLine($"You add {addSum} to your account.");
                         Console.WriteLine("-----");
-                        CurrentBalance += addSum;
+                        CurrentBalance = funcSum(CurrentBalance, addSum);
                         break;
                     case "w":
 
