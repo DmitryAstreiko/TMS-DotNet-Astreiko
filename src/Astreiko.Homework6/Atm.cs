@@ -8,6 +8,7 @@ namespace Astreiko.Homework6
     {
         public event Action<decimal> AddBalanceHandler;
         public event Action<decimal> ShowBalanceHandler;
+        public event Action<decimal> DelBalanceHandler;
 
         private decimal CurrentBalance;
 
@@ -22,9 +23,10 @@ namespace Astreiko.Homework6
             EUROToBYN = 3.11M;
         }
 
-        public void GetCash()
+        public void GetCash(decimal DelSum)
         {
-
+            CurrentBalance -= DelSum;
+            DelBalanceHandler?.Invoke(DelSum);
         }
 
         public void PutCash(decimal GetedSum)
@@ -38,31 +40,5 @@ namespace Astreiko.Homework6
         {           
             ShowBalanceHandler?.Invoke(CurrentBalance);
         }
-
-        //private decimal GetSum(string TextComment)
-        //{
-        //    var check = true;
-
-        //    var sum = 0M;
-
-        //    while (check)
-        //    {
-        //        Console.Write($"{TextComment}");
-
-        //        try
-        //        {
-        //            sum = decimal.Parse(Console.ReadLine().Trim().Replace(".", ","));
-        //            check = false;
-        //        }
-        //        catch
-        //        {
-        //            Console.ForegroundColor = ConsoleColor.Red;
-        //            Console.WriteLine("Entered uncorect sum. Please try again.");
-        //            Console.ResetColor();
-        //        }
-        //    }
-
-        //    return sum;
-        //}
     }
 }

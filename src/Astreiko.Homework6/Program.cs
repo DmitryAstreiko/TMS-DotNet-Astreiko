@@ -13,8 +13,10 @@ namespace Astreiko.Homework6
         static void Main(string[] args)
         {
             var CurrentAtm = new Atm();
+
             CurrentAtm.AddBalanceHandler += CurrentAtm_AddBalanceHandler;
             CurrentAtm.ShowBalanceHandler += CurrentAtm_ShowBalanceHandler;
+            CurrentAtm.DelBalanceHandler += CurrentAtm_DelBalanceHandler;
 
             //Func<decimal, decimal, decimal> funcSum = (x, y) => (x + y);
 
@@ -44,8 +46,7 @@ namespace Astreiko.Homework6
                         break;
                     case "w":
                         ShowMenuCurrency(CurrentAtm.EUROToBYN, CurrentAtm.USDToBYN);
-                        //WorkWithSum();
-                        Console.WriteLine("-----");
+                        WorkWithSum(CurrentAtm);
                         ShowMainMenu();
                         break;
                     case "d":
@@ -73,6 +74,12 @@ namespace Astreiko.Homework6
             Console.ReadKey();
         }
 
+        private static void CurrentAtm_DelBalanceHandler(decimal delSum)
+        {
+            Console.WriteLine($"You withdraw {delSum} BYN.");
+            Console.WriteLine("-----");
+        }
+
         private static void CurrentAtm_ShowBalanceHandler(decimal CurrentBalance)
         {
             Console.ForegroundColor = ConsoleColor.Green;
@@ -87,6 +94,49 @@ namespace Astreiko.Homework6
             Console.WriteLine("-----");
         }
 
+        private static void WorkWithSum(Atm atm)
+        {
+            //Func<decimal, decimal, decimal> funcSubst = (x, y) => (x - y);
+            //Func<decimal, decimal, decimal, decimal> funcSubstWithConst = (x, y, k) => (x - y * k);
+
+            var check = true;
+
+            //var tempBalance = CurrentBalance;
+
+            while (check)
+            {
+                Console.Write("Select currency : ");
+                var input = Console.ReadLine().Trim();
+
+                switch (input)
+                {
+                    case "b":
+                        //CheckSum(funcSubst(tempBalance, GetSum("Enter sum to withdrawal [BYN] : ")));
+                        atm.GetCash(GetSum("Enter sum to withdrawal [BYN] : "));
+                        check = false;
+                        break;
+                    case "u":
+                        //CheckSum(funcSubstWithConst(CurrentBalance, GetSum("Enter sum to withdrawal [USD] : "), USDToBYN));
+                        atm.GetCash(GetSum("Enter sum to withdrawal [USD] : ") * atm.USDToBYN);
+                        check = false;
+                        break;
+                    case "e":
+                        //CheckSum(funcSubstWithConst(CurrentBalance, GetSum("Enter sum to withdrawal [EURO] : "), EUROToBYN));
+                        atm.GetCash(GetSum("Enter sum to withdrawal [EURO] : ") * atm.EUROToBYN);
+                        check = false;
+                        break;
+                    case "c":
+                        check = false;
+                        break;
+                    default:
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Entered uncorect char. Please try again.");
+                        Console.ResetColor();
+                        break;
+                }
+            }
+        }
+
         //private static void WorkWithSum()
         //{
         //    Func<decimal, decimal, decimal> funcSubst = (x, y) => (x - y);
@@ -94,17 +144,18 @@ namespace Astreiko.Homework6
 
         //    var check = true;
 
-        //    var tempBalance = CurrentBalance;
+        //    //var tempBalance = CurrentBalance;
 
         //    while (check)
         //    {
         //        Console.Write("Select currency : ");
-        //        var input = Console.ReadLine().Trim();               
+        //        var input = Console.ReadLine().Trim();
 
         //        switch (input)
-        //        {                                
+        //        {
         //            case "b":
-        //                CheckSum(funcSubst(tempBalance, GetSum("Enter sum to withdrawal [BYN] : ")));
+        //                //CheckSum(funcSubst(tempBalance, GetSum("Enter sum to withdrawal [BYN] : ")));
+
         //                check = false;
         //                break;
         //            case "u":
