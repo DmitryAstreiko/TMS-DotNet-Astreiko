@@ -4,12 +4,6 @@ namespace Astreiko.Homework6
 {
     class Program
     {
-        //public static decimal CurrentBalance { get; set; } = 0M;
-
-        //public static decimal USDToBYN { get; set; } = 2.51M;
-
-        //public static decimal EUROToBYN { get; set; } = 3.11M;
-
         static void Main(string[] args)
         {
             var currentAtm = new Atm();
@@ -17,10 +11,6 @@ namespace Astreiko.Homework6
             currentAtm.AddBalanceHandler += CurrentAtm_AddBalanceHandler;
             currentAtm.ShowBalanceHandler += CurrentAtm_ShowBalanceHandler;
             currentAtm.DelBalanceHandler += CurrentAtm_DelBalanceHandler;
-
-            //Func<decimal, decimal, decimal> funcSum = (x, y) => (x + y);
-
-            //CurrentAtm.CurrentBalance = funcSum(CurrentAtm.CurrentBalance, GetSum("Enter start sum [BYN]: "));
 
             currentAtm.PutCash(GetSum("Enter start sum [BYN] : "));
 
@@ -38,10 +28,6 @@ namespace Astreiko.Homework6
                 {
                     case "a":
                         currentAtm.PutCash(GetSum("Enter sum to add [BYN] : "));
-                        //var addSum = GetSum("Enter sum to add [BYN] : ");
-                        //Console.WriteLine($"You add {addSum} to your account.");
-                        //Console.WriteLine("-----");
-                        //CurrentBalance = funcSum(CurrentBalance, addSum);
                         ShowMainMenu();
                         break;
                     case "w":
@@ -50,10 +36,6 @@ namespace Astreiko.Homework6
                         ShowMainMenu();
                         break;
                     case "d":
-                        //Console.ForegroundColor = ConsoleColor.Green;
-                        //Console.WriteLine($"Actual balance - {CurrentBalance}");
-                        //Console.ResetColor();
-                        //Console.WriteLine("-----");
                         currentAtm.ShowBalance();
                         ShowMainMenu();
                         break;
@@ -74,6 +56,11 @@ namespace Astreiko.Homework6
             Console.ReadKey();
         }
 
+        /// <summary>
+        /// Handler event debit with balance
+        /// </summary>
+        /// <param name="delSum">Amount to be debited from the account</param>
+        /// <param name="resCheck">The result of checking the difference between the balance and the amount to be debited</param>
         private static void CurrentAtm_DelBalanceHandler(decimal delSum, bool resCheck)
         {
             if (!resCheck)
@@ -89,6 +76,10 @@ namespace Astreiko.Homework6
             }
         }
 
+        /// <summary>
+        /// Handler event show current balance 
+        /// </summary>
+        /// <param name="currentBalance">Current balance</param>
         private static void CurrentAtm_ShowBalanceHandler(decimal currentBalance)
         {
             Console.ForegroundColor = ConsoleColor.Green;
@@ -97,20 +88,23 @@ namespace Astreiko.Homework6
             Console.WriteLine("-----");
         }
 
+        /// <summary>
+        /// Handler event top up amount with balance
+        /// </summary>
+        /// <param name="delSum">Amount to be debited from the account</param>
         private static void CurrentAtm_AddBalanceHandler(decimal addSum)
         {
             Console.WriteLine($"You add {addSum} to your account.");
             Console.WriteLine("-----");
         }
 
+        /// <summary>
+        /// Method work with amount debit 
+        /// </summary>
+        /// <param name="atm">Class Atm</param>
         private static void WorkWithSum(Atm atm)
         {
-            //Func<decimal, decimal, decimal> funcSubst = (x, y) => (x - y);
-            //Func<decimal, decimal, decimal, decimal> funcSubstWithConst = (x, y, k) => (x - y * k);
-
             var check = true;
-
-            //var tempBalance = CurrentBalance;
 
             while (check)
             {
@@ -120,17 +114,14 @@ namespace Astreiko.Homework6
                 switch (input)
                 {
                     case "b":
-                        //CheckSum(funcSubst(tempBalance, GetSum("Enter sum to withdrawal [BYN] : ")));
                         atm.GetCash(GetSum("Enter sum to withdrawal [BYN] : "));
                         check = false;
                         break;
                     case "u":
-                        //CheckSum(funcSubstWithConst(CurrentBalance, GetSum("Enter sum to withdrawal [USD] : "), USDToBYN));
                         atm.GetCash(GetSum("Enter sum to withdrawal [USD] : ") * atm.UsdToByn);
                         check = false;
                         break;
                     case "e":
-                        //CheckSum(funcSubstWithConst(CurrentBalance, GetSum("Enter sum to withdrawal [EURO] : "), EUROToBYN));
                         atm.GetCash(GetSum("Enter sum to withdrawal [EURO] : ") * atm.EuroToByn);
                         check = false;
                         break;
@@ -139,68 +130,18 @@ namespace Astreiko.Homework6
                         break;
                     default:
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("Entered uncorect char. Please try again.");
+                        Console.WriteLine("Entered uncorrect char. Please try again.");
                         Console.ResetColor();
                         break;
                 }
             }
         }
 
-        //private static void WorkWithSum()
-        //{
-        //    Func<decimal, decimal, decimal> funcSubst = (x, y) => (x - y);
-        //    Func<decimal, decimal, decimal, decimal> funcSubstWithConst = (x, y, k) => (x - y * k);
-
-        //    var check = true;
-
-        //    //var tempBalance = CurrentBalance;
-
-        //    while (check)
-        //    {
-        //        Console.Write("Select currency : ");
-        //        var input = Console.ReadLine().Trim();
-
-        //        switch (input)
-        //        {
-        //            case "b":
-        //                //CheckSum(funcSubst(tempBalance, GetSum("Enter sum to withdrawal [BYN] : ")));
-
-        //                check = false;
-        //                break;
-        //            case "u":
-        //                CheckSum(funcSubstWithConst(CurrentBalance, GetSum("Enter sum to withdrawal [USD] : "), USDToBYN));
-        //                check = false;
-        //                break;
-        //            case "e":
-        //                CheckSum(funcSubstWithConst(CurrentBalance, GetSum("Enter sum to withdrawal [EURO] : "), EUROToBYN));
-        //                check = false;
-        //                break;
-        //            case "c":
-        //                check = false;
-        //                break;
-        //            default:
-        //                Console.ForegroundColor = ConsoleColor.Red;
-        //                Console.WriteLine("Entered uncorect char. Please try again.");
-        //                Console.ResetColor();
-        //                break;
-        //        }
-        //    }
-        //}
-
-        //private static void CheckSum(decimal checkSum)
-        //{
-        //    if (checkSum >= 0)
-        //    {
-        //        CurrentBalance = checkSum;
-        //    }
-        //    else
-        //    {
-        //        Console.ForegroundColor = ConsoleColor.Red;
-        //        Console.WriteLine("Entered summa is greater then current balance. Operation is not possible.");
-        //        Console.ResetColor();
-        //    }
-        //}
-
+        /// <summary>
+        /// Show menu currency
+        /// </summary>
+        /// <param name="euroToByn">Conversion USD to BYN</param>
+        /// <param name="usdToByn">Conversion EURO to BYN</param>
         private static void ShowMenuCurrency(decimal euroToByn, decimal usdToByn)
         {
             Console.WriteLine();
@@ -214,6 +155,11 @@ namespace Astreiko.Homework6
             Console.WriteLine("-----");
         }
 
+        /// <summary>
+        /// Get string and convers into decomal
+        /// </summary>
+        /// <param name="textComment">String to convert</param>
+        /// <returns></returns>
         private static decimal GetSum(string textComment)
         {
             var check = true;
@@ -240,6 +186,9 @@ namespace Astreiko.Homework6
             return sum;
         }
 
+        /// <summary>
+        /// Show main menu application
+        /// </summary>
         private static void ShowMainMenu()
         {
             Console.ForegroundColor = ConsoleColor.Blue;
