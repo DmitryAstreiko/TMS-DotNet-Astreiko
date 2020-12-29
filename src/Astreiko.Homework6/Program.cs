@@ -4,19 +4,23 @@ namespace Astreiko.Homework6
 {
     class Program
     {
-        public static decimal CurrentBalance { get; set; } = 0M;
+        //public static decimal CurrentBalance { get; set; } = 0M;
 
-        public static decimal USDToBYN { get; set; } = 2.51M;
+        //public static decimal USDToBYN { get; set; } = 2.51M;
 
-        public static decimal EUROToBYN { get; set; } = 3.11M;
+        //public static decimal EUROToBYN { get; set; } = 3.11M;
 
         static void Main(string[] args)
         {
-            Func<decimal, decimal, decimal> funcSum = (x, y) => (x + y);
+            var CurrentAtm = new Atm();
+            CurrentAtm.AddBalanceHandler += CurrentAtm_AddBalanceHandler;
+            CurrentAtm.ShowBalanceHandler += CurrentAtm_ShowBalanceHandler;
 
-            CurrentBalance = funcSum(CurrentBalance, GetSum("Enter start sum [BYN]: "));
+            //Func<decimal, decimal, decimal> funcSum = (x, y) => (x + y);
 
-            Console.WriteLine("-----");
+            //CurrentAtm.CurrentBalance = funcSum(CurrentAtm.CurrentBalance, GetSum("Enter start sum [BYN]: "));
+
+            CurrentAtm.PutCash(GetSum("Enter start sum [BYN] : "));
 
             ShowMainMenu();
 
@@ -31,22 +35,25 @@ namespace Astreiko.Homework6
                 switch (inputChoose)
                 {
                     case "a":
-                        var addSum = GetSum("Enter sum to add [BYN] : ");
-                        Console.WriteLine($"You add {addSum} to your account.");
-                        Console.WriteLine("-----");
-                        CurrentBalance = funcSum(CurrentBalance, addSum);
+                        CurrentAtm.PutCash(GetSum("Enter sum to add [BYN] : "));
+                        //var addSum = GetSum("Enter sum to add [BYN] : ");
+                        //Console.WriteLine($"You add {addSum} to your account.");
+                        //Console.WriteLine("-----");
+                        //CurrentBalance = funcSum(CurrentBalance, addSum);
+                        ShowMainMenu();
                         break;
                     case "w":
-                        ShowMenuCurrency();
-                        WorkWithSum();
+                        ShowMenuCurrency(CurrentAtm.EUROToBYN, CurrentAtm.USDToBYN);
+                        //WorkWithSum();
                         Console.WriteLine("-----");
                         ShowMainMenu();
                         break;
                     case "d":
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine($"Actual balance - {CurrentBalance}");
-                        Console.ResetColor();
-                        Console.WriteLine("-----");
+                        //Console.ForegroundColor = ConsoleColor.Green;
+                        //Console.WriteLine($"Actual balance - {CurrentBalance}");
+                        //Console.ResetColor();
+                        //Console.WriteLine("-----");
+                        CurrentAtm.ShowBalance();
                         ShowMainMenu();
                         break;
                     case "e":
@@ -66,61 +73,75 @@ namespace Astreiko.Homework6
             Console.ReadKey();
         }
 
-        private static void WorkWithSum()
+        private static void CurrentAtm_ShowBalanceHandler(decimal CurrentBalance)
         {
-            Func<decimal, decimal, decimal> funcSubst = (x, y) => (x - y);
-            Func<decimal, decimal, decimal, decimal> funcSubstWithConst = (x, y, k) => (x - y * k);
-
-            var check = true;
-
-            var tempBalance = CurrentBalance;
-
-            while (check)
-            {
-                Console.Write("Select currency : ");
-                var input = Console.ReadLine().Trim();               
-
-                switch (input)
-                {                                
-                    case "b":
-                        CheckSum(funcSubst(tempBalance, GetSum("Enter sum to withdrawal [BYN] : ")));
-                        check = false;
-                        break;
-                    case "u":
-                        CheckSum(funcSubstWithConst(CurrentBalance, GetSum("Enter sum to withdrawal [USD] : "), USDToBYN));
-                        check = false;
-                        break;
-                    case "e":
-                        CheckSum(funcSubstWithConst(CurrentBalance, GetSum("Enter sum to withdrawal [EURO] : "), EUROToBYN));
-                        check = false;
-                        break;
-                    case "c":
-                        check = false;
-                        break;
-                    default:
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("Entered uncorect char. Please try again.");
-                        Console.ResetColor();
-                        break;
-                }
-            }
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"Actual balance - {CurrentBalance}");
+            Console.ResetColor();
+            Console.WriteLine("-----");
         }
 
-        private static void CheckSum(decimal checkSum)
+        private static void CurrentAtm_AddBalanceHandler(decimal addSum)
         {
-            if (checkSum >= 0)
-            {
-                CurrentBalance = checkSum;
-            }
-            else
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Entered summa is greater then current balance. Operation is not possible.");
-                Console.ResetColor();
-            }
+            Console.WriteLine($"You add {addSum} to your account.");
+            Console.WriteLine("-----");
         }
 
-        private static void ShowMenuCurrency()
+        //private static void WorkWithSum()
+        //{
+        //    Func<decimal, decimal, decimal> funcSubst = (x, y) => (x - y);
+        //    Func<decimal, decimal, decimal, decimal> funcSubstWithConst = (x, y, k) => (x - y * k);
+
+        //    var check = true;
+
+        //    var tempBalance = CurrentBalance;
+
+        //    while (check)
+        //    {
+        //        Console.Write("Select currency : ");
+        //        var input = Console.ReadLine().Trim();               
+
+        //        switch (input)
+        //        {                                
+        //            case "b":
+        //                CheckSum(funcSubst(tempBalance, GetSum("Enter sum to withdrawal [BYN] : ")));
+        //                check = false;
+        //                break;
+        //            case "u":
+        //                CheckSum(funcSubstWithConst(CurrentBalance, GetSum("Enter sum to withdrawal [USD] : "), USDToBYN));
+        //                check = false;
+        //                break;
+        //            case "e":
+        //                CheckSum(funcSubstWithConst(CurrentBalance, GetSum("Enter sum to withdrawal [EURO] : "), EUROToBYN));
+        //                check = false;
+        //                break;
+        //            case "c":
+        //                check = false;
+        //                break;
+        //            default:
+        //                Console.ForegroundColor = ConsoleColor.Red;
+        //                Console.WriteLine("Entered uncorect char. Please try again.");
+        //                Console.ResetColor();
+        //                break;
+        //        }
+        //    }
+        //}
+
+        //private static void CheckSum(decimal checkSum)
+        //{
+        //    if (checkSum >= 0)
+        //    {
+        //        CurrentBalance = checkSum;
+        //    }
+        //    else
+        //    {
+        //        Console.ForegroundColor = ConsoleColor.Red;
+        //        Console.WriteLine("Entered summa is greater then current balance. Operation is not possible.");
+        //        Console.ResetColor();
+        //    }
+        //}
+
+        private static void ShowMenuCurrency(decimal EUROToBYN, decimal USDToBYN)
         {
             Console.WriteLine();
             Console.WriteLine("Choose currency : ");
