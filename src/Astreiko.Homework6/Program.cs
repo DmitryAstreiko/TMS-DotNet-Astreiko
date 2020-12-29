@@ -12,17 +12,17 @@ namespace Astreiko.Homework6
 
         static void Main(string[] args)
         {
-            var CurrentAtm = new Atm();
+            var currentAtm = new Atm();
 
-            CurrentAtm.AddBalanceHandler += CurrentAtm_AddBalanceHandler;
-            CurrentAtm.ShowBalanceHandler += CurrentAtm_ShowBalanceHandler;
-            CurrentAtm.DelBalanceHandler += CurrentAtm_DelBalanceHandler;
+            currentAtm.AddBalanceHandler += CurrentAtm_AddBalanceHandler;
+            currentAtm.ShowBalanceHandler += CurrentAtm_ShowBalanceHandler;
+            currentAtm.DelBalanceHandler += CurrentAtm_DelBalanceHandler;
 
             //Func<decimal, decimal, decimal> funcSum = (x, y) => (x + y);
 
             //CurrentAtm.CurrentBalance = funcSum(CurrentAtm.CurrentBalance, GetSum("Enter start sum [BYN]: "));
 
-            CurrentAtm.PutCash(GetSum("Enter start sum [BYN] : "));
+            currentAtm.PutCash(GetSum("Enter start sum [BYN] : "));
 
             ShowMainMenu();
 
@@ -37,7 +37,7 @@ namespace Astreiko.Homework6
                 switch (inputChoose)
                 {
                     case "a":
-                        CurrentAtm.PutCash(GetSum("Enter sum to add [BYN] : "));
+                        currentAtm.PutCash(GetSum("Enter sum to add [BYN] : "));
                         //var addSum = GetSum("Enter sum to add [BYN] : ");
                         //Console.WriteLine($"You add {addSum} to your account.");
                         //Console.WriteLine("-----");
@@ -45,8 +45,8 @@ namespace Astreiko.Homework6
                         ShowMainMenu();
                         break;
                     case "w":
-                        ShowMenuCurrency(CurrentAtm.EUROToBYN, CurrentAtm.USDToBYN);
-                        WorkWithSum(CurrentAtm);
+                        ShowMenuCurrency(currentAtm.EuroToByn, currentAtm.UsdToByn);
+                        WorkWithSum(currentAtm);
                         ShowMainMenu();
                         break;
                     case "d":
@@ -54,7 +54,7 @@ namespace Astreiko.Homework6
                         //Console.WriteLine($"Actual balance - {CurrentBalance}");
                         //Console.ResetColor();
                         //Console.WriteLine("-----");
-                        CurrentAtm.ShowBalance();
+                        currentAtm.ShowBalance();
                         ShowMainMenu();
                         break;
                     case "e":
@@ -74,16 +74,25 @@ namespace Astreiko.Homework6
             Console.ReadKey();
         }
 
-        private static void CurrentAtm_DelBalanceHandler(decimal delSum)
+        private static void CurrentAtm_DelBalanceHandler(decimal delSum, bool resCheck)
         {
-            Console.WriteLine($"You withdraw {delSum} BYN.");
-            Console.WriteLine("-----");
+            if (!resCheck)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Entered summa is greater then current balance. Operation is not possible.");
+                Console.ResetColor();
+            }
+            else
+            {
+                Console.WriteLine($"You withdraw {delSum} BYN.");
+                Console.WriteLine("-----");
+            }
         }
 
-        private static void CurrentAtm_ShowBalanceHandler(decimal CurrentBalance)
+        private static void CurrentAtm_ShowBalanceHandler(decimal currentBalance)
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"Actual balance - {CurrentBalance}");
+            Console.WriteLine($"Actual balance - {currentBalance}");
             Console.ResetColor();
             Console.WriteLine("-----");
         }
@@ -117,12 +126,12 @@ namespace Astreiko.Homework6
                         break;
                     case "u":
                         //CheckSum(funcSubstWithConst(CurrentBalance, GetSum("Enter sum to withdrawal [USD] : "), USDToBYN));
-                        atm.GetCash(GetSum("Enter sum to withdrawal [USD] : ") * atm.USDToBYN);
+                        atm.GetCash(GetSum("Enter sum to withdrawal [USD] : ") * atm.UsdToByn);
                         check = false;
                         break;
                     case "e":
                         //CheckSum(funcSubstWithConst(CurrentBalance, GetSum("Enter sum to withdrawal [EURO] : "), EUROToBYN));
-                        atm.GetCash(GetSum("Enter sum to withdrawal [EURO] : ") * atm.EUROToBYN);
+                        atm.GetCash(GetSum("Enter sum to withdrawal [EURO] : ") * atm.EuroToByn);
                         check = false;
                         break;
                     case "c":
@@ -192,20 +201,20 @@ namespace Astreiko.Homework6
         //    }
         //}
 
-        private static void ShowMenuCurrency(decimal EUROToBYN, decimal USDToBYN)
+        private static void ShowMenuCurrency(decimal euroToByn, decimal usdToByn)
         {
             Console.WriteLine();
             Console.WriteLine("Choose currency : ");
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("BYN - [b]");
-            Console.WriteLine($"USD (1 USD = {USDToBYN} BYN) - [u]");
-            Console.WriteLine($"EURO (1 EURO = {EUROToBYN} BYN) - [e]");
+            Console.WriteLine($"USD (1 USD = {usdToByn} BYN) - [u]");
+            Console.WriteLine($"EURO (1 EURO = {euroToByn} BYN) - [e]");
             Console.WriteLine("Cancel - [c]");
             Console.ResetColor();
             Console.WriteLine("-----");
         }
 
-        private static decimal GetSum(string TextComment)
+        private static decimal GetSum(string textComment)
         {
             var check = true;
 
@@ -213,7 +222,7 @@ namespace Astreiko.Homework6
 
             while (check)
             {
-                Console.Write($"{TextComment}");
+                Console.Write($"{textComment}");
 
                 try
                 {

@@ -8,37 +8,61 @@ namespace Astreiko.Homework6
     {
         public event Action<decimal> AddBalanceHandler;
         public event Action<decimal> ShowBalanceHandler;
-        public event Action<decimal> DelBalanceHandler;
+        public event Action<decimal, bool> DelBalanceHandler;
 
-        private decimal CurrentBalance;
+        private decimal _currentBalance;
 
-        public decimal USDToBYN { get; set; }
+        public decimal UsdToByn { get; set; }
 
-        public decimal EUROToBYN { get; set; }
+        public decimal EuroToByn { get; set; }
 
         public Atm()
         {
-            CurrentBalance = 0M;
-            USDToBYN = 2.51M;
-            EUROToBYN = 3.11M;
+            _currentBalance = 0M;
+            UsdToByn = 2.51M;
+            EuroToByn = 3.11M;
         }
 
-        public void GetCash(decimal DelSum)
+        public void GetCash(decimal delSum)
         {
-            CurrentBalance -= DelSum;
-            DelBalanceHandler?.Invoke(DelSum);
+            Predicate<decimal> checkSum = (x) => (x > _currentBalance);
+
+            //Сумма списания больше, чем остаток
+            if (checkSum(delSum))
+            {
+                DelBalanceHandler?.Invoke(delSum, false);
+            }
+            //Сумма списания меньше или равно, чем остаток
+            else
+            {
+                _currentBalance -= delSum;
+                DelBalanceHandler?.Invoke(delSum, true);
+            }
         }
 
-        public void PutCash(decimal GetedSum)
+        public void PutCash(decimal getedSum)
         {
-            //var addSum = GetSum("Enter sum to add [BYN] : ");
-            CurrentBalance += GetedSum;
-            AddBalanceHandler?.Invoke(GetedSum);
+            _currentBalance += getedSum;
+            AddBalanceHandler?.Invoke(getedSum);
         }
 
         public void ShowBalance()
         {           
-            ShowBalanceHandler?.Invoke(CurrentBalance);
+            ShowBalanceHandler?.Invoke(_currentBalance);
         }
+
+        //private static bool CheckSum(decimal checkSum, decimal tempBalance)
+        //{
+        //    Func<decimal, decimal, decimal> funcSubst = (x, y) => (x - y);
+
+        //    var tempCurrentBalance = tempBalance;
+
+        //    return funcSubst(tempBalance, checkSum) >= 0;
+        //    //{
+        //    //    Console.ForegroundColor = ConsoleColor.Red;
+        //    //    Console.WriteLine("Entered summa is greater then current balance. Operation is not possible.");
+        //    //    Console.ResetColor();
+        //    //}
+        //}
     }
 }
