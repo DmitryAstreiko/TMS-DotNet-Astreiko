@@ -7,7 +7,7 @@ namespace Astreiko.Homework4
     /// <summary>
     /// Класс для записей календаря
     /// </summary>
-    abstract class TemplateEvent
+    public class TemplateEvent
     {
         /// <summary>
         /// Идентификатор события

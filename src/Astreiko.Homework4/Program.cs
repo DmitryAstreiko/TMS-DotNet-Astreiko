@@ -6,7 +6,7 @@ namespace Astreiko.Homework4
     class Program
     {
         /// <summary>
-        /// Список событий
+        /// List events
         /// </summary>
         public static List<Events> CurrentListEvents;
 
@@ -14,36 +14,32 @@ namespace Astreiko.Homework4
         {
             DefaultEvents();
 
-            var currentAction = GetAction();
-
             var check = true;
 
             while (check)
             {
+                var currentAction = GetAction();
+
                 switch (currentAction)
                 {
                     case TypeAction.Add:
                         {
                             CreateEvent();
-                            currentAction = GetAction();
                             break;
                         }
                     case TypeAction.Edit:
                         {
                             EditEvent();
-                            currentAction = GetAction();
                             break;
                         }
                     case TypeAction.Delete:
                         {
                             DeleteEvent();
-                            currentAction = GetAction();
                             break;
                         }
                     case TypeAction.Show:
                         {
                             ShowEvents();
-                            currentAction = GetAction();
                             break;
                         }
                     case TypeAction.Close:
@@ -60,7 +56,7 @@ namespace Astreiko.Homework4
         }
 
         /// <summary>
-        /// Удаление события
+        /// Delete event
         /// </summary>
         private static void DeleteEvent()
         {
@@ -70,11 +66,11 @@ namespace Astreiko.Homework4
             {
                 Console.Write("Input id for delete : ");
 
-                var searchId = Console.ReadLine().Trim();
+                var searchId = Console.ReadLine()?.Trim();
 
                 var searchEvent = CheckEvent(searchId);
 
-                if (searchEvent.BoolResult)
+                if (searchEvent != -1)
                 {
                     Console.WriteLine("Event found.");
                     Console.WriteLine();
@@ -94,13 +90,13 @@ namespace Astreiko.Homework4
 
                     Console.Write("You want continious? (y - default or n)");
 
-                    if (Console.ReadLine().Trim() == "n") { checkDel = false; }
-                };
+                    if (Console.ReadLine()?.Trim() == "n") { checkDel = false; }
+                }
             }
         }
 
         /// <summary>
-        /// Редактирование события
+        /// Edit event
         /// </summary>
         private static void EditEvent()
         {
@@ -110,25 +106,24 @@ namespace Astreiko.Homework4
             {
                 Console.Write("Input id for edit : ");
 
-                var searchId = Console.ReadLine().Trim();
+                var searchId = Console.ReadLine()?.Trim();
 
                 var searchEvent = CheckEvent(searchId);
 
-                if (searchEvent.BoolResult)
+                if (searchEvent != -1)
                 {
                     Console.WriteLine("Event found.");
                     Console.WriteLine();
 
                     Console.Write("Enter description : ");
-                    CurrentListEvents[searchEvent.NumberRow].Description = Console.ReadLine().Trim();
+                    CurrentListEvents[searchEvent].Description = Console.ReadLine()?.Trim();
 
-                    var inputDate = CheckDate();
-                    CurrentListEvents[searchEvent.NumberRow].StartDate = inputDate.StartDate;
+                    CurrentListEvents[searchEvent].StartDate = GetDate("Enter start date: ");
 
-                    CurrentListEvents[searchEvent.NumberRow].EndDate = inputDate.EndDate;
+                    CurrentListEvents[searchEvent].EndDate = GetDate("Enter finish date: ");
 
                     Console.Write("Enter status : ");
-                    CurrentListEvents[searchEvent.NumberRow].Status = Console.ReadLine().Trim();
+                    CurrentListEvents[searchEvent].Status = Console.ReadLine()?.Trim();
 
                     Console.WriteLine("Event edited.");
 
@@ -143,60 +138,61 @@ namespace Astreiko.Homework4
 
                     Console.Write("You want continious? (y - default or n)");
 
-                    if (Console.ReadLine().Trim() == "n") { checkEdit = false; }
-                };
+                    if (Console.ReadLine()?.Trim() == "n") { checkEdit = false; }
+                }
             }
         }
 
         /// <summary>
-        /// Прверка существования введенного идентификатора события
+        /// Checking for the existence of an entered event identifier (Проверка существования введенного идентификатора события)
         /// </summary>
         /// <returns></returns>
-        private static (bool BoolResult, int NumberRow) CheckEvent(string searchId)
+        private static int CheckEvent(string searchId)
         {
-            var vResB = false;
-            var vResI = 0;
+            var vRes = -1;
 
             for (int i = 0; i < CurrentListEvents.Count; i++)
             {
-                if (CurrentListEvents[i].Id == searchId) { vResB = true; vResI = i; };
+                if (CurrentListEvents[i].Id == searchId) { vRes = i; }
             }
 
-            return (vResB, vResI);
+            return vRes;
         }
 
         /// <summary>
-        /// Создание события
+        /// Create event
         /// </summary>
         private static void CreateEvent()
         {
             Console.Write("Enter description : ");
-            var inputDesc = Console.ReadLine().Trim();
+            var inputDesc = Console.ReadLine()?.Trim();
 
-            var inputDate = CheckDate();
+            var inputStartDate = GetDate("Enter start date: ");
+
+            var inputFinishDate = GetDate("Enter finish date: ");
 
             Console.Write("Enter status : ");
-            var inputStatus = Console.ReadLine().Trim();
+            var inputStatus = Console.ReadLine()?.Trim();
 
-            AddEventToList(inputDesc, inputDate.StartDate, inputDate.EndDate, inputStatus);
+            AddEventToList(inputDesc, inputStartDate, inputFinishDate, inputStatus);
         }
 
         /// <summary>
-        /// Получение введенных дат
+        /// Get entered date
         /// </summary>
         /// <returns></returns>
-        private static (DateTime StartDate, DateTime EndDate) CheckDate()
+        private static DateTime GetDate(string textToConsole)
         {
             var check = true;
 
-            var inputStartDate = DateTime.Now;
+            var inputDate = DateTime.Now;
 
             while (check)
             {
                 try
                 {
-                    Console.Write("Enter start date : ");
-                    inputStartDate = DateTime.Parse(Console.ReadLine());
+                    Console.Write(textToConsole);
+                    inputDate = DateTime.Parse(Console.ReadLine());
                     check = false;
                 }
                 catch
@@ -207,37 +203,16 @@ namespace Astreiko.Homework4
                     Console.ResetColor();
                 }
             }
-
-            check = true;
-
-            var inputFinishDate = DateTime.Now;
-
-            while (check)
-            {
-                try
-                {
-                    Console.Write("Enter finish date : ");
-                    inputFinishDate = DateTime.Parse(Console.ReadLine());
-                    check = false;
-                }
-                catch
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Input date uncorrect!");
-                    Console.WriteLine();
-                    Console.ResetColor();
-                }
-            }
-            return (inputStartDate, inputFinishDate);
+            return inputDate;
         }
 
         /// <summary>
-        /// Добавление события в лист событий
+        /// Add events into list events
         /// </summary>
-        /// <param name="description">Описание события</param>
-        /// <param name="startDate">Дата начала события</param>
-        /// <param name="finishDate">Дата окончания события</param>
-        /// <param name="status">Статус события</param>
+        /// <param name="description">Description events</param>
+        /// <param name="startDate">Start date event</param>
+        /// <param name="finishDate">Finish date event</param>
+        /// <param name="status">Status events</param>
         private static void AddEventToList(string description, DateTime startDate, DateTime finishDate, string status)
         {
             var newEvent = new Events();
@@ -254,7 +229,7 @@ namespace Astreiko.Homework4
         }
 
         /// <summary>
-        /// Отображение событий
+        /// Show events
         /// </summary>
         private static void ShowEvents()
         {
@@ -274,9 +249,9 @@ namespace Astreiko.Homework4
         }
 
         /// <summary>
-        /// Заполнение первоночальных событий
+        /// Add default events
         /// </summary>
-        static private void DefaultEvents()
+        private static void DefaultEvents()
         {
             CurrentListEvents = new List<Events>()
             {
@@ -310,10 +285,10 @@ namespace Astreiko.Homework4
         }
 
         /// <summary>
-        /// Тип выбора из консоли
+        /// Menu actions in console
         /// </summary>
         /// <returns></returns>
-        static private TypeAction GetAction()
+        private static TypeAction GetAction()
         {
             TypeAction vRes = 0;
 
@@ -335,38 +310,40 @@ namespace Astreiko.Homework4
 
                 var inputText = Console.ReadLine();
 
-                if (inputText == "A" || inputText == "a")
+                switch (inputText)
                 {
-                    vRes = TypeAction.Add;
-                    check = false;
-                }
-                else if (inputText == "E" || inputText == "e")
-                {
-                    vRes = TypeAction.Edit;
-                    check = false;
-                }
-                else if (inputText == "D" || inputText == "d")
-                {
-                    vRes = TypeAction.Delete;
-                    check = false;
-                }
-                else if (inputText == "S" || inputText == "s")
-                {
-                    vRes = TypeAction.Show;
-                    check = false;
-                }
-                else if (inputText == "C" || inputText == "c")
-                {
-                    vRes = TypeAction.Close;
-                    check = false;
-                }
-                else
-                {
-                    Console.WriteLine();
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Bad input operation. Please try again!");
-                    Console.ResetColor();
-                    Console.WriteLine();
+                    case "A":
+                    case "a":
+                        vRes = TypeAction.Add;
+                        check = false;
+                        break;
+                    case "E":
+                    case "e":
+                        vRes = TypeAction.Edit;
+                        check = false;
+                        break;
+                    case "D":
+                    case "d":
+                        vRes = TypeAction.Delete;
+                        check = false;
+                        break;
+                    case "S":
+                    case "s":
+                        vRes = TypeAction.Show;
+                        check = false;
+                        break;
+                    case "C":
+                    case "c":
+                        vRes = TypeAction.Close;
+                        check = false;
+                        break;
+                    default:
+                        Console.WriteLine();
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Bad input operation. Please try again!");
+                        Console.ResetColor();
+                        Console.WriteLine();
+                        break;
                 }
             }
             return vRes;
