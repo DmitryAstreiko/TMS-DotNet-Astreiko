@@ -1,4 +1,6 @@
-﻿namespace Astreiko.Homework8
+﻿using System;
+
+namespace Astreiko.Homework8
 {
     public class PeopleGenerator
     {
