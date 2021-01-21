@@ -180,6 +180,7 @@ namespace Astreiko.Homework4
         /// <summary>
         /// Get entered date
         /// </summary>
+        /// <param name="textToConsole">Text to console</param>
         /// <returns></returns>
         private static DateTime GetDate(string textToConsole)
         {
@@ -192,7 +193,7 @@ namespace Astreiko.Homework4
                 try
                 {
                     Console.Write(textToConsole);
-                    inputDate = DateTime.Parse(Console.ReadLine());
+                    inputDate = DateTime.Parse(Console.ReadLine().Trim());
                     check = false;
                 }
                 catch
