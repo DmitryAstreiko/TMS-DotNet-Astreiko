@@ -3,8 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Astreiko.Homework3", "src\Astreiko.Homework3\Astreiko.Homework3.csproj", "{37505970-2F5C-4A11-A972-D91D757DA58C}"
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Astreiko.Homework2", "src\Astreiko.Homework2\Astreiko.Homework2.csproj", "{05088D13-8C17-48E0-8E97-16A68BFFACBF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Astreiko.Homework3", "src\Astreiko.Homework3\Astreiko.Homework3.csproj", "{37505970-2F5C-4A11-A972-D91D757DA58C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Astreiko.Homework2", "src\Astreiko.Homework2\Astreiko.Homework2.csproj", "{05088D13-8C17-48E0-8E97-16A68BFFACBF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "test-7-Thread", "src\test-7-Thread\test-7-Thread.csproj", "{A4029DFD-6643-483B-81F9-0AA209F9AD09}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Astreiko.Homework8", "src\Astreiko.Homework8\Astreiko.Homework8.csproj", "{287FB9FF-6095-4E05-AACC-5CFBE7FAD2E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,6 +25,14 @@ Global
 		{05088D13-8C17-48E0-8E97-16A68BFFACBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05088D13-8C17-48E0-8E97-16A68BFFACBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05088D13-8C17-48E0-8E97-16A68BFFACBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4029DFD-6643-483B-81F9-0AA209F9AD09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4029DFD-6643-483B-81F9-0AA209F9AD09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4029DFD-6643-483B-81F9-0AA209F9AD09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4029DFD-6643-483B-81F9-0AA209F9AD09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{287FB9FF-6095-4E05-AACC-5CFBE7FAD2E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{287FB9FF-6095-4E05-AACC-5CFBE7FAD2E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{287FB9FF-6095-4E05-AACC-5CFBE7FAD2E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{287FB9FF-6095-4E05-AACC-5CFBE7FAD2E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
