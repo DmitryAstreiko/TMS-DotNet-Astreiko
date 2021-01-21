@@ -184,17 +184,14 @@ namespace Astreiko.Homework4
         /// <returns></returns>
         private static DateTime GetDate(string textToConsole)
         {
-            var check = true;
-
             var inputDate = DateTime.Now;
 
-            while (check)
+            while (true)
             {
                 try
                 {
                     Console.Write(textToConsole);
-                    inputDate = DateTime.Parse(Console.ReadLine().Trim());
-                    check = false;
+                    return inputDate = DateTime.Parse(Console.ReadLine().Trim());
                 }
                 catch
                 {
@@ -204,7 +201,6 @@ namespace Astreiko.Homework4
                     Console.ResetColor();
                 }
             }
-            return inputDate;
         }
 
         /// <summary>
