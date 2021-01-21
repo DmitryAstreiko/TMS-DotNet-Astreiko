@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Test_6_LINQ.Models
+namespace Astreiko.Homework7.Models
 {
     internal class Training
     {

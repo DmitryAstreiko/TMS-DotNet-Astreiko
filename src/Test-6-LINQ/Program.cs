@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Test_6_LINQ.Models;
+using Astreiko.Homework7.Models;
 
-namespace Test_6_LINQ
+namespace Astreiko.Homework7
 {
     class Program
     {
@@ -12,7 +12,7 @@ namespace Test_6_LINQ
             Console.WriteLine("Starting Fitness Tracker...");
             Console.WriteLine("");
 
-            var trainings = TrainingGenerator.GetTrainings();
+            var trainings = TrainingGenerator.GetTrainings().ToList();
             //var pulse1 = TrainingGenerator.GetPulses(true);
             //var pulse2 = TrainingGenerator.GetPulses(false);
 

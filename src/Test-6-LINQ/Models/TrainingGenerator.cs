@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Test_6_LINQ.Models
+namespace Astreiko.Homework7.Models
 {
     internal class TrainingGenerator
     {
+        private static int CountTrainingsInStatistic { get; set; } = 100;
+
         /// <summary>
         /// Get trainings
         /// </summary>
         /// <returns></returns>
         public static IEnumerable<Training> GetTrainings()
         {
-            return Enumerable.Range(0, 100).Select(CreateTraining);
+            return Enumerable.Range(0, CountTrainingsInStatistic).Select(CreateTraining);
         }
 
         /// <summary>
