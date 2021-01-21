@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Test_6_LINQ.Models;
 
 namespace Test_6_LINQ
 {
@@ -9,74 +10,84 @@ namespace Test_6_LINQ
         static void Main(string[] args)
         {
             Console.WriteLine("Starting Fitness Tracker...");
+            Console.WriteLine("");
 
             var trainings = TrainingGenerator.GetTrainings();
             //var pulse1 = TrainingGenerator.GetPulses(true);
             //var pulse2 = TrainingGenerator.GetPulses(false);
 
+            ShowTrainings(trainings);
+
             Console.WriteLine("Statistics...");
-            var evegareDistance = GetAverageDisnanse(trainings);
-            var allTimeDistance = GetAllTimeDisnanse(trainings);
-            var maxDistance = GetMaxDisnanse(trainings);
+            var evegareDistance = GetAverageDistanse(trainings);
+            var allTimeDistance = GetAllTimeDistanse(trainings);
+            var maxDistance = GetMaxDistanse(trainings);
+
+            ShowStatistics(evegareDistance, maxDistance, allTimeDistance);
         }
 
-        private static double GetMaxDisnanse(IEnumerable<Training> trainings)
+        /// <summary>
+        /// Show all trainings
+        /// </summary>
+        /// <param name="trainings">Collection of training</param>
+        private static void ShowTrainings(IEnumerable<Training> trainings)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Exist trainings...");
+
+            foreach (var train in trainings)
+            {
+                Console.WriteLine($"Training: {train.StartDate}, {train.Duration}, {train.Distance}, {train.Step}, {train.AveragePulse}.");
+            }
+
+            Console.WriteLine("");
         }
 
-        private static double GetAllTimeDisnanse(IEnumerable<Training> trainings)
+        /// <summary>
+        /// Show statistics
+        /// </summary>
+        /// <param name="evegareDistance">Max distance for all trainings</param>
+        /// <param name="maxDistance">Distance for all trainings</param>
+        /// <param name="allTimeDistance">Average distance for all trainings</param>
+        private static void ShowStatistics(double evegareDistance, double maxDistance, double allTimeDistance)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("----------------");
+            Console.WriteLine("Show statistics:");
+            Console.WriteLine($"Max distance for all trainings: {maxDistance}");
+            Console.WriteLine($"Distance for all trainings: {allTimeDistance}");
+            Console.WriteLine($"Average distance for all trainings: {evegareDistance}");
+            Console.WriteLine("----------------");
+
+            Console.ReadKey();
         }
 
-        private static double GetAverageDisnanse(IEnumerable<Training> trainings)
+        /// <summary>
+        /// Max distance for all trainings
+        /// </summary>
+        /// <param name="trainings">Collection of training</param>
+        /// <returns></returns>
+        private static double GetMaxDistanse(IEnumerable<Training> trainings)
         {
-            throw new NotImplementedException();
+            return trainings.Max(x => x.Distance);
         }
-    }
 
-    internal class TrainingGenerator
-    {
-        public static IEnumerable<Training> GetTrainings()
+        /// <summary>
+        /// Distance for all trainings
+        /// </summary>
+        /// <param name="trainings">Collection of training</param>
+        /// <returns></returns>
+        private static double GetAllTimeDistanse(IEnumerable<Training> trainings)
         {
-            return Enumerable.Range(0, 100).Select(CreateTraining);
+            return trainings.Sum(x => x.Distance);
         }
 
-        private static Training CreateTraining(int num)
+        /// <summary>
+        /// Average distance for all trainings
+        /// </summary>
+        /// <param name="trainings">Collection of training</param>
+        /// <returns></returns>
+        private static double GetAverageDistanse(IEnumerable<Training> trainings)
         {
-            //var rnd = Random();
-            
-
-            throw new NotImplementedException();
+            return trainings.Average(x => x.Distance);
         }
-
-        public static IEnumerable<int> GetPulses(bool isThird)
-        {
-            yield return 0;
-
-            yield return 1;
-
-            if (isThird)
-                yield return 2;
-            else yield break;
-
-            yield return 3;
-            // or
-           // return isThird ? new[] {0,1,2,3} : new[] {0,1}
-        }
-    }
-
-    internal class Training
-    {
-        public TimeSpan Duration { get; set; }
-
-        public DateTime StartDate { get; set; }
-
-        public double Distance { get; set; }
-
-        public int Step { get; set; }
-
-        public int AveragePulse { get; set; }
     }
 }
