@@ -3,6 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Astreiko.Homework4", "src\Astreiko.Homework4\Astreiko.Homework4.csproj", "{65B22FBE-1F02-4048-BAE8-D9B4EF8A74BE}"
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Astreiko.Homework3", "src\Astreiko.Homework3\Astreiko.Homework3.csproj", "{37505970-2F5C-4A11-A972-D91D757DA58C}"
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Astreiko.Homework2", "src\Astreiko.Homework2\Astreiko.Homework2.csproj", "{05088D13-8C17-48E0-8E97-16A68BFFACBF}"
 EndProject
@@ -12,6 +13,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{65B22FBE-1F02-4048-BAE8-D9B4EF8A74BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65B22FBE-1F02-4048-BAE8-D9B4EF8A74BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65B22FBE-1F02-4048-BAE8-D9B4EF8A74BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65B22FBE-1F02-4048-BAE8-D9B4EF8A74BE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{37505970-2F5C-4A11-A972-D91D757DA58C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{37505970-2F5C-4A11-A972-D91D757DA58C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37505970-2F5C-4A11-A972-D91D757DA58C}.Release|Any CPU.ActiveCfg = Release|Any CPU
