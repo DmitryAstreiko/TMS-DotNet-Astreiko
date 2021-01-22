@@ -7,17 +7,17 @@ namespace Astreiko.Homework6
         /// <summary>
         /// Event top up amount with balance
         /// </summary>
-        public event Action<decimal> AddBalanceHandler;
+        public event Action<decimal> CashAdd;
 
         /// <summary>
         /// Event show current balance
         /// </summary>
-        public event Action<decimal> ShowBalanceHandler;
+        public event Action<decimal> ShowActualBalance;
 
         /// <summary>
         /// Event debit with balance
         /// </summary>
-        public event Action<decimal, bool> DelBalanceHandler;
+        public event Action<decimal, bool> CashWithdrawal;
 
         /// <summary>
         /// Current balance
@@ -50,18 +50,19 @@ namespace Astreiko.Homework6
         /// <param name="delSum"></param>
         public void GetCash(decimal delSum)
         {
-            Predicate<decimal> checkSum = (x) => (x > _currentBalance);
+            //Predicate<decimal> checkSum = (x) => (x > _currentBalance);
 
             //Сумма списания больше, чем остаток
-            if (checkSum(delSum))
+            //if (checkSum(delSum))
+            if(delSum > _currentBalance)
             {
-                DelBalanceHandler?.Invoke(delSum, false);
+                CashWithdrawal?.Invoke(delSum, false);
             }
             //Сумма списания меньше или равно, чем остаток
             else
             {
                 _currentBalance -= delSum;
-                DelBalanceHandler?.Invoke(delSum, true);
+                CashWithdrawal?.Invoke(delSum, true);
             }
         }
 
@@ -72,7 +73,7 @@ namespace Astreiko.Homework6
         public void PutCash(decimal getedSum)
         {
             _currentBalance += getedSum;
-            AddBalanceHandler?.Invoke(getedSum);
+            CashAdd?.Invoke(getedSum);
         }
 
         /// <summary>
@@ -80,7 +81,7 @@ namespace Astreiko.Homework6
         /// </summary>
         public void ShowBalance()
         {
-            ShowBalanceHandler?.Invoke(_currentBalance);
+            ShowActualBalance?.Invoke(_currentBalance);
         }
     }
 }
