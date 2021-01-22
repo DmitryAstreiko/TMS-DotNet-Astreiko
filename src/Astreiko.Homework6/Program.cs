@@ -12,7 +12,7 @@ namespace Astreiko.Homework6
             atm.ShowActualBalance += AtmShowActualBalance;
             atm.CashWithdrawal += AtmCashWithdrawal;
 
-            atm.PutCash(GetSum("Enter start sum [BYN] : "));
+            atm.PutCash(GetNumber("Enter start sum [BYN] : "));
 
             while (true)
             {
@@ -25,7 +25,7 @@ namespace Astreiko.Homework6
                 switch (inputChoose)
                 {
                     case "a":
-                        atm.PutCash(GetSum("Enter sum to add [BYN] : "));
+                        atm.PutCash(GetNumber("Enter sum to add [BYN] : "));
                         break;
                     case "w":
                         ShowMenuCurrency(atm);
@@ -105,13 +105,13 @@ namespace Astreiko.Homework6
                 switch (input)
                 {
                     case "b":
-                        atm.GetCash(GetSum("Enter sum to withdrawal [BYN] : "));
+                        atm.GetCash(GetNumber("Enter sum to withdrawal [BYN] : "));
                         break;
                     case "u":
-                        atm.GetCash(GetSum("Enter sum to withdrawal [USD] : ") * atm.UsdToByn);
+                        atm.GetCash(GetNumber("Enter sum to withdrawal [USD] : ") * atm.UsdToByn);
                         break;
                     case "e":
-                        atm.GetCash(GetSum("Enter sum to withdrawal [EURO] : ") * atm.EuroToByn);
+                        atm.GetCash(GetNumber("Enter sum to withdrawal [EURO] : ") * atm.EuroToByn);
                         break;
                     case "c":
                         return;
@@ -142,30 +142,22 @@ namespace Astreiko.Homework6
         }
 
         /// <summary>
-        /// Get string and convers into decomal
+        /// Get number
         /// </summary>
         /// <param name="textComment">String to convert</param>
         /// <returns></returns>
-        private static decimal GetSum(string textComment)
+        private static decimal GetNumber(string textComment)
         {
             while (true)
             {
                 Console.Write($"{textComment}");
 
-                decimal number;
-
-                var result = decimal.TryParse(Console.ReadLine().Trim().Replace(".", ","), out number);
-
-                if (!result)
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Entered uncorrect sum. Please try again.");
-                    Console.ResetColor();
-                }
-                else
-                {
+                if (decimal.TryParse(Console.ReadLine().Trim().Replace(".", ","), out var number))
                     return number;
-                }
+
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Enter correct number.");
+                Console.ResetColor();
             }
         }
 
