@@ -148,27 +148,25 @@ namespace Astreiko.Homework6
         /// <returns></returns>
         private static decimal GetSum(string textComment)
         {
-            var check = true;
-
-            var sum = 0M;
-
-            while (check)
+            while (true)
             {
                 Console.Write($"{textComment}");
 
-                try
-                {
-                    sum = decimal.Parse(Console.ReadLine().Trim().Replace(".", ","));
-                    check = false;
-                }
-                catch
+                decimal number;
+
+                var result = decimal.TryParse(Console.ReadLine().Trim().Replace(".", ","), out number);
+
+                if (!result)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Entered uncorect sum. Please try again.");
+                    Console.WriteLine("Entered uncorrect sum. Please try again.");
                     Console.ResetColor();
                 }
+                else
+                {
+                    return number;
+                }
             }
-            return sum;
         }
 
         /// <summary>
