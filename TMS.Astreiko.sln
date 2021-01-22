@@ -3,6 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test2", "src\test2\test2.csproj", "{0331F557-5E30-4A73-837A-7D64A2557A5F}"
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Astreiko.Homework7", "src\Test-6-LINQ\Astreiko.Homework7.csproj", "{88882E5C-C952-422A-A83B-3743BB9E7267}"
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Astreiko.Homework4", "src\Astreiko.Homework4\Astreiko.Homework4.csproj", "{65B22FBE-1F02-4048-BAE8-D9B4EF8A74BE}"
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Astreiko.Homework3", "src\Astreiko.Homework3\Astreiko.Homework3.csproj", "{37505970-2F5C-4A11-A972-D91D757DA58C}"
@@ -14,6 +15,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0331F557-5E30-4A73-837A-7D64A2557A5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0331F557-5E30-4A73-837A-7D64A2557A5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0331F557-5E30-4A73-837A-7D64A2557A5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0331F557-5E30-4A73-837A-7D64A2557A5F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{88882E5C-C952-422A-A83B-3743BB9E7267}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{88882E5C-C952-422A-A83B-3743BB9E7267}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88882E5C-C952-422A-A83B-3743BB9E7267}.Release|Any CPU.ActiveCfg = Release|Any CPU
