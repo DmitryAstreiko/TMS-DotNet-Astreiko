@@ -8,8 +8,8 @@ namespace Astreiko.Homework8
     internal class Shop
     {
         private PeopleGenerator peopleGenerator;
+        private ConcurrentQueue<Person> processingQueue;
         private List<Thread> processors;
-        private Queue<Person> processingQueue;
         private bool isOpen;
 
         public Shop(PeopleGenerator peopleGenerator, int cashierNumber)
@@ -18,27 +18,22 @@ namespace Astreiko.Homework8
             this.processingQueue = new ConcurrentQueue<Person>();
 
             var processors = new List<Thread>();
-
             for (int i = 0; i < cashierNumber; i++)
             {
-                processors.Add(new Thread(ProcesPeople));
+                processors.Add(new Thread(ProcessPeople));
             }
             this.processors = processors;
         }
 
         internal void Open()
         {
-            Console.WriteLine("Shop is openning...");
-
-            this.isOpen = true;
-
-            for (int i = 0; i < processors.Count; i++)
+            Console.WriteLine("Shop is opening...");
+            isOpen = true;
+            for (int i = 1; i <= processors.Count; i++)
             {
                 processors[i - 1].Start(i);
-                Thread.Start();
-                Console.WriteLine($"Cachier {i} is open.");
+                Console.WriteLine($"Cachier {i} is opened.");
             }
-                        
         }
 
         internal void Close()
@@ -48,27 +43,24 @@ namespace Astreiko.Homework8
 
         internal void EnterShop()
         {
-
+            processingQueue.Enqueue(peopleGenerator.GetPerson());
         }
 
-        private void ProcesPeople(object obj)
+        private void ProcessPeople(object obj)
         {
             while (isOpen)
             {
-
-                while (this.processingQueue.IsEmpty)
+                while (!this.processingQueue.IsEmpty)
                 {
                     if (processingQueue.TryDequeue(out var person))
                     {
-                        Console.WriteLine($"Cashier {obj} is processing {person.Name}...");
+                        Console.WriteLine($"Cachier {obj} is processing {person.Name}...");
                         Thread.Sleep(person.TimeToProcess);
-
-                        Console.WriteLine($"Cashier {obj} is processed {person.Name}...");
+                        Console.WriteLine($"Cachier {obj} is processed {person.Name}.");
                     }
                 }
             }
-            Console.WriteLine($"Cshier {obj} is closed/");
-
+            Console.WriteLine($"Cachier {obj} is closed.");
         }
     }
 }

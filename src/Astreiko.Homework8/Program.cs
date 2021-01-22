@@ -15,7 +15,10 @@ namespace Astreiko.Homework8
 
             while(true)
             {
+                Console.WriteLine();
+
                 var command = Console.ReadLine();
+
                 switch (command)
                 {
                     case "close":
@@ -29,6 +32,7 @@ namespace Astreiko.Homework8
                                 shop.EnterShop();
                             }
                         }
+                        break;
                 }
             }
         }

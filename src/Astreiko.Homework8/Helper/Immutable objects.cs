@@ -7,9 +7,8 @@ namespace Astreiko.Homework8.Helper
 {
     class Immutable_objects
     {
-    namespace TMS.NET06.Lesson11.Multithreading
-    {
-        static class Program
+    
+        public class Program
         {
 
             // An immutable object is one whose state cannot be altered — externally or internally.
@@ -17,34 +16,34 @@ namespace Astreiko.Homework8.Helper
             // you create a new object with different properties.
             // Immutability is also valuable in multithreading in that it avoids the problem of shared writable state.
 
-            public static void Main()
-            {
-                // how to fix?           
+            //public void Main()
+            //{
+            //    // how to fix?           
 
-                var hello = new char[] { 'H', 'e', 'l', 'l', 'o' };
-                new Thread(() => Console.WriteLine((hello.ToUpper()))).Start();
-                Console.WriteLine(hello.ToLower());
-            }
+            //    var hello = new char[] { 'H', 'e', 'l', 'l', 'o' };
+            //    new Thread(() => Console.WriteLine((hello.ToUpper()))).Start();
+            //    Console.WriteLine(hello.ToLower());
+            //}
 
-            private static char[] ToUpper(this char[] obj)
-            {
-                for (int i = 0; i < obj.Length; i++)
-                {
-                    obj[i] = char.ToUpper(obj[i]);
-                }
+            //private char[] ToUpper(this char[] obj)
+            //{
+            //    for (int i = 0; i < obj.Length; i++)
+            //    {
+            //        obj[i] = char.ToUpper(obj[i]);
+            //    }
 
-                return obj;
-            }
+            //    return obj;
+            //}
 
-            private static char[] ToLower(this char[] obj)
-            {
-                for (int i = 0; i < obj.Length; i++)
-                {
-                    obj[i] = char.ToLower(obj[i]);
-                }
+            //private char[] ToLower(this char[] obj)
+            //{
+            //    for (int i = 0; i < obj.Length; i++)
+            //    {
+            //        obj[i] = char.ToLower(obj[i]);
+            //    }
 
-                return obj;
-            }
+            //    return obj;
+            //}
         }
     }
 }
