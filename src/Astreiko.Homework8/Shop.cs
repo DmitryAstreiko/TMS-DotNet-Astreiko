@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Timers;
@@ -9,14 +10,29 @@ namespace Astreiko.Homework8
 {
     internal class Shop
     {
+        /// <summary>
+        /// Генератор свойств посетителей
+        /// </summary>
         private PeopleGenerator PeopleGenerator { get; set; }
 
+        /// <summary>
+        /// Очередь из посетителей в кассы
+        /// </summary>
         private ConcurrentQueue<Person> ProcessingQueue { get; set; }
 
+        /// <summary>
+        /// Список потоков касс
+        /// </summary>
         private List<Thread> Processors { get; set; }
 
+        /// <summary>
+        /// Флаг открыт/закрыт магазин
+        /// </summary>
         private bool IsOpen { get; set; }
 
+        /// <summary>
+        /// Генератор для создания посетителей
+        /// </summary>
         private Random RandomVisitors { get; set; }
 
         /// <summary>
@@ -44,6 +60,15 @@ namespace Astreiko.Homework8
         /// </summary>
         private int CountVisitorsWaiting { get; set; }
 
+        /// <summary>
+        /// Необходимость закрыть кассу
+        /// </summary>
+        private bool NeedCloseCashier { get; set; }
+
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        /// <param name="cashierNumber"></param>
         public Shop(int cashierNumber)
         {
             PeopleGenerator = new PeopleGenerator();
@@ -52,6 +77,8 @@ namespace Astreiko.Homework8
             MaxCountVisitors = 25;
             RandomCreateVisitors = new Random();
             CheckPeriodQueue = 5000;
+            NeedCloseCashier = false;
+            MaxCountCashier = 10;
 
             var processors = new List<Thread>();
             for (int i = 0; i < cashierNumber; i++)
@@ -93,6 +120,9 @@ namespace Astreiko.Homework8
             Console.WriteLine();
         }
 
+        /// <summary>
+        /// Генератор новых посетителей
+        /// </summary>
         internal void StartVisitorsGenerator()
         {
             while (IsOpen)
@@ -116,11 +146,11 @@ namespace Astreiko.Homework8
 
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine($"{CountVisitorsWaiting} visitors are waiting a free cashier (Check period is {CheckPeriodQueue}).");
+                Console.WriteLine($"{CountVisitorsWaiting} visitors are waiting a free cashier (Check period is {CheckPeriodQueue} ms).");
                 Console.ResetColor();
                 Console.WriteLine();
 
-                if (CountVisitorsWaiting > 30 && MaxCountCashier > Processors.Count)
+                if (CountVisitorsWaiting > 30 && MaxCountCashier >= Processors.Count(x => x.IsAlive))
                 {
                     Console.WriteLine();
                     Console.ForegroundColor = ConsoleColor.Magenta;
@@ -130,31 +160,16 @@ namespace Astreiko.Homework8
 
                     Thread.Sleep(CheckPeriodQueue * 3); //ожидаем результатов работы дополнительной кассы
                 }
-                //else if (CountVisitorsWaiting == 0 && Processors.Count > 3)
-                //{
-                //    Console.WriteLine();
-                //    Console.ForegroundColor = ConsoleColor.Magenta;
-                //    Console.WriteLine("There are 0 visitor, need to close any cashier!");
-                //    Console.ResetColor();
-
-                //    CloseCashier();
-                //}
+                else if (CountVisitorsWaiting < 5 && Processors.Count > 3)
+                {
+                    Console.WriteLine();
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.WriteLine("There are a few visitor, need to close any cashier!");
+                    Console.ResetColor();
+                    NeedCloseCashier = true;
+                }
             }
         }
-
-        //internal void CloseCashier()
-        //{
-        //    //processors.Add(new Thread(ProcessPeople));
-        //    //processors[processors.Count - 1].Start(processors.Count);
-        //    Processors[Processors.Count-1].Abort();
-
-
-        //    Console.WriteLine();
-        //    Console.ForegroundColor = ConsoleColor.Magenta;
-        //    Console.WriteLine($"Cachier {1} is closed.");
-        //    Console.ResetColor();
-        //    Console.WriteLine();
-        //}
 
         /// <summary>
         /// Открытие кассы
@@ -166,7 +181,7 @@ namespace Astreiko.Homework8
 
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine($"Cachier {Processors.Count} is opened.");
+            Console.WriteLine($"Cashier {Processors.Count} is opened.");
             Console.ResetColor();
             Console.WriteLine();
         }
@@ -179,7 +194,7 @@ namespace Astreiko.Homework8
             var randomV = RandomVisitors.Next(0, MaxCountVisitors);
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"{randomV} visitors are visiting the shop.");
+            Console.WriteLine($"{randomV} visitors are visiting the shop ({MaxCountVisitors} are maximum visitors).");
             Console.ResetColor();
             Console.WriteLine();
 
@@ -197,24 +212,29 @@ namespace Astreiko.Homework8
             ProcessingQueue.Enqueue(PeopleGenerator.GetPerson());
         }
 
+        /// <summary>
+        /// Обслуживание посетителей
+        /// </summary>
+        /// <param name="obj"></param>
         private void ProcessPeople(object obj)
         {
-            while (IsOpen)
+            while (IsOpen && !NeedCloseCashier)
             {
                 while (!this.ProcessingQueue.IsEmpty)
                 {
                     if (ProcessingQueue.TryDequeue(out var person))
                     {
-                        Console.WriteLine($"Cachier {obj} is processing {person.Name}...");
+                        Console.WriteLine($"Cashier {obj} is processing {person.Name}...");
                         Thread.Sleep(person.TimeToProcess);
-                        Console.WriteLine($"Cachier {obj} is processed {person.Name}.");
+                        Console.WriteLine($"Cashier {obj} is processed {person.Name}.");
                     }
                 }
             }
 
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"Cachier {obj} is closed.");
+            Console.WriteLine($"Cashier {obj} is closed.");
+            NeedCloseCashier = false;
             Console.ResetColor();
             Console.WriteLine();
         }

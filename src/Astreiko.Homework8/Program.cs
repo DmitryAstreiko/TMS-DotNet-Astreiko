@@ -6,7 +6,7 @@ namespace Astreiko.Homework8
     class Program
     {
         /// <summary>
-        /// Количество касс
+        /// Количество одновременно работающих касс при открытии магазина
         /// </summary>
         public static int countCashier = 3;
 
