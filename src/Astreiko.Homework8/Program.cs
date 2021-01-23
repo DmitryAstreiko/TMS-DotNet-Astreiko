@@ -1,19 +1,27 @@
 ﻿using System;
+using System.Threading;
 
 namespace Astreiko.Homework8
 {
     class Program
     {
+        /// <summary>
+        /// Количество касс
+        /// </summary>
+        public static int countCashier = 3;
+
         static void Main(string[] args)
         {
-            
-            var peopleGenerator = new PeopleGenerator();
-
-            var shop = new Shop(peopleGenerator, 3); //3 - количество касс
+            var shop = new Shop(countCashier); 
 
             shop.Open();
 
-            while(true)
+            Thread threadGenVisitors = new Thread(shop.StartVisitorsGenerator);
+            threadGenVisitors.Start();
+
+            new Thread(shop.CheckWaitingVisitors).Start();
+
+            while (true)
             {
                 Console.WriteLine();
 
@@ -21,18 +29,9 @@ namespace Astreiko.Homework8
 
                 switch (command)
                 {
-                    case "close":
+                    case "c":
                         shop.Close();
                         return;
-                    default:
-                        if (int.TryParse(command, out var numberPeople))
-                        {
-                            for (int i = 0; i < numberPeople; i++)
-                            {
-                                shop.EnterShop();
-                            }
-                        }
-                        break;
                 }
             }
         }
