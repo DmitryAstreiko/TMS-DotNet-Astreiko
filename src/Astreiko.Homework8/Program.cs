@@ -5,14 +5,9 @@ namespace Astreiko.Homework8
 {
     class Program
     {
-        /// <summary>
-        /// Количество одновременно работающих касс при открытии магазина
-        /// </summary>
-        public static int countCashier = 3;
-
         static void Main(string[] args)
         {
-            var shop = new Shop(countCashier); 
+            var shop = new Shop(); 
 
             shop.Open();
 

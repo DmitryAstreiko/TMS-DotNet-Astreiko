@@ -23,7 +23,8 @@ namespace Astreiko.Homework8
         /// <summary>
         /// Список потоков касс
         /// </summary>
-        private List<Thread> Processors { get; set; }
+        //private List<Thread> Processors { get; set; }
+        private List<Cashier> Processors { get; set; }
 
         /// <summary>
         /// Флаг открыт/закрыт магазин
@@ -66,10 +67,11 @@ namespace Astreiko.Homework8
         private bool NeedCloseCashier { get; set; }
 
         /// <summary>
-        /// Конструктор
+        /// Количество одновременно работающих касс при открытии магазина
         /// </summary>
-        /// <param name="cashierNumber"></param>
-        public Shop(int cashierNumber)
+        public int CountCashier { get; set; }
+
+        public Shop()
         {
             PeopleGenerator = new PeopleGenerator();
             ProcessingQueue = new ConcurrentQueue<Person>();
@@ -79,13 +81,17 @@ namespace Astreiko.Homework8
             CheckPeriodQueue = 5000;
             NeedCloseCashier = false;
             MaxCountCashier = 10;
+            CountCashier = 3;
 
-            var processors = new List<Thread>();
-            for (int i = 0; i < cashierNumber; i++)
+            var processors = new List<Cashier>();
+            for (int i = 0; i < CountCashier; i++)
             {
-                processors.Add(new Thread(ProcessPeople));
+                var nCashier = new Cashier();
+                nCashier.ThreadCashier = new Thread(ProcessPeople);
+                nCashier.NameCashier = $"Cashier {i + 1}";
+                processors.Add(nCashier);
             }
-            this.Processors = processors;
+            Processors = processors;
         }
 
         /// <summary>
@@ -98,10 +104,10 @@ namespace Astreiko.Homework8
 
             for (int i = 1; i <= Processors.Count; i++)
             {
-                Processors[i - 1].Start(i);
+                Processors[i - 1].ThreadCashier.Start(i);
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine($"Cachier {i} is opened.");
+                Console.WriteLine($"{Processors[i-1].NameCashier} is opened.");
                 Console.ResetColor();
                 Console.WriteLine();
             }
@@ -146,26 +152,23 @@ namespace Astreiko.Homework8
 
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine($"{CountVisitorsWaiting} visitors are waiting a free cashier (Check period is {CheckPeriodQueue} ms).");
+                Console.WriteLine($"{CountVisitorsWaiting} visitors are waiting a free cashier (Check starts every {CheckPeriodQueue} ms).");
                 Console.ResetColor();
                 Console.WriteLine();
 
-                if (CountVisitorsWaiting > 30 && MaxCountCashier >= Processors.Count(x => x.IsAlive))
+                if (CountVisitorsWaiting > 30 && MaxCountCashier >= Processors.Count(x => x.ThreadCashier.IsAlive))
                 {
                     Console.WriteLine();
                     Console.ForegroundColor = ConsoleColor.Magenta;
                     Console.WriteLine("There are many visitors, need to open new cashier!");
                     Console.ResetColor();
+
                     OpenCashier();
 
                     Thread.Sleep(CheckPeriodQueue * 3); //ожидаем результатов работы дополнительной кассы
                 }
-                else if (CountVisitorsWaiting < 5 && Processors.Count > 3)
+                else if (CountVisitorsWaiting < 5 && Processors.Count(x => x.ThreadCashier.IsAlive) > 3)
                 {
-                    Console.WriteLine();
-                    Console.ForegroundColor = ConsoleColor.Magenta;
-                    Console.WriteLine("There are a few visitor, need to close any cashier!");
-                    Console.ResetColor();
                     NeedCloseCashier = true;
                 }
             }
@@ -176,12 +179,20 @@ namespace Astreiko.Homework8
         /// </summary>
         internal void OpenCashier()
         {
-            Processors.Add(new Thread(ProcessPeople));
-            Processors[Processors.Count-1].Start(Processors.Count);
+            var StopedCashiers = Processors.Where(x => x.ThreadCashier.IsAlive == false).Select(q => q.NameCashier).Distinct().ToList();
+            var RanCashiers = Processors.Where(x => x.ThreadCashier.IsAlive).Select(q => q.NameCashier).ToList();
+            var freeCashiersList = StopedCashiers.Except(RanCashiers).ToList();
+
+            var nCashier = new Cashier();
+            nCashier.ThreadCashier = new Thread(ProcessPeople);
+            nCashier.NameCashier = freeCashiersList.Count == 0 ? $"Cashier {Processors.Count + 1}" : freeCashiersList.First();
+
+            Processors.Add(nCashier);
+            Processors[Processors.Count-1].ThreadCashier.Start(Processors.Count);
 
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine($"Cashier {Processors.Count} is opened.");
+            Console.WriteLine($"{Processors[Processors.Count-1].NameCashier} is opened.");
             Console.ResetColor();
             Console.WriteLine();
         }
@@ -194,7 +205,7 @@ namespace Astreiko.Homework8
             var randomV = RandomVisitors.Next(0, MaxCountVisitors);
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"{randomV} visitors are visiting the shop ({MaxCountVisitors} are maximum visitors).");
+            Console.WriteLine($"{randomV} visitors are visiting the shop (Maximum number of visitors are {MaxCountVisitors}).");
             Console.ResetColor();
             Console.WriteLine();
 
@@ -220,23 +231,24 @@ namespace Astreiko.Homework8
         {
             while (IsOpen && !NeedCloseCashier)
             {
-                while (!this.ProcessingQueue.IsEmpty)
+                while (!ProcessingQueue.IsEmpty)
                 {
                     if (ProcessingQueue.TryDequeue(out var person))
                     {
-                        Console.WriteLine($"Cashier {obj} is processing {person.Name}...");
+                        Console.WriteLine($"{Processors[(int)obj - 1].NameCashier} is processing {person.Name}...");
                         Thread.Sleep(person.TimeToProcess);
-                        Console.WriteLine($"Cashier {obj} is processed {person.Name}.");
+                        Console.WriteLine($"{Processors[(int)obj - 1].NameCashier} is processed {person.Name}.");
                     }
                 }
             }
 
             Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine($"There are a few visitor, need to close any cashier!");
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"Cashier {obj} is closed.");
-            NeedCloseCashier = false;
+            Console.WriteLine($"{Processors[(int)obj - 1].NameCashier} is closed.");
             Console.ResetColor();
-            Console.WriteLine();
+            NeedCloseCashier = false;
         }
     }
 }
