@@ -5,7 +5,14 @@ namespace Astreiko.Homework8
 {
     public class PeopleGenerator
     {
+        /// <summary>
+        /// Generator time
+        /// </summary>
         private Random randomTime;
+
+        /// <summary>
+        /// Generator name
+        /// </summary>
         private Random randomName;
 
         public PeopleGenerator()
@@ -14,6 +21,10 @@ namespace Astreiko.Homework8
             randomName = new Random();
         }
 
+        /// <summary>
+        /// Create class Person
+        /// </summary>
+        /// <returns></returns>
         internal Person GetPerson()
         {
             return new Person
@@ -23,6 +34,12 @@ namespace Astreiko.Homework8
             };
         }
 
+        /// <summary>
+        /// Get random string
+        /// </summary>
+        /// <param name="size">Length string</param>
+        /// <param name="lowerCase">Flag use lower or upper</param>
+        /// <returns></returns>
         private string GetRandomString(int size, bool lowerCase = false)
         {
             var builder = new StringBuilder(size);

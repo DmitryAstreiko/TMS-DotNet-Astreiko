@@ -11,7 +11,7 @@ namespace Astreiko.Homework8
             {
                 var shop = new Shop();
 
-                shop.Open();
+                shop.OpenShop();
 
                 Thread threadGenVisitors = new Thread(shop.StartVisitorsGenerator);
                 threadGenVisitors.Start();
@@ -27,7 +27,7 @@ namespace Astreiko.Homework8
                     switch (command)
                     {
                         case "c":
-                            shop.Close();
+                            shop.CloseShop();
                             return;
                     }
                 }
