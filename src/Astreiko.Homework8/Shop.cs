@@ -123,7 +123,7 @@ namespace Astreiko.Homework8
         }
 
         /// <summary>
-        /// Generator creates new visitors  
+        /// Generator creates new customers  
         /// </summary>
         internal void StartVisitorsGenerator()
         {
@@ -136,7 +136,7 @@ namespace Astreiko.Homework8
         }
 
         /// <summary>
-        /// Check count visitors waiting the free cashier
+        /// Check count customers waiting the free cashier
         /// </summary>
         internal void CheckWaitingVisitors()
         {
@@ -148,7 +148,7 @@ namespace Astreiko.Homework8
 
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine($"{countCustomersWaiting} customs are waiting the free cashier (Check starts every {CheckPeriodQueue} ms).");
+                Console.WriteLine($"{countCustomersWaiting} customers are waiting the free cashier (Check every {CheckPeriodQueue} ms).");
                 Console.ResetColor();
                 Console.WriteLine();
 
@@ -156,7 +156,7 @@ namespace Astreiko.Homework8
                 {
                     Console.WriteLine();
                     Console.ForegroundColor = ConsoleColor.Magenta;
-                    Console.WriteLine("There are many customs, need to open new cashier!");
+                    Console.WriteLine("There are many customers, need to open new cashier!");
                     Console.ResetColor();
 
                     OpenCashier();
@@ -166,6 +166,14 @@ namespace Astreiko.Homework8
                 else if (countCustomersWaiting < 5 && ListCashiers.Count(x => x.ThreadCashier.IsAlive) > 3)
                 {
                     NeedCloseCashier = true;
+                }
+
+                if (countCustomersWaiting > 99)
+                {
+                    Console.WriteLine();
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.WriteLine("ALARM. NEED MORE CASHIERS!");
+                    Console.ResetColor();
                 }
             }
         }
@@ -196,14 +204,14 @@ namespace Astreiko.Homework8
         }
 
         /// <summary>
-        /// Generator new visitors in the shop 
+        /// Generator new customers in the shop 
         /// </summary>
         internal void GeneratorVisitors()
         {
             var randomV = RandomCustomers.Next(0, MaxCountCustomers);
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"{randomV} customs are visiting the shop (Maximum number of customs are {MaxCountCustomers}).");
+            Console.WriteLine($"{randomV} customers are visiting the shop (Maximum number of customers - {MaxCountCustomers}).");
             Console.ResetColor();
             Console.WriteLine();
 
@@ -231,21 +239,26 @@ namespace Astreiko.Homework8
             {
                 while (ProcessingQueue.Count > 0)
                 {
+                    bool resDequeue;
+                    Person person;
+
                     lock (_locker)
                     {
-                        if (ProcessingQueue.TryDequeue(out var person))
-                        {
-                            Console.WriteLine(
-                                $"{ListCashiers[(int)obj - 1].NameCashier} is processing {person.Name}...");
-                            Thread.Sleep(person.TimeToProcess);
-                            Console.WriteLine($"{ListCashiers[(int)obj - 1].NameCashier} is processed {person.Name}.");
-                        }
+                        resDequeue = ProcessingQueue.TryDequeue(out person);
+                    }
+
+                    if (resDequeue)
+                    {
+                        Console.WriteLine(
+                            $"{ListCashiers[(int) obj - 1].NameCashier} is processing {person.Name}...");
+                        Thread.Sleep(person.TimeToProcess);
+                        Console.WriteLine($"{ListCashiers[(int) obj - 1].NameCashier} is processed {person.Name}.");
                     }
                 }
             }
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine($"There are a few customs, need to close any cashier!");
+            Console.WriteLine($"There are a few customers, need to close any cashier!");
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine($"{ListCashiers[(int)obj - 1].NameCashier} is closed.");
             Console.ResetColor();
