@@ -7,27 +7,34 @@ namespace Astreiko.Homework8
     {
         static void Main(string[] args)
         {
-            var shop = new Shop(); 
-
-            shop.Open();
-
-            Thread threadGenVisitors = new Thread(shop.StartVisitorsGenerator);
-            threadGenVisitors.Start();
-
-            new Thread(shop.CheckWaitingVisitors).Start();
-
-            while (true)
+            try
             {
-                Console.WriteLine();
+                var shop = new Shop();
 
-                var command = Console.ReadLine();
+                shop.Open();
 
-                switch (command)
+                Thread threadGenVisitors = new Thread(shop.StartVisitorsGenerator);
+                threadGenVisitors.Start();
+
+                new Thread(shop.CheckWaitingVisitors).Start();
+
+                while (true)
                 {
-                    case "c":
-                        shop.Close();
-                        return;
+                    Console.WriteLine();
+
+                    var command = Console.ReadLine();
+
+                    switch (command)
+                    {
+                        case "c":
+                            shop.Close();
+                            return;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception! {ex.Message}, {ex.StackTrace}.");
             }
         }
     }

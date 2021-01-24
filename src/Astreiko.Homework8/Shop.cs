@@ -18,7 +18,7 @@ namespace Astreiko.Homework8
         /// <summary>
         /// Очередь из посетителей в кассы
         /// </summary>
-        private ConcurrentQueue<Person> ProcessingQueue { get; set; }
+        private Queue<Person> ProcessingQueue { get; set; }
 
         /// <summary>
         /// Список потоков касс
@@ -69,15 +69,20 @@ namespace Astreiko.Homework8
         /// <summary>
         /// Количество одновременно работающих касс при открытии магазина
         /// </summary>
-        public int CountCashier { get; set; }
+        private int CountCashier { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private readonly object locker = new object();
 
         public Shop()
         {
             PeopleGenerator = new PeopleGenerator();
-            ProcessingQueue = new ConcurrentQueue<Person>();
+            ProcessingQueue = new Queue<Person>();
             RandomVisitors = new Random();
-            MaxCountVisitors = 25;
             RandomCreateVisitors = new Random();
+            MaxCountVisitors = 25;
             CheckPeriodQueue = 5000;
             NeedCloseCashier = false;
             MaxCountCashier = 10;
@@ -231,13 +236,17 @@ namespace Astreiko.Homework8
         {
             while (IsOpen && !NeedCloseCashier)
             {
-                while (!ProcessingQueue.IsEmpty)
+                while (ProcessingQueue.Count > 0)
                 {
-                    if (ProcessingQueue.TryDequeue(out var person))
+                    lock (locker)
                     {
-                        Console.WriteLine($"{Processors[(int)obj - 1].NameCashier} is processing {person.Name}...");
-                        Thread.Sleep(person.TimeToProcess);
-                        Console.WriteLine($"{Processors[(int)obj - 1].NameCashier} is processed {person.Name}.");
+                        if (ProcessingQueue.TryDequeue(out var person))
+                        {
+                            Console.WriteLine(
+                                $"{Processors[(int) obj - 1].NameCashier} is processing {person.Name}...");
+                            Thread.Sleep(person.TimeToProcess);
+                            Console.WriteLine($"{Processors[(int) obj - 1].NameCashier} is processed {person.Name}.");
+                        }
                     }
                 }
             }
