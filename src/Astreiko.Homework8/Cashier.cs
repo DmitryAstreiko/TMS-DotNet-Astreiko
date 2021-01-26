@@ -11,11 +11,21 @@ namespace Astreiko.Homework8
         /// <summary>
         /// Thread for cashier
         /// </summary>
-        public Thread ThreadCashier { get; set; }
+        //public Thread ThreadCashier { get; set; }
 
         /// <summary>
         /// Name cashier
         /// </summary>
         public string NameCashier { get; set; }
+
+        private static Random randomTimeToProcess = new Random();
+
+        public int TimeToProcess { get; set; }
+
+        public Cashier()
+        {
+            TimeToProcess = randomTimeToProcess.Next(3000);
+            NameCashier = Guid.NewGuid().ToString("N");
+        }
     }
 }

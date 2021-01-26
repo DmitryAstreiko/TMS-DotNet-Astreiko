@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Astreiko.Homework8
 {
@@ -10,7 +11,9 @@ namespace Astreiko.Homework8
         /// <summary>
         /// Generate properties customs
         /// </summary>
-        private PeopleGenerator PeopleGenerator { get; set; }
+        private PeopleGenerator peopleGenerator;
+        private Queue<Cashier> cashierQueue;
+        private Queue<Person> customerQueue;
 
         /// <summary>
         /// Queue of customers into cashiers
@@ -25,7 +28,7 @@ namespace Astreiko.Homework8
         /// <summary>
         /// Flag open/close shop
         /// </summary>
-        private bool IsOpen { get; set; }
+        private bool isOpen;
 
         /// <summary>
         /// Generate to create customers
@@ -62,14 +65,36 @@ namespace Astreiko.Homework8
         /// </summary>
         private int CountCashierDefault { get; set; }
 
+        private List<Task> currentTasks;
+
         /// <summary>
         /// Propetry for using functionality lock
         /// </summary>
-        private readonly object _locker = new object();
+        //private readonly object _locker = new object();
 
         public Shop()
         {
-            PeopleGenerator = new PeopleGenerator();
+            //PeopleGenerator = new PeopleGenerator();
+            //ProcessingQueue = new Queue<Person>();
+            //RandomCustomers = new Random();
+            //RandomCreateCustomers = new Random();
+            //MaxCountCustomers = 25;
+            //CheckPeriodQueue = 5000;
+            //NeedCloseCashier = false;
+            //MaxCountCashier = 10;
+            //CountCashierDefault = 3;
+
+            //var listCashiers = new List<Cashier>();
+
+            //for (var i = 0; i < CountCashierDefault; i++)
+            //{
+            //    var nCashier = new Cashier {ThreadCashier = new Thread(ProcessPeople), NameCashier = $"Cashier {i + 1}"};
+
+            //    listCashiers.Add(nCashier);
+            //}
+            //ListCashiers = listCashiers;
+
+            //PeopleGenerator = new PeopleGenerator();
             ProcessingQueue = new Queue<Person>();
             RandomCustomers = new Random();
             RandomCreateCustomers = new Random();
@@ -79,15 +104,17 @@ namespace Astreiko.Homework8
             MaxCountCashier = 10;
             CountCashierDefault = 3;
 
-            var listCashiers = new List<Cashier>();
+            peopleGenerator = new PeopleGenerator();
+            cashierQueue = new Queue<Cashier>();
+            customerQueue = new Queue<Person>();
+            ListCashiers = new List<Cashier>();
+            currentTasks = new List<Task>();
 
             for (var i = 0; i < CountCashierDefault; i++)
             {
-                var nCashier = new Cashier {ThreadCashier = new Thread(ProcessPeople), NameCashier = $"Cashier {i + 1}"};
-
-                listCashiers.Add(nCashier);
+                ListCashiers.Add(new Cashier());
             }
-            ListCashiers = listCashiers;
+            
         }
 
         /// <summary>
@@ -96,16 +123,28 @@ namespace Astreiko.Homework8
         internal void OpenShop()
         {
             Console.WriteLine("Shop is opening...");
-            IsOpen = true;
+            isOpen = true;
 
-            for (var i = 1; i <= ListCashiers.Count; i++)
+            //for (var i = 1; i <= ListCashiers.Count; i++)
+            //{
+            //    ListCashiers[i - 1].ThreadCashier.Start(i);
+            //    Console.WriteLine();
+            //    Console.ForegroundColor = ConsoleColor.Magenta;
+            //    Console.WriteLine($"{ListCashiers[i - 1].NameCashier} is opened.");
+            //    Console.ResetColor();
+            //    Console.WriteLine();
+            //}
+
+            for (var i = 0; i < ListCashiers.Count; i++)
             {
-                ListCashiers[i - 1].ThreadCashier.Start(i);
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine($"{ListCashiers[i - 1].NameCashier} is opened.");
-                Console.ResetColor();
-                Console.WriteLine();
+                OpenCashier(ListCashiers[i]);
+                //ListCashiers[i - 1].ThreadCashier.Start(i);
+                //EnqueueCashier(ListCashiers[i]);
+                //Console.WriteLine();
+                //Console.ForegroundColor = ConsoleColor.Magenta;
+                //Console.WriteLine($"Cachier {ListCashiers[i].NameCashier} is opened.");
+                //Console.ResetColor();
+                //Console.WriteLine();
             }
         }
 
@@ -114,7 +153,9 @@ namespace Astreiko.Homework8
         /// </summary>
         internal void CloseShop()
         {
-            IsOpen = false;
+            isOpen = false;
+            Task.WaitAll(currentTasks.ToArray());
+
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.WriteLine("The shop is closing...");
@@ -127,142 +168,254 @@ namespace Astreiko.Homework8
         /// </summary>
         internal void StartVisitorsGenerator()
         {
-            while (IsOpen)
+            while (isOpen)
             {
-                GeneratorVisitors();
-
                 Thread.Sleep(RandomCreateCustomers.Next(10000, 15000));
+
+                var countCustomers = RandomCustomers.Next(0, MaxCountCustomers);
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"{countCustomers} customers are visiting the shop (Maximum number of customers - {MaxCountCustomers}).");
+                Console.ResetColor();
+                Console.WriteLine();
+
+                for (var i = 0; i < countCustomers; i++)
+                {
+                    var ttt = peopleGenerator.GetPerson();
+                    EnqueueCustomer(ttt);
+                    var task = Task.Run(() => ProcessPerson(ttt));
+                    currentTasks.Add(task);
+                }
             }
+        }
+
+        internal void CheckWaitingCustomers()
+        {
+            var countCustomersWaiting = customerQueue.Count;
+
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine(
+                $"{countCustomersWaiting} customers are waiting the free cashier (Check every {CheckPeriodQueue} ms).");
+            Console.ResetColor();
+            Console.WriteLine();
+
+            if (countCustomersWaiting > 30) // && MaxCountCashier >= customerQueue.Count(x => x.ThreadCashier.IsAlive))
+            {
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.WriteLine("There are many customers, need to open new cashier!");
+                Console.ResetColor();
+
+                OpenCashier(new Cashier());
+
+                //    Thread.Sleep(CheckPeriodQueue * 3); //Waiting results work additional cashier
+                //}
+                //else if (countCustomersWaiting < 5 && ListCashiers.Count(x => x.ThreadCashier.IsAlive) > 3)
+                //{
+                //    NeedCloseCashier = true;
+                //}
+
+                //if (countCustomersWaiting > 99)
+                //{
+                //    Console.WriteLine();
+                //    Console.ForegroundColor = ConsoleColor.Magenta;
+                //    Console.WriteLine("ALARM. NEED MORE CASHIERS!");
+                //    Console.ResetColor();
+                //}
+            }
+        }
+
+        internal void OpenCashier(Cashier cashier)
+        {
+            EnqueueCashier(cashier);
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine($"Cachier {cashier.NameCashier} is opened.");
+            Console.ResetColor();
+            Console.WriteLine();
         }
 
         /// <summary>
         /// Check count customers waiting the free cashier
         /// </summary>
-        internal void CheckWaitingVisitors()
+        internal void CheckQueueCustomers()
         {
-            while (IsOpen)
+            while (isOpen)
             {
                 Thread.Sleep(CheckPeriodQueue);
 
-                var countCustomersWaiting = ProcessingQueue.Count;
+                var task = Task.Run(() => CheckWaitingCustomers());
+                currentTasks.Add(task);
 
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine($"{countCustomersWaiting} customers are waiting the free cashier (Check every {CheckPeriodQueue} ms).");
-                Console.ResetColor();
-                Console.WriteLine();
+                //var countCustomersWaiting = ProcessingQueue.Count;
 
-                if (countCustomersWaiting > 30 && MaxCountCashier >= ListCashiers.Count(x => x.ThreadCashier.IsAlive))
-                {
-                    Console.WriteLine();
-                    Console.ForegroundColor = ConsoleColor.Magenta;
-                    Console.WriteLine("There are many customers, need to open new cashier!");
-                    Console.ResetColor();
+                //Console.WriteLine();
+                //Console.ForegroundColor = ConsoleColor.Cyan;
+                //Console.WriteLine($"{countCustomersWaiting} customers are waiting the free cashier (Check every {CheckPeriodQueue} ms).");
+                //Console.ResetColor();
+                //Console.WriteLine();
 
-                    OpenCashier();
+                //if (countCustomersWaiting > 30 && MaxCountCashier >= ListCashiers.Count(x => x.ThreadCashier.IsAlive))
+                //{
+                //    Console.WriteLine();
+                //    Console.ForegroundColor = ConsoleColor.Magenta;
+                //    Console.WriteLine("There are many customers, need to open new cashier!");
+                //    Console.ResetColor();
 
-                    Thread.Sleep(CheckPeriodQueue * 3); //Waiting results work additional cashier
-                }
-                else if (countCustomersWaiting < 5 && ListCashiers.Count(x => x.ThreadCashier.IsAlive) > 3)
-                {
-                    NeedCloseCashier = true;
-                }
+                //    OpenCashier();
 
-                if (countCustomersWaiting > 99)
-                {
-                    Console.WriteLine();
-                    Console.ForegroundColor = ConsoleColor.Magenta;
-                    Console.WriteLine("ALARM. NEED MORE CASHIERS!");
-                    Console.ResetColor();
-                }
+                //    Thread.Sleep(CheckPeriodQueue * 3); //Waiting results work additional cashier
+                //}
+                //else if (countCustomersWaiting < 5 && ListCashiers.Count(x => x.ThreadCashier.IsAlive) > 3)
+                //{
+                //    NeedCloseCashier = true;
+                //}
+
+                //if (countCustomersWaiting > 99)
+                //{
+                //    Console.WriteLine();
+                //    Console.ForegroundColor = ConsoleColor.Magenta;
+                //    Console.WriteLine("ALARM. NEED MORE CASHIERS!");
+                //    Console.ResetColor();
+                //}
             }
         }
 
         /// <summary>
         /// OpenShop of additional cashier
         /// </summary>
-        internal void OpenCashier()
-        {
-            var stopedCashiers = ListCashiers.Where(x => x.ThreadCashier.IsAlive == false).Select(q => q.NameCashier).Distinct().ToList();
-            var runCashiers = ListCashiers.Where(x => x.ThreadCashier.IsAlive).Select(q => q.NameCashier).ToList();
-            var freeCashiersList = stopedCashiers.Except(runCashiers).ToList();
+        //internal void OpenCashier()
+        //{
+        //    var stopedCashiers = ListCashiers.Where(x => x.ThreadCashier.IsAlive == false).Select(q => q.NameCashier).Distinct().ToList();
+        //    var runCashiers = ListCashiers.Where(x => x.ThreadCashier.IsAlive).Select(q => q.NameCashier).ToList();
+        //    var freeCashiersList = stopedCashiers.Except(runCashiers).ToList();
 
-            var nCashier = new Cashier
-            {
-                ThreadCashier = new Thread(ProcessPeople),
-                NameCashier = freeCashiersList.Count == 0 ? $"Cashier {ListCashiers.Count + 1}" : freeCashiersList.First()
-            };
+        //    var nCashier = new Cashier
+        //    {
+        //        ThreadCashier = new Thread(ProcessPeople),
+        //        NameCashier = freeCashiersList.Count == 0 ? $"Cashier {ListCashiers.Count + 1}" : freeCashiersList.First()
+        //    };
 
-            ListCashiers.Add(nCashier);
-            ListCashiers[ListCashiers.Count - 1].ThreadCashier.Start(ListCashiers.Count);
+        //    ListCashiers.Add(nCashier);
+        //    ListCashiers[ListCashiers.Count - 1].ThreadCashier.Start(ListCashiers.Count);
 
-            Console.WriteLine();
-            Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine($"{ListCashiers[ListCashiers.Count - 1].NameCashier} is opened.");
-            Console.ResetColor();
-            Console.WriteLine();
-        }
+        //    Console.WriteLine();
+        //    Console.ForegroundColor = ConsoleColor.Magenta;
+        //    Console.WriteLine($"{ListCashiers[ListCashiers.Count - 1].NameCashier} is opened.");
+        //    Console.ResetColor();
+        //    Console.WriteLine();
+        //}
 
         /// <summary>
         /// Generator new customers in the shop 
         /// </summary>
-        internal void GeneratorVisitors()
-        {
-            var randomV = RandomCustomers.Next(0, MaxCountCustomers);
-            Console.WriteLine();
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"{randomV} customers are visiting the shop (Maximum number of customers - {MaxCountCustomers}).");
-            Console.ResetColor();
-            Console.WriteLine();
+        //internal void GeneratorVisitors()
+        //{
+        //    var randomV = RandomCustomers.Next(0, MaxCountCustomers);
+        //    Console.WriteLine();
+        //    Console.ForegroundColor = ConsoleColor.Green;
+        //    Console.WriteLine($"{randomV} customers are visiting the shop (Maximum number of customers - {MaxCountCustomers}).");
+        //    Console.ResetColor();
+        //    Console.WriteLine();
 
-            for (var i = 0; i < randomV; i++)
-            {
-                AddVisitorsToWaitingQueue();
-            }
-        }
+        //    for (var i = 0; i < randomV; i++)
+        //    {
+        //        AddVisitorsToWaitingQueue();
+        //    }
+        //}
 
         /// <summary>
         /// Add visitors to waiting queue
         /// </summary>
-        internal void AddVisitorsToWaitingQueue()
+        //internal void AddVisitorsToWaitingQueue()
+        //{
+        //    ProcessingQueue.Enqueue(PeopleGenerator.GetPerson());
+        //}
+
+        //internal void EnterShop()
+        //{
+        //    if (isOpen)
+        //    {
+        //        // public delegate void WaitCallback(object state);
+        //        var task = Task.Run(() => ProcessPerson(peopleGenerator.GetPerson()));
+        //        currentTasks.Add(task);
+        //        //task.ContinueWith(t => currentTasks.Remove(task));
+        //    }
+        //}
+
+        private void ProcessPerson(Person person)
         {
-            ProcessingQueue.Enqueue(PeopleGenerator.GetPerson());
+            if (isOpen)
+            {
+                //Console.WriteLine();
+                //Console.ForegroundColor = ConsoleColor.Red;
+                //Console.WriteLine($"Очередь из кассиров {cashierQueue.Count}");
+                //Console.ResetColor();
+                //Console.WriteLine();
+
+                Cashier cashier;
+
+                while (!TryDequeueCashier(out cashier))
+                {
+                    Thread.Sleep(100);
+                }
+
+                var timeToProcess = cashier.TimeToProcess + person.TimeToProcess;
+                Console.WriteLine($"Cashier {cashier.NameCashier} is processing {person.Name} on thread {Thread.CurrentThread.ManagedThreadId}...");
+                Thread.Sleep(timeToProcess);
+
+                DequeueCustomer();
+                EnqueueCashier(cashier);
+            }
+
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"Cachier {Thread.CurrentThread.ManagedThreadId} is exitting.");
+            Console.ResetColor();
+            Console.WriteLine();
         }
 
-        /// <summary>
-        /// Visitor service
-        /// </summary>
-        /// <param name="obj"></param>
-        private void ProcessPeople(object obj)
+        private void EnqueueCashier(Cashier cashier)
         {
-            while (IsOpen && !NeedCloseCashier)
+            lock (cashierQueue)
             {
-                while (ProcessingQueue.Count > 0)
+                cashierQueue.Enqueue(cashier);
+            }
+        }
+
+        private void EnqueueCustomer(Person person)
+        {
+            lock (customerQueue)
+            {
+                customerQueue.Enqueue(person);
+            }
+        }
+
+        private bool TryDequeueCashier(out Cashier cashier)
+        {
+            cashier = null;
+
+            lock (cashierQueue)
+            {
+                if (cashierQueue.Count > 0)
                 {
-                    bool resDequeue;
-                    Person person;
-
-                    lock (_locker)
-                    {
-                        resDequeue = ProcessingQueue.TryDequeue(out person);
-                    }
-
-                    if (resDequeue)
-                    {
-                        Console.WriteLine(
-                            $"{ListCashiers[(int) obj - 1].NameCashier} is processing {person.Name}...");
-                        Thread.Sleep(person.TimeToProcess);
-                        Console.WriteLine($"{ListCashiers[(int) obj - 1].NameCashier} is processed {person.Name}.");
-                    }
+                    cashier = cashierQueue.Dequeue();
+                    return true;
                 }
             }
-            Console.WriteLine();
-            Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine($"There are a few customers, need to close any cashier!");
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"{ListCashiers[(int)obj - 1].NameCashier} is closed.");
-            Console.ResetColor();
-            NeedCloseCashier = false;
+            return false;
+        }
+
+        private void DequeueCustomer()
+        {
+            lock (customerQueue)
+            {
+                if (customerQueue.Count > 0)
+                {
+                    customerQueue.Dequeue();
+                }
+            }
         }
     }
 }
