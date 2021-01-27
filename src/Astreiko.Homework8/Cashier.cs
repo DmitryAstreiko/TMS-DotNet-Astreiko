@@ -25,7 +25,7 @@ namespace Astreiko.Homework8
         public Cashier()
         {
             TimeToProcess = randomTimeToProcess.Next(3000);
-            NameCashier = Guid.NewGuid().ToString("N");
+            NameCashier = Guid.NewGuid().ToString("N").Substring(1,4);
         }
     }
 }

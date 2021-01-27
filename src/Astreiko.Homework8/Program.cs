@@ -29,7 +29,7 @@ namespace Astreiko.Homework8
 
                     new Thread(shop.CheckQueueCustomers).Start();
 
-                    shop.StartVisitorsGenerator();
+                    new Thread(shop.StartVisitorsGenerator).Start();
 
                     Console.WriteLine();
 
