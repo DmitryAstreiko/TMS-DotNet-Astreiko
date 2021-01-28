@@ -11,11 +11,11 @@ namespace Astreiko.Homework9.Nbrb.by.UI
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.Write("Please choose the operation : ");
-            Console.WriteLine("Input date for select currency - (1)");
-            Console.WriteLine("Input period for select currency - (2)");
+            Console.WriteLine("Input date for select currency - [1]");
+            Console.WriteLine("Input period for select currency - [2]");
             Console.WriteLine("Exit - [3]");
             Console.ResetColor();
-            Console.WriteLine("-----");
+            Console.WriteLine("--------------");
         }
 
         public TypeSelectDates GetVariantDate()
@@ -23,15 +23,14 @@ namespace Astreiko.Homework9.Nbrb.by.UI
             while (true)
             {
                 Console.Write("Select operation: ");
-                var numInput = int.Parse(Console.ReadLine().Trim());
 
-                switch (numInput)
+                switch (Console.ReadLine()?.Trim())
                 {
-                    case 1:
+                    case "1":
                         return TypeSelectDates.OneDate;
-                    case 2:
+                    case "2":
                         return TypeSelectDates.PeriodDate;
-                    case 3:
+                    case "3":
                         return TypeSelectDates.None;
                     default:
                         Console.ForegroundColor = ConsoleColor.Red;
