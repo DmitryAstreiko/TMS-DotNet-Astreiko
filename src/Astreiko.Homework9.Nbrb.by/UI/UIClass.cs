@@ -70,7 +70,7 @@ namespace Astreiko.Homework9.Nbrb.by.UI
             }
             else if (variantDate == TypeSelectDates.PeriodDate)
             {
-                ShowCurrencies();
+                ShowCurrencies(apiClient.GetCurrencies(DateTime.Parse(enteredFirstDate), DateTime.Parse(enteredFinishDate), enteredCode));
             }
 
             Console.WriteLine("-4444444444-");

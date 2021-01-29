@@ -68,28 +68,70 @@ namespace Astreiko.Homework9.Nbrb.by.API_Client
         }
 
         /// <summary>
-        /// 
+        /// Task for get currency
         /// </summary>
-        /// <param name="forDateTime"></param>
-        /// <param name="codeCurrency"></param>
+        /// <param name="forDate">Date currency</param>
+        /// <param name="codeCurrency">Code currency</param>
         /// <returns></returns>
-        public async Task<Currencies> GetCurrencyOnDate(DateTime forDateTime, int codeCurrency)
+        private async Task<Currencies> GetCurrencyOnDate(DateTime forDate, int codeCurrency)
         {
             HttpClient httpClient1 = new HttpClient();
 
-            var searchDate = forDateTime.ToString("d");
+            var searchDate = forDate.ToString("d");
             var searchCode = dictionaryCurrencies.FirstOrDefault(x => x.Key == codeCurrency).Value;
 
-            string request1 = "https://www.nbrb.by/api/exrates/rates/" + searchCode + "?ondate=2020-1-1";
-            HttpResponseMessage response1 = (await httpClient1.GetAsync(request1)).EnsureSuccessStatusCode();
-            string responseBody1 = await response1.Content.ReadAsStringAsync();
+            string request = "https://www.nbrb.by/api/exrates/rates/" + searchCode + "?ondate=2020-1-1";
+            HttpResponseMessage response = (await httpClient1.GetAsync(request)).EnsureSuccessStatusCode();
+            string responseBody = await response.Content.ReadAsStringAsync();
 
-            return JsonConvert.DeserializeObject<Currencies>(responseBody1);
+            return JsonConvert.DeserializeObject<Currencies>(responseBody);
         }
 
-        public Currencies GetCurrency(DateTime forDateTime, int codeCurrency)
+        /// <summary>
+        /// Get currency on date
+        /// </summary>
+        /// <param name="forDate">Date currency</param>
+        /// <param name="codeCurrency">Code currency</param>
+        /// <returns></returns>
+        public Currencies GetCurrency(DateTime forDate, int codeCurrency)
         {
-            return GetCurrencyOnDate(forDateTime, codeCurrency).Result;
+            return GetCurrencyOnDate(forDate, codeCurrency).Result;
+        }
+
+        /// <summary>
+        /// Get list currencies
+        /// </summary>
+        /// <param name="startDate">Start date</param>
+        /// <param name="finishDate">Finish date</param>
+        /// <param name="codeCurrency">Code currency</param>
+        /// <returns></returns>
+        public List<Currencies> GetCurrencies(DateTime startDate, DateTime finishDate, int codeCurrency)
+        {
+            return GetCurrenciesOnPeriod(startDate, finishDate, codeCurrency).Result;
+        }
+
+        /// <summary>
+        /// Task for get list currencies
+        /// </summary>
+        /// <param name="startDate">Start date</param>
+        /// <param name="finishDate">Finish date</param>
+        /// <param name="codeCurrency">Code currency</param>
+        /// <returns></returns>
+        private async Task<List<Currencies>> GetCurrenciesOnPeriod(DateTime startDate, DateTime finishDate, int codeCurrency)
+        {
+            HttpClient httpClient = new HttpClient();
+
+            var searchFirstDate = startDate.ToString("d");
+            var searchfinishDate = finishDate.ToString("d");
+            var searchCode = dictionaryCurrencies.FirstOrDefault(x => x.Key == codeCurrency).Value;
+
+            ////https://www.nbrb.by/API/ExRates/Rates/Dynamics/190?startDate=2016-6-1&endDate=2016-6-30 
+
+            string request = "https://www.nbrb.by/API/ExRates/Rates/Dynamics/" + searchCode + "?startDate=" + searchFirstDate + "&endDate=" + searchfinishDate;
+            HttpResponseMessage response = (await httpClient.GetAsync(request)).EnsureSuccessStatusCode();
+            string responseBody = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<List<Currencies>>(responseBody);
         }
     }
 }
