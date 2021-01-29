@@ -7,8 +7,8 @@ namespace Astreiko.Homework9.Nbrb.by
     {
         static void Main(string[] args)
         {
-            var uiClass = new UIClass();
-            uiClass.ToDo();
+            var uiApplication = new UIApplication();
+            uiApplication.ToDo();
 
             Console.ReadKey();
         }

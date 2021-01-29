@@ -8,11 +8,11 @@ using Newtonsoft.Json;
 
 namespace Astreiko.Homework9.Nbrb.by.API_Client
 {
-    public class APIClientClass
+    public class APIClient
     {
         private Dictionary<int, int> dictionaryCurrencies;
 
-        public APIClientClass()
+        public APIClient()
         {
             dictionaryCurrencies = new Dictionary<int, int>();
         }
@@ -61,6 +61,8 @@ namespace Astreiko.Homework9.Nbrb.by.API_Client
         /// <param name="listCurrencies">list currencies</param>
         private void CreateDictionaryCurrencies(List<Currencies> listCurrencies)
         {
+            dictionaryCurrencies.Clear();
+
             foreach (var currency in listCurrencies)
             {
                 dictionaryCurrencies.Add(currency.Cur_Code, currency.Cur_ID);
@@ -68,61 +70,61 @@ namespace Astreiko.Homework9.Nbrb.by.API_Client
         }
 
         /// <summary>
-        /// Task for get currency
+        /// Task for get Rates
         /// </summary>
         /// <param name="forDate">Date currency</param>
         /// <param name="codeCurrency">Code currency</param>
-        /// <returns></returns>
-        private async Task<Currencies> GetCurrencyOnDate(DateTime forDate, int codeCurrency)
+        /// <returns>Task</returns>
+        private async Task<Rates> GetRateOnDate(DateTime forDate, int codeCurrency)
         {
             HttpClient httpClient1 = new HttpClient();
 
-            var searchDate = forDate.ToString("d");
+            var searchDate = forDate.ToString("yyyy-M-d");
             var searchCode = dictionaryCurrencies.FirstOrDefault(x => x.Key == codeCurrency).Value;
 
-            string request = "https://www.nbrb.by/api/exrates/rates/" + searchCode + "?ondate=2020-1-1";
+            string request = "https://www.nbrb.by/api/exrates/rates/" + searchCode + "?ondate=" + searchDate;
             HttpResponseMessage response = (await httpClient1.GetAsync(request)).EnsureSuccessStatusCode();
             string responseBody = await response.Content.ReadAsStringAsync();
 
-            return JsonConvert.DeserializeObject<Currencies>(responseBody);
+            return JsonConvert.DeserializeObject<Rates>(responseBody);
         }
 
         /// <summary>
-        /// Get currency on date
+        /// Get rates on date
         /// </summary>
         /// <param name="forDate">Date currency</param>
         /// <param name="codeCurrency">Code currency</param>
-        /// <returns></returns>
-        public Currencies GetCurrency(DateTime forDate, int codeCurrency)
+        /// <returns>Currency</returns>
+        public Rates GetRates(DateTime forDate, int codeCurrency)
         {
-            return GetCurrencyOnDate(forDate, codeCurrency).Result;
+            return GetRateOnDate(forDate, codeCurrency).Result;
         }
 
         /// <summary>
-        /// Get list currencies
+        /// Get list rates
         /// </summary>
         /// <param name="startDate">Start date</param>
         /// <param name="finishDate">Finish date</param>
         /// <param name="codeCurrency">Code currency</param>
-        /// <returns></returns>
-        public List<Currencies> GetCurrencies(DateTime startDate, DateTime finishDate, int codeCurrency)
+        /// <returns>List Currencies</returns>
+        public List<Rates> GetRates(DateTime startDate, DateTime finishDate, int codeCurrency)
         {
-            return GetCurrenciesOnPeriod(startDate, finishDate, codeCurrency).Result;
+            return GetRatesOnPeriod(startDate, finishDate, codeCurrency).Result;
         }
 
         /// <summary>
-        /// Task for get list currencies
+        /// Task for get list rates
         /// </summary>
         /// <param name="startDate">Start date</param>
         /// <param name="finishDate">Finish date</param>
         /// <param name="codeCurrency">Code currency</param>
-        /// <returns></returns>
-        private async Task<List<Currencies>> GetCurrenciesOnPeriod(DateTime startDate, DateTime finishDate, int codeCurrency)
+        /// <returns>Task</returns>
+        private async Task<List<Rates>> GetRatesOnPeriod(DateTime startDate, DateTime finishDate, int codeCurrency)
         {
             HttpClient httpClient = new HttpClient();
 
-            var searchFirstDate = startDate.ToString("d");
-            var searchfinishDate = finishDate.ToString("d");
+            var searchFirstDate = startDate.ToString("yyyy-M-d");
+            var searchfinishDate = finishDate.ToString("yyyy-M-d");
             var searchCode = dictionaryCurrencies.FirstOrDefault(x => x.Key == codeCurrency).Value;
 
             ////https://www.nbrb.by/API/ExRates/Rates/Dynamics/190?startDate=2016-6-1&endDate=2016-6-30 
@@ -131,7 +133,7 @@ namespace Astreiko.Homework9.Nbrb.by.API_Client
             HttpResponseMessage response = (await httpClient.GetAsync(request)).EnsureSuccessStatusCode();
             string responseBody = await response.Content.ReadAsStringAsync();
 
-            return JsonConvert.DeserializeObject<List<Currencies>>(responseBody);
+            return JsonConvert.DeserializeObject<List<Rates>>(responseBody);
         }
     }
 }

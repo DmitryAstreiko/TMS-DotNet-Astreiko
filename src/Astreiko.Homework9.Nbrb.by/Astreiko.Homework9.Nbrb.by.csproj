@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="File server\" />
+    <Folder Include="File service\" />
   </ItemGroup>
 
 </Project>
