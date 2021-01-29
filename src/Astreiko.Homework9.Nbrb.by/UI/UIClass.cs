@@ -54,7 +54,6 @@ namespace Astreiko.Homework9.Nbrb.by.UI
                     return;
             }
 
-            Console.WriteLine("--------------");
             Console.WriteLine("-------List currencies-------");
             ShowCurrencies(apiClient.GetShortCurrencies(countCurrency));
             Console.WriteLine("--------------");
@@ -64,19 +63,40 @@ namespace Astreiko.Homework9.Nbrb.by.UI
             Console.WriteLine("--------------");
             
             Console.WriteLine();
+
             if (variantDate == TypeSelectDates.OneDate)
             {
-                var ttt = apiClient.GetCurrencies(DateTime.Parse(enteredDate), enteredCode);
+                ShowCurrencies(apiClient.GetCurrency(DateTime.Parse(enteredDate), enteredCode));
+            }
+            else if (variantDate == TypeSelectDates.PeriodDate)
+            {
+                ShowCurrencies();
             }
 
             Console.WriteLine("-4444444444-");
         }
 
-        private void ShowCurrencies(List<ShortCurrencies> listCiCurrenceses)
+        private void ShowCurrencies(List<Currencies> listCurrencies)
         {
-            foreach (var currency in listCiCurrenceses)
+            Console.WriteLine("------Info about selected currencies:-------");
+
+            foreach (var currency in listCurrencies)
             {
-                Console.WriteLine($"Code curency - {currency.Code}, abbreviation - {currency.Abbreviation}.");
+                Console.WriteLine($"Code currency - {currency.Cur_Code}, abbreviation - {currency.Cur_Abbreviation}, name - {currency.Cur_QuotName}.");
+            }
+        }
+        private void ShowCurrencies(Currencies currencies)
+        {
+            Console.WriteLine("------Info about selected currency:-------");
+
+            Console.WriteLine($"Code currency - {currencies.Cur_Code}, abbreviation - {currencies.Cur_Abbreviation}, name - {currencies.Cur_Name}.");
+        }
+
+        private void ShowCurrencies(List<ShortCurrencies> listCurrencies)
+        {
+            foreach (var currency in listCurrencies)
+            {
+                Console.WriteLine($"Code currency - {currency.Code}, abbreviation - {currency.Abbreviation}.");
             }
         }
 
