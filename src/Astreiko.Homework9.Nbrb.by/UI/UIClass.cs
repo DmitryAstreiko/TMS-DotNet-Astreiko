@@ -18,40 +18,41 @@ namespace Astreiko.Homework9.Nbrb.by.UI
 
         public void ToDo()
         {
-            GetMenuSelectDate();
+            //GetMenuSelectDate();
 
-            var variantDate = GetVariantDate();
+            //var variantDate = GetVariantDate();
 
-            switch (variantDate)
-            {
-                case TypeSelectDates.OneDate:
-                    Console.WriteLine("--------------");
-                    var enteredDate = GetDate("Enter date: ").ToShortDateString();
-                    Console.WriteLine($"Entered date - {enteredDate}");
-                    break;
-                case TypeSelectDates.PeriodDate:
-                    Console.WriteLine("--------------");
-                    var enteredFirstDate = GetDate("Enter first date: ").ToShortDateString();
-                    Console.WriteLine($"Entered first date - {enteredFirstDate}");
-                    var enteredFinishDate = GetDate("Enter finish date: ").ToShortDateString();
-                    Console.WriteLine($"Entered finish date - {enteredFinishDate}");
-                    break;
-                case TypeSelectDates.None:
-                    Console.WriteLine("--------------");
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("Application will be close.");
-                    Console.ResetColor();
-                    return;
-            }
+            //switch (variantDate)
+            //{
+            //    case TypeSelectDates.OneDate:
+            //        Console.WriteLine("--------------");
+            //        var enteredDate = GetDate("Enter date: ").ToShortDateString();
+            //        Console.WriteLine($"Entered date - {enteredDate}");
+            //        break;
+            //    case TypeSelectDates.PeriodDate:
+            //        Console.WriteLine("--------------");
+            //        var enteredFirstDate = GetDate("Enter first date: ").ToShortDateString();
+            //        Console.WriteLine($"Entered first date - {enteredFirstDate}");
+            //        var enteredFinishDate = GetDate("Enter finish date: ").ToShortDateString();
+            //        Console.WriteLine($"Entered finish date - {enteredFinishDate}");
+            //        break;
+            //    case TypeSelectDates.None:
+            //        Console.WriteLine("--------------");
+            //        Console.ForegroundColor = ConsoleColor.Green;
+            //        Console.WriteLine("Application will be close.");
+            //        Console.ResetColor();
+            //        return;
+            //}
 
             Console.WriteLine("--------------");
 
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.Write("Please choose the code currency : ");
 
-            var currentListCurrency = apiClient.GetCurrencies(countCurrency);
+            apiClient.GetAllCurrenciesAsync();
+            //var currentListCurrency = apiClient.GetCurrencies(countCurrency);
 
-
+            Console.WriteLine("-4444444444-");
         }
 
         private void GetMenuSelectDate()

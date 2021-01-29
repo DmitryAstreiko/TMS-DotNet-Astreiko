@@ -5,29 +5,29 @@ using System.Text;
 
 namespace Astreiko.Homework9.Nbrb.by.File_server.Models
 {
-    internal class Currencies
+    public class Currencies
     {
-        internal int Code { get; set; }
-        internal string NameRus { get; set; }
-        internal string NameEng { get; set; }
-        internal string Abbreviation { get; set; }
+        //public int Code { get; set; }
+        //public string NameRus { get; set; }
+        //public string NameEng { get; set; }
+        //public string Abbreviation { get; set; }
 
-        //Cur_ID – внутренний код
-        //Cur_ParentID – этот код используется для связи, при изменениях наименования, количества единиц к которому устанавливается курс белорусского рубля, буквенного, цифрового кодов и т.д.фактически одной и той же валюты*.
-        //Cur_Code – цифровой код
-        //Cur_Abbreviation – буквенный код
-        //Cur_Name – наименование валюты на русском языке
-        //    Cur_Name_Bel – наименование на белорусском языке
-        //Cur_Name_Eng – наименование на английском языке
-        //Cur_QuotName – наименование валюты на русском языке, содержащее количество единиц
-        //    Cur_QuotName_Bel – наименование на белорусском языке, содержащее количество единиц
-        //Cur_QuotName_Eng – наименование на английском языке, содержащее количество единиц
-        //Cur_NameMulti – наименование валюты на русском языке во множественном числе
-        //Cur_Name_BelMulti – наименование валюты на белорусском языке во множественном числе*
-        //Cur_Name_EngMulti – наименование на английском языке во множественном числе*
-        //    Cur_Scale – количество единиц иностранной валюты
-        //Cur_Periodicity – периодичность установления курса(0 – ежедневно, 1 – ежемесячно)
-        //Cur_DateStart – дата включения валюты в перечень валют, к которым устанавливается официальный курс бел.рубля
-        //    Cur_DateEnd – дата исключения валюты из перечня валют, к которым устанавливается официальный курс бел.рубля
+        public int Cur_ID { get; set; }// внутренний код
+        public int Cur_ParentID { get; set; }//– этот код используется для связи, при изменениях наименования, количества единиц к которому устанавливается курс белорусского рубля, буквенного, цифрового кодов и т.д.фактически одной и той же валюты*.
+        public int Cur_Code { get; set; }//– цифровой код
+        public string Cur_Abbreviation { get; set; } //– буквенный код
+        public string Cur_Name { get; set; } //– наименование валюты на русском языке
+        public string Cur_Name_Bel { get; set; } //– наименование на белорусском языке
+        public string Cur_Name_Eng { get; set; } //– наименование на английском языке
+        public string Cur_QuotName { get; set; }//наименование валюты на русском языке, содержащее количество единиц
+        public string Cur_QuotName_Bel { get; set; } //– наименование на белорусском языке, содержащее количество единиц
+        public string Cur_QuotName_Eng { get; set; }// – наименование на английском языке, содержащее количество единиц
+        public string Cur_NameMulti { get; set; } //– наименование валюты на русском языке во множественном числе
+        public string Cur_Name_BelMulti { get; set; } //– наименование валюты на белорусском языке во множественном числе*
+        public string Cur_Name_EngMulti { get; set; } //– наименование на английском языке во множественном числе*
+        public decimal Cur_Scale { get; set; } //– количество единиц иностранной валюты
+        public int Cur_Periodicity { get; set; } //– периодичность установления курса(0 – ежедневно, 1 – ежемесячно)
+        public DateTime? Cur_DateStart { get; set; } // – дата включения валюты в перечень валют, к которым устанавливается официальный курс бел.рубля
+        public DateTime? Cur_DateEnd { get; set; } //– дата исключения валюты из перечня валют, к которым устанавливается официальный курс бел.рубля
     }
 }
