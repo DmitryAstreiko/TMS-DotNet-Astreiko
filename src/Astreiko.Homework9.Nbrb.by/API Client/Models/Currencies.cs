@@ -3,15 +3,10 @@ using System.Collections.Generic;
 using System.Security.Permissions;
 using System.Text;
 
-namespace Astreiko.Homework9.Nbrb.by.File_server.Models
+namespace Astreiko.Homework9.Nbrb.by.API_Client.Models
 {
     public class Currencies
     {
-        //public int Code { get; set; }
-        //public string NameRus { get; set; }
-        //public string NameEng { get; set; }
-        //public string Abbreviation { get; set; }
-
         public int Cur_ID { get; set; }// внутренний код
         public int Cur_ParentID { get; set; }//– этот код используется для связи, при изменениях наименования, количества единиц к которому устанавливается курс белорусского рубля, буквенного, цифрового кодов и т.д.фактически одной и той же валюты*.
         public int Cur_Code { get; set; }//– цифровой код

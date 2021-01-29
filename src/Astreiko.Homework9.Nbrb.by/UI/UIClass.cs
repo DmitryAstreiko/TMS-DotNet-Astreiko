@@ -1,5 +1,7 @@
 ﻿using System;
-using Astreiko.Homework9.Nbrb.@by.File_server;
+using System.Collections.Generic;
+using Astreiko.Homework9.Nbrb.@by.API_Client;
+using Astreiko.Homework9.Nbrb.@by.API_Client.Models;
 using Astreiko.Homework9.Nbrb.@by.UI.Enums;
 
 namespace Astreiko.Homework9.Nbrb.by.UI
@@ -18,41 +20,51 @@ namespace Astreiko.Homework9.Nbrb.by.UI
 
         public void ToDo()
         {
-            //GetMenuSelectDate();
+            GetMenuSelectDate();
 
-            //var variantDate = GetVariantDate();
+            var variantDate = GetVariantDate();
 
-            //switch (variantDate)
-            //{
-            //    case TypeSelectDates.OneDate:
-            //        Console.WriteLine("--------------");
-            //        var enteredDate = GetDate("Enter date: ").ToShortDateString();
-            //        Console.WriteLine($"Entered date - {enteredDate}");
-            //        break;
-            //    case TypeSelectDates.PeriodDate:
-            //        Console.WriteLine("--------------");
-            //        var enteredFirstDate = GetDate("Enter first date: ").ToShortDateString();
-            //        Console.WriteLine($"Entered first date - {enteredFirstDate}");
-            //        var enteredFinishDate = GetDate("Enter finish date: ").ToShortDateString();
-            //        Console.WriteLine($"Entered finish date - {enteredFinishDate}");
-            //        break;
-            //    case TypeSelectDates.None:
-            //        Console.WriteLine("--------------");
-            //        Console.ForegroundColor = ConsoleColor.Green;
-            //        Console.WriteLine("Application will be close.");
-            //        Console.ResetColor();
-            //        return;
-            //}
+            switch (variantDate)
+            {
+                case TypeSelectDates.OneDate:
+                    Console.WriteLine("--------------");
+                    var enteredDate = GetDate("Enter date: ").ToShortDateString();
+                    Console.WriteLine($"Entered date - {enteredDate}");
+                    break;
+                case TypeSelectDates.PeriodDate:
+                    Console.WriteLine("--------------");
+                    var enteredFirstDate = GetDate("Enter first date: ").ToShortDateString();
+                    Console.WriteLine($"Entered first date - {enteredFirstDate}");
+                    var enteredFinishDate = GetDate("Enter finish date: ").ToShortDateString();
+                    Console.WriteLine($"Entered finish date - {enteredFinishDate}");
+                    break;
+                case TypeSelectDates.None:
+                    Console.WriteLine("--------------");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Application will be close.");
+                    Console.ResetColor();
+                    return;
+            }
 
             Console.WriteLine("--------------");
 
+            ShowCurrencies(apiClient.GetCurrencies(countCurrency));
+            Console.WriteLine("--------------");
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.Write("Please choose the code currency : ");
+            Console.ResetColor();
 
-            apiClient.GetAllCurrenciesAsync();
-            //var currentListCurrency = apiClient.GetCurrencies(countCurrency);
+
 
             Console.WriteLine("-4444444444-");
+        }
+
+        private void ShowCurrencies(List<ShortCurrences> listCiCurrenceses)
+        {
+            foreach (var currency in listCiCurrenceses)
+            {
+                Console.WriteLine($"Code curency - {currency.Code}, abbreviation - {currency.Abbreviation}.");
+            }
         }
 
         private void GetMenuSelectDate()
