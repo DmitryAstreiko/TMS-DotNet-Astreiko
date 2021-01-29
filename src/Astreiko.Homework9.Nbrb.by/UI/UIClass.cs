@@ -12,6 +12,14 @@ namespace Astreiko.Homework9.Nbrb.by.UI
 
         private APIClientClass apiClient;
 
+        private string enteredFirstDate;
+
+        private string enteredFinishDate;
+
+        private int enteredCode;
+
+        private string enteredDate;
+
         public UIClass()
         {
             countCurrency = 10;
@@ -28,14 +36,14 @@ namespace Astreiko.Homework9.Nbrb.by.UI
             {
                 case TypeSelectDates.OneDate:
                     Console.WriteLine("--------------");
-                    var enteredDate = GetDate("Enter date: ").ToShortDateString();
+                    enteredDate = GetDate("Enter date: ").ToShortDateString();
                     Console.WriteLine($"Entered date - {enteredDate}");
                     break;
                 case TypeSelectDates.PeriodDate:
                     Console.WriteLine("--------------");
-                    var enteredFirstDate = GetDate("Enter first date: ").ToShortDateString();
+                    enteredFirstDate = GetDate("Enter first date: ").ToShortDateString();
                     Console.WriteLine($"Entered first date - {enteredFirstDate}");
-                    var enteredFinishDate = GetDate("Enter finish date: ").ToShortDateString();
+                    enteredFinishDate = GetDate("Enter finish date: ").ToShortDateString();
                     Console.WriteLine($"Entered finish date - {enteredFinishDate}");
                     break;
                 case TypeSelectDates.None:
@@ -47,19 +55,24 @@ namespace Astreiko.Homework9.Nbrb.by.UI
             }
 
             Console.WriteLine("--------------");
-
-            ShowCurrencies(apiClient.GetCurrencies(countCurrency));
+            Console.WriteLine("-------List currencies-------");
+            ShowCurrencies(apiClient.GetShortCurrencies(countCurrency));
             Console.WriteLine("--------------");
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.Write("Please choose the code currency : ");
-            Console.ResetColor();
 
-
+            enteredCode = GetCode();
+            Console.WriteLine($"Entered code - {enteredCode}");
+            Console.WriteLine("--------------");
+            
+            Console.WriteLine();
+            if (variantDate == TypeSelectDates.OneDate)
+            {
+                var ttt = apiClient.GetCurrencies(DateTime.Parse(enteredDate), enteredCode);
+            }
 
             Console.WriteLine("-4444444444-");
         }
 
-        private void ShowCurrencies(List<ShortCurrences> listCiCurrenceses)
+        private void ShowCurrencies(List<ShortCurrencies> listCiCurrenceses)
         {
             foreach (var currency in listCiCurrenceses)
             {
@@ -111,6 +124,20 @@ namespace Astreiko.Homework9.Nbrb.by.UI
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Enter correct date. ");
                     Console.ResetColor();
+            }
+        }
+
+        private int GetCode()
+        {
+            while (true)
+            {
+                Console.Write($"Enter code: ");
+
+                if (int.TryParse(Console.ReadLine()?.Trim(), out var selectcode)) return selectcode;
+
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Enter correct code. ");
+                Console.ResetColor();
             }
         }
     }
