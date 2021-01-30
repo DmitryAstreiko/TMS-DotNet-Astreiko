@@ -1,14 +1,14 @@
 ﻿namespace Astreiko.Homework9.Nbrb.by.API_Client.Models
 {
-    public class ShortCurrencies
+    public class ShortCurrency
     {
         /// <summary>
-        /// Code currency
+        /// Currency code
         /// </summary>
         public int Code { get; set; }
 
         /// <summary>
-        /// Abbreviation currency
+        /// Abbreviation
         /// </summary>
         public string Abbreviation { get; set; }
     }

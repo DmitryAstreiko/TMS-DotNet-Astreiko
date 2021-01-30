@@ -2,30 +2,56 @@
 using System.Collections.Generic;
 using Astreiko.Homework9.Nbrb.@by.API_Client;
 using Astreiko.Homework9.Nbrb.@by.API_Client.Models;
+using Astreiko.Homework9.Nbrb.@by.FileClient;
 using Astreiko.Homework9.Nbrb.@by.UI.Enums;
 
 namespace Astreiko.Homework9.Nbrb.by.UI
 {
     public class UIApplication
     {
+        /// <summary>
+        /// Count currency which will be show in the list
+        /// </summary>
         private int countCurrency;
 
         private APIClient apiClient;
 
+        private FIleService fIleService;
+
+        /// <summary>
+        /// Entered first date
+        /// </summary>
         private string enteredFirstDate;
 
+        /// <summary>
+        /// Entered end date
+        /// </summary>
         private string enteredFinishDate;
 
+        /// <summary>
+        /// Entered currency code
+        /// </summary>
         private int enteredCode;
 
+        /// <summary>
+        /// Entered date for searching currency
+        /// </summary>
         private string enteredDate;
 
+        /// <summary>
+        /// Enum for date options 
+        /// </summary>
         private TypeSelectDates typeSelectDates;
+
+        private Rate CheckedRates;
+
+        private List<Rate> checkListRates;
 
         public UIApplication()
         {
             countCurrency = 10;
             apiClient = new APIClient();
+            fIleService = new FIleService();
         }
 
         public void ToDo()
@@ -71,22 +97,41 @@ namespace Astreiko.Homework9.Nbrb.by.UI
                 switch (typeSelectDates)
                 {
                     case TypeSelectDates.OneDate:
-                        ShowRates(apiClient.GetRates(DateTime.Parse(enteredDate), enteredCode));
+                        CheckedRates = apiClient.GetRates(DateTime.Parse(enteredDate), enteredCode);
+                        ShowRates(CheckedRates);
                         break;
                     case TypeSelectDates.PeriodDate:
-                        ShowRates(apiClient.GetRates(DateTime.Parse(enteredFirstDate), DateTime.Parse(enteredFinishDate), enteredCode));
+                        checkListRates = apiClient.GetRates(DateTime.Parse(enteredFirstDate),
+                            DateTime.Parse(enteredFinishDate), enteredCode);
+                        ShowRates(checkListRates);
                         break;
                 }
 
                 if (NeedSaveToFile())
                 {
-                    Console.WriteLine("Search///");
+                    
+                    var ttt = ShowPathToSaveFile();
                 }
                 Console.WriteLine("--------------");
-
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private bool ShowPathToSaveFile()
+        {
+            Console.WriteLine();
+            Console.Write($"Enter path (default C:\\temp): ");
+
+            return fIleService.SaveFile(Console.ReadLine().Trim() != null ? Console.ReadLine().Trim() : "C:\\Temp", CheckedRates);
+        }
+
+        /// <summary>
+        /// Check to need save to file
+        /// </summary>
+        /// <returns></returns>
         private bool NeedSaveToFile()
         {
             while (true)
@@ -109,23 +154,32 @@ namespace Astreiko.Homework9.Nbrb.by.UI
             }
         }
 
-        private void ShowRates(List<Rates> listRates)
+        /// <summary>
+        /// Show rate
+        /// </summary>
+        /// <param name="listRates">list rate</param>
+        private void ShowRates(List<Rate> listRates)
         {
-            Console.WriteLine("------Info about selected rates:-------");
+            Console.WriteLine("------Info about selected rate:-------");
 
             foreach (var rates in listRates)
             {
                 Console.WriteLine($"Abbreviation - {rates.Cur_Abbreviation}, name - {rates.Cur_Name}, rate - {rates.Cur_OfficialRate}.");
             }
         }
-        private void ShowRates(Rates rates)
+
+        /// <summary>
+        /// Show rate
+        /// </summary>
+        /// <param name="rate">rate</param>
+        private void ShowRates(Rate rate)
         {
             Console.WriteLine("------Info about selected rate:-------");
 
-            Console.WriteLine($"Abbreviation - {rates.Cur_Abbreviation}, name - {rates.Cur_Name}, rate - {rates.Cur_OfficialRate}.");
+            Console.WriteLine($"Abbreviation - {rate.Cur_Abbreviation}, name - {rate.Cur_Name}, rate - {rate.Cur_OfficialRate}.");
         }
 
-        private void ShowCurrencies(List<ShortCurrencies> listCurrencies)
+        private void ShowCurrencies(List<ShortCurrency> listCurrencies)
         {
             foreach (var currency in listCurrencies)
             {
@@ -133,6 +187,9 @@ namespace Astreiko.Homework9.Nbrb.by.UI
             }
         }
 
+        /// <summary>
+        /// Main menu
+        /// </summary>
         private void GetMenuSelectDate()
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -144,6 +201,10 @@ namespace Astreiko.Homework9.Nbrb.by.UI
             Console.WriteLine("--------------");
         }
 
+        /// <summary>
+        /// Get date option
+        /// </summary>
+        /// <returns>enum TypeSelectDates</returns>
         private TypeSelectDates GetVariantDate()
         {
             while (true)
@@ -166,6 +227,12 @@ namespace Astreiko.Homework9.Nbrb.by.UI
                 }
             }
         }
+
+        /// <summary>
+        /// Check correctly date
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         private DateTime GetDate(string text)
         {
             while (true)
@@ -180,6 +247,10 @@ namespace Astreiko.Homework9.Nbrb.by.UI
             }
         }
 
+        /// <summary>
+        /// Check correctly code
+        /// </summary>
+        /// <returns></returns>
         private int GetCode()
         {
             while (true)
