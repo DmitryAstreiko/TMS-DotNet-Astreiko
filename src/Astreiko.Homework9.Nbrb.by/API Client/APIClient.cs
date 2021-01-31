@@ -39,7 +39,7 @@ namespace Astreiko.Homework9.Nbrb.by.API_Client
         }
 
         /// <summary>
-        /// Receiving currency as a short list
+        /// Receiving currency as a short list (input 0 return all list)
         /// </summary>
         /// <param name="countCurrencies">Count elements need result</param>
         /// <returns>list short currencies</returns>
@@ -51,7 +51,11 @@ namespace Astreiko.Homework9.Nbrb.by.API_Client
 
             CreateDictionaryCurrencies(listCurrencies);
 
-            for (int i = 0; i < countCurrencies; i++)
+            var currentCountCurrencies = (countCurrencies > listCurrencies.Count) || (countCurrencies == 0)
+                ? listCurrencies.Count
+                : countCurrencies;
+
+            for (var i = 0; i < currentCountCurrencies; i++)
             {
                 var shortCurrency = new ShortCurrency();
                 shortCurrency.Code = listCurrencies[i].Cur_Code;
