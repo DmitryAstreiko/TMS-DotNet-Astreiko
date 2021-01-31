@@ -29,7 +29,7 @@ namespace Astreiko.Homework9.Nbrb.by.FileClient
 
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("Text save to file");
+            Console.WriteLine($"Text save to file: {pathToSave}\\{rate.Cur_Name}.txt");
             Console.ResetColor();
             Console.WriteLine();
 
@@ -64,7 +64,7 @@ namespace Astreiko.Homework9.Nbrb.by.FileClient
 
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Text save to file");
+                Console.WriteLine($"Text save to file: {pathToSave}\\{codeCurrency}.txt.");
                 Console.ResetColor();
                 Console.WriteLine();
 

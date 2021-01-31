@@ -34,8 +34,10 @@ namespace Astreiko.Homework9.Nbrb.by.API_Client
 
             //return JsonConvert.DeserializeObject<List<Currencies>>(responseBody);
 
-            var httpClient = new HttpClient();
-            return await httpClient.GetFromJsonAsync<List<Currency>>("https://www.nbrb.by/api/exrates/currencies");
+            using (var httpClient = new HttpClient())
+            {
+                return await httpClient.GetFromJsonAsync<List<Currency>>("https://www.nbrb.by/api/exrates/currencies");
+            }
         }
 
         /// <summary>
@@ -89,13 +91,16 @@ namespace Astreiko.Homework9.Nbrb.by.API_Client
         /// <returns>Task</returns>
         private async Task<Rate> GetRateOnDate(DateTime forDate, int codeCurrency)
         {
-            var httpClient = new HttpClient();
-            var searchDate = forDate.ToString("yyyy-M-d");
-            var searchCode = dictionaryCurrencies.FirstOrDefault(x => x.Key == codeCurrency).Value;
+            using (var httpClient = new HttpClient())
+            {
+                var searchDate = forDate.ToString("yyyy-M-d");
+                var searchCode = dictionaryCurrencies.FirstOrDefault(x => x.Key == codeCurrency).Value;
 
-            var request = "https://www.nbrb.by/api/exrates/rates/" + searchCode + "?ondate=" + searchDate;
-            return await httpClient.GetFromJsonAsync<Rate>(request);
+                var request = "https://www.nbrb.by/api/exrates/rates/" + searchCode + "?ondate=" + searchDate;
+                return await httpClient.GetFromJsonAsync<Rate>(request);
+            }
         }
+           
 
         /// <summary>
         /// Get rates on date
@@ -144,16 +149,17 @@ namespace Astreiko.Homework9.Nbrb.by.API_Client
         /// <returns>Task</returns>
         private async Task<List<ShortRate>> GetRatesOnPeriod(DateTime startDate, DateTime finishDate, int codeCurrency)
         {
-            var httpClient = new HttpClient();
+            using (var httpClient = new HttpClient())
+            {
+                var searchFirstDate = startDate.ToString("yyyy-M-d");
+                var searchFinishDate = finishDate.ToString("yyyy-M-d");
+                var searchCode = dictionaryCurrencies.FirstOrDefault(x => x.Key == codeCurrency).Value;
 
-            var searchFirstDate = startDate.ToString("yyyy-M-d");
-            var searchFinishDate = finishDate.ToString("yyyy-M-d");
-            var searchCode = dictionaryCurrencies.FirstOrDefault(x => x.Key == codeCurrency).Value;
+                ////https://www.nbrb.by/API/ExRates/Rates/Dynamics/190?startDate=2016-6-1&endDate=2016-6-30 
 
-            ////https://www.nbrb.by/API/ExRates/Rates/Dynamics/190?startDate=2016-6-1&endDate=2016-6-30 
-
-            var request = "https://www.nbrb.by/API/ExRates/Rates/Dynamics/" + searchCode + "?startDate=" + searchFirstDate + "&endDate=" + searchFinishDate;
-            return await httpClient.GetFromJsonAsync<List<ShortRate>>(request);
+                var request = "https://www.nbrb.by/API/ExRates/Rates/Dynamics/" + searchCode + "?startDate=" + searchFirstDate + "&endDate=" + searchFinishDate;
+                return await httpClient.GetFromJsonAsync<List<ShortRate>>(request);
+            }
         }
     }
 }
