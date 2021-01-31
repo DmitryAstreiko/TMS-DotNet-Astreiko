@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Astreiko.Homework9.Nbrb.@by.API_Client.Models;
 using System.IO;
 
@@ -8,31 +7,92 @@ namespace Astreiko.Homework9.Nbrb.by.FileClient
 {
     public class FIleService
     {
-        public bool SaveFile(string pathToSave, Rate rates)
+        /// <summary>
+        /// Save file
+        /// </summary>
+        /// <param name="pathToSave">path</param>
+        /// <param name="rate">rate</param>
+        /// <returns>bool</returns>
+        public bool SaveFile(string pathToSave, Rate rate)
         {
-            if (ChechCreatePath(pathToSave))
+            if (!ChechCreatePath(pathToSave)) return false;
+
+            string[] lines = { $"{rate.CurID}", $"{rate.Cur_Name}", $"{rate.Cur_Abbreviation}", $"{rate.Cur_Scale}", $"{rate.Date}" };
+
+            using (StreamWriter outputFile = new StreamWriter(Path.Combine(pathToSave, $"{rate.Cur_Name}.txt")))
             {
-                var fullPathName = $"{pathToSave}\\{rates.Cur_Name}_{DateTime.Now}.txt";
+                foreach (var line in lines)
+                {
+                    outputFile.WriteLine(line);
+                }
+            }
 
-                File.Create(fullPathName).Dispose();
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Text save to file");
+            Console.ResetColor();
+            Console.WriteLine();
 
-                if (File.Exists(fullPathName)) FillFile(fullPathName, rates);
+            return true;
+        }
 
+        /// <summary>
+        /// Save file
+        /// </summary>
+        /// <param name="pathToSave">path</param>
+        /// <param name="listShortRate">list short rate</param>
+        /// <param name="codeCurrency"> code currency</param>
+        /// <returns>bool</returns>
+        public bool SaveFile(string pathToSave, List<ShortRate> listShortRate, int? codeCurrency)
+        {
+            try
+            {
+                if (!ChechCreatePath(pathToSave)) return false;
+
+                using (StreamWriter outputFile = new StreamWriter(Path.Combine(pathToSave, $"{codeCurrency}.txt")))
+                {
+                    foreach (var rate in listShortRate)
+                    {
+                        string[] lines = { $"{rate.Cur_ID}", $"{rate.Cur_OfficialRate}", $"{rate.Date}" };
+
+                        foreach (var line in lines)
+                        {
+                            outputFile.WriteLine(line);
+                        }
+                    }
+                }
+
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Text save to file");
+                Console.ResetColor();
+                Console.WriteLine();
 
                 return true;
             }
-
-            return false;
+            catch 
+            {
+                return false;
+            }
         }
 
-        private void FillFile(string fullFileName, Rate rates)
+        /// <summary>
+        /// Fill file (заполнение файла)
+        /// </summary>
+        /// <param name="fullFileName">full path</param>
+        /// <param name="rate">rate</param>
+        private void FillFile(string fullFileName, Rate rate)
         {
             using StreamWriter outputFile = new StreamWriter(Path.Combine(fullFileName));
 
-            outputFile.WriteLine(rates);
-            
+            outputFile.WriteLine(rate);
         }
 
+        /// <summary>
+        /// Check or check and create path
+        /// </summary>
+        /// <param name="path">path</param>
+        /// <returns>bool</returns>
         private bool ChechCreatePath(string path)
         {
             try
@@ -42,13 +102,11 @@ namespace Astreiko.Homework9.Nbrb.by.FileClient
                 Directory.CreateDirectory(path);
                 
                 return true;
-
             }
-            catch (Exception e)
+            catch
             {
                 return false;
             }
-            
         }
     }
 }

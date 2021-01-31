@@ -43,13 +43,13 @@ namespace Astreiko.Homework9.Nbrb.by.UI
         /// </summary>
         private TypeSelectDates typeSelectDates;
 
-        private Rate CheckedRates;
+        private Rate checkedRate;
 
-        private List<Rate> checkListRates;
+        private List<ShortRate> checkListShortRates;
 
         public UIApplication()
         {
-            countCurrency = 10;
+            countCurrency = 30;
             apiClient = new APIClient();
             fIleService = new FIleService();
         }
@@ -62,6 +62,7 @@ namespace Astreiko.Homework9.Nbrb.by.UI
 
                 typeSelectDates = GetVariantDate();
 
+                Console.ForegroundColor = ConsoleColor.Green;
                 switch (typeSelectDates)
                 {
                     case TypeSelectDates.OneDate:
@@ -73,59 +74,90 @@ namespace Astreiko.Homework9.Nbrb.by.UI
                         Console.WriteLine("--------------");
                         enteredFirstDate = GetDate("Enter first date: ").ToShortDateString();
                         Console.WriteLine($"Entered first date - {enteredFirstDate}");
+                        Console.WriteLine();
                         enteredFinishDate = GetDate("Enter finish date: ").ToShortDateString();
                         Console.WriteLine($"Entered finish date - {enteredFinishDate}");
                         break;
                     case TypeSelectDates.None:
                         Console.WriteLine("--------------");
-                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Application will be close.");
                         Console.ResetColor();
                         return;
                 }
 
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("-------List currencies-------");
                 ShowCurrencies(apiClient.GetShortCurrencies(countCurrency));
                 Console.WriteLine("--------------");
 
+                Console.ForegroundColor = ConsoleColor.Magenta;
                 enteredCode = GetCode();
                 Console.WriteLine($"Entered code - {enteredCode}");
                 Console.WriteLine("--------------");
+                Console.ResetColor();
 
                 Console.WriteLine();
 
+                Console.ForegroundColor = ConsoleColor.Blue;
                 switch (typeSelectDates)
                 {
                     case TypeSelectDates.OneDate:
-                        CheckedRates = apiClient.GetRates(DateTime.Parse(enteredDate), enteredCode);
-                        ShowRates(CheckedRates);
+                        checkedRate = apiClient.GetRates(DateTime.Parse(enteredDate), enteredCode);
+                        ShowRate(checkedRate);
+                        SaveFile(null);
                         break;
                     case TypeSelectDates.PeriodDate:
-                        checkListRates = apiClient.GetRates(DateTime.Parse(enteredFirstDate),
+                        var resultRates = apiClient.GetRates(DateTime.Parse(enteredFirstDate),
                             DateTime.Parse(enteredFinishDate), enteredCode);
-                        ShowRates(checkListRates);
+                        checkListShortRates = resultRates.listShortRate;
+                        ShowRates(checkListShortRates);
+                        SaveFile(resultRates.codeCurrency);
                         break;
                 }
-
-                if (NeedSaveToFile())
-                {
-                    
-                    var ttt = ShowPathToSaveFile();
-                }
-                Console.WriteLine("--------------");
+                Console.ResetColor();
             }
+        }
+
+        private void SaveFile(int? codeCurrency)
+        {
+            if (NeedSaveToFile())
+            {
+                if (!ShowPathToSaveFile(codeCurrency))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Error save file");
+                    Console.ResetColor();
+                }
+            }
+            Console.WriteLine("--------------");
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        private bool ShowPathToSaveFile()
+        private bool ShowPathToSaveFile(int? codeCurrency)
         {
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine();
             Console.Write($"Enter path (default C:\\temp): ");
 
-            return fIleService.SaveFile(Console.ReadLine().Trim() != null ? Console.ReadLine().Trim() : "C:\\Temp", CheckedRates);
+            var enteredPath = Console.ReadLine().Trim();
+            var workPath = String.IsNullOrEmpty(enteredPath) != true ? enteredPath : "C:\\Temp";
+
+            switch (typeSelectDates)
+            {
+                case TypeSelectDates.OneDate:
+                    if (checkedRate is null) return false;
+                    else return fIleService.SaveFile(workPath, checkedRate);
+                case TypeSelectDates.PeriodDate:
+                    if (checkListShortRates.Count == 0) return false;
+                    else return fIleService.SaveFile(workPath, checkListShortRates, codeCurrency);
+                default:
+                    return false;
+            }
+            //return typeSelectDates == TypeSelectDates.OneDate ? fIleService.SaveFile(workPath, checkedRate) : fIleService.SaveFile(workPath, checkListShortRates, codeCurrency);
         }
 
         /// <summary>
@@ -136,8 +168,10 @@ namespace Astreiko.Homework9.Nbrb.by.UI
         {
             while (true)
             {
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine();
                 Console.Write("Are you want to save currency into file? (y or n) ");
+                Console.ResetColor();
 
                 switch (Console.ReadLine()?.Trim())
                 {
@@ -157,14 +191,25 @@ namespace Astreiko.Homework9.Nbrb.by.UI
         /// <summary>
         /// Show rate
         /// </summary>
-        /// <param name="listRates">list rate</param>
-        private void ShowRates(List<Rate> listRates)
+        /// <param name="listShortRates">list rate</param>
+        private void ShowRates(List<ShortRate> listShortRates)
         {
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("------Info about selected rate:-------");
 
-            foreach (var rates in listRates)
+            if (listShortRates.Count == 0)
             {
-                Console.WriteLine($"Abbreviation - {rates.Cur_Abbreviation}, name - {rates.Cur_Name}, rate - {rates.Cur_OfficialRate}.");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("No information to display.");
+                Console.ResetColor();
+            }
+            else
+            {
+                foreach (var rates in listShortRates)
+                {
+                    Console.WriteLine($"Date - {rates.Date}, rate - {rates.Cur_OfficialRate}.");
+                }
+                Console.ResetColor();
             }
         }
 
@@ -172,18 +217,29 @@ namespace Astreiko.Homework9.Nbrb.by.UI
         /// Show rate
         /// </summary>
         /// <param name="rate">rate</param>
-        private void ShowRates(Rate rate)
+        private void ShowRate(Rate rate)
         {
-            Console.WriteLine("------Info about selected rate:-------");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("------Info about selected rates:-------");
 
-            Console.WriteLine($"Abbreviation - {rate.Cur_Abbreviation}, name - {rate.Cur_Name}, rate - {rate.Cur_OfficialRate}.");
+            if (rate == null)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("No information to display.");
+                Console.ResetColor();
+            }
+            else
+            {
+                Console.WriteLine($"Abbreviation - {rate.Cur_Abbreviation}, name - {rate.Cur_Name}, rate - {rate.Cur_OfficialRate}.");
+                Console.ResetColor();
+            }
         }
 
         private void ShowCurrencies(List<ShortCurrency> listCurrencies)
         {
             foreach (var currency in listCurrencies)
             {
-                Console.WriteLine($"Code currency - {currency.Code}, abbreviation - {currency.Abbreviation}.");
+                Console.WriteLine($"Code currency - {currency.Code}, abbreviation - {currency.Abbreviation}, name - {currency.Name}.");
             }
         }
 

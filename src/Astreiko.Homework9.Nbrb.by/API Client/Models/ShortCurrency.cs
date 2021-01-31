@@ -11,5 +11,10 @@
         /// Abbreviation
         /// </summary>
         public string Abbreviation { get; set; }
+
+        /// <summary>
+        /// Currency name
+        /// </summary>
+        public string Name { get; set; }
     }
 }

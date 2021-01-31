@@ -11,6 +11,9 @@ namespace Astreiko.Homework9.Nbrb.by.API_Client
 {
     public class APIClient
     {
+        /// <summary>
+        /// Dictionary for currencies (save code currency and internal code)
+        /// </summary>
         private Dictionary<int, int> dictionaryCurrencies;
 
         public APIClient()
@@ -44,15 +47,16 @@ namespace Astreiko.Homework9.Nbrb.by.API_Client
         {
             List<ShortCurrency> vRes = new List<ShortCurrency>();
 
-            var listCurrencieses = GetAllCurrenciesAsync().Result.Where(x => x.Cur_DateEnd > DateTime.Now).OrderBy(y =>y.Cur_Code).ToList();
+            var listCurrencies = GetAllCurrenciesAsync().Result.Where(x => x.Cur_DateEnd > DateTime.Now).OrderBy(y =>y.Cur_Code).ToList();
 
-            CreateDictionaryCurrencies(listCurrencieses);
+            CreateDictionaryCurrencies(listCurrencies);
 
             for (int i = 0; i < countCurrencies; i++)
             {
                 var shortCurrency = new ShortCurrency();
-                shortCurrency.Code = listCurrencieses[i].Cur_Code;
-                shortCurrency.Abbreviation = listCurrencieses[i].Cur_Abbreviation;
+                shortCurrency.Code = listCurrencies[i].Cur_Code;
+                shortCurrency.Abbreviation = listCurrencies[i].Cur_Abbreviation;
+                shortCurrency.Name = listCurrencies[i].Cur_Name;
                 
                 vRes.Add(shortCurrency);
             }
@@ -81,17 +85,6 @@ namespace Astreiko.Homework9.Nbrb.by.API_Client
         /// <returns>Task</returns>
         private async Task<Rate> GetRateOnDate(DateTime forDate, int codeCurrency)
         {
-            //HttpClient httpClient = new HttpClient();
-
-            //var searchDate = forDate.ToString("yyyy-M-d");
-            //var searchCode = dictionaryCurrencies.FirstOrDefault(x => x.Key == codeCurrency).Value;
-
-            //string request = "https://www.nbrb.by/api/exrates/rates/" + searchCode + "?ondate=" + searchDate;
-            //HttpResponseMessage response = (await httpClient.GetAsync(request)).EnsureSuccessStatusCode();
-            //string responseBody = await response.Content.ReadAsStringAsync();
-
-            //return JsonConvert.DeserializeObject<Rates>(responseBody);
-
             var httpClient = new HttpClient();
             var searchDate = forDate.ToString("yyyy-M-d");
             var searchCode = dictionaryCurrencies.FirstOrDefault(x => x.Key == codeCurrency).Value;
@@ -108,19 +101,34 @@ namespace Astreiko.Homework9.Nbrb.by.API_Client
         /// <returns>Rate</returns>
         public Rate GetRates(DateTime forDate, int codeCurrency)
         {
-            return GetRateOnDate(forDate, codeCurrency).Result;
+            try
+            {
+                return GetRateOnDate(forDate, codeCurrency).Result;
+            }
+            catch
+            {
+                return null;
+            }
+            
         }
 
         /// <summary>
-        /// Get list rates
+        /// Get list short rates
         /// </summary>
         /// <param name="startDate">Start date</param>
         /// <param name="finishDate">Finish date</param>
         /// <param name="codeCurrency">Code currency</param>
-        /// <returns>List Rate</returns>
-        public List<Rate> GetRates(DateTime startDate, DateTime finishDate, int codeCurrency)
+        /// <returns>List short rate</returns>
+        public (List<ShortRate> listShortRate, int codeCurrency) GetRates(DateTime startDate, DateTime finishDate, int codeCurrency)
         {
-            return GetRatesOnPeriod(startDate, finishDate, codeCurrency).Result;
+            try
+            {
+                return (GetRatesOnPeriod(startDate, finishDate, codeCurrency).Result, codeCurrency);
+            }
+            catch
+            {
+                return (null, codeCurrency);
+            }
         }
 
         /// <summary>
@@ -130,31 +138,18 @@ namespace Astreiko.Homework9.Nbrb.by.API_Client
         /// <param name="finishDate">Finish date</param>
         /// <param name="codeCurrency">Code currency</param>
         /// <returns>Task</returns>
-        private async Task<List<Rate>> GetRatesOnPeriod(DateTime startDate, DateTime finishDate, int codeCurrency)
+        private async Task<List<ShortRate>> GetRatesOnPeriod(DateTime startDate, DateTime finishDate, int codeCurrency)
         {
-            //HttpClient httpClient = new HttpClient();
-
-            //var searchFirstDate = startDate.ToString("yyyy-M-d");
-            //var searchfinishDate = finishDate.ToString("yyyy-M-d");
-            //var searchCode = dictionaryCurrencies.FirstOrDefault(x => x.Key == codeCurrency).Value;
-
-            //////https://www.nbrb.by/API/ExRates/Rates/Dynamics/190?startDate=2016-6-1&endDate=2016-6-30 
-
-            //string request = "https://www.nbrb.by/API/ExRates/Rates/Dynamics/" + searchCode + "?startDate=" + searchFirstDate + "&endDate=" + searchfinishDate;
-            //HttpResponseMessage response = (await httpClient.GetAsync(request)).EnsureSuccessStatusCode();
-            //string responseBody = await response.Content.ReadAsStringAsync();
-
-            //return JsonConvert.DeserializeObject<List<Rates>>(responseBody);
-
             var httpClient = new HttpClient();
+
             var searchFirstDate = startDate.ToString("yyyy-M-d");
-            var searchfinishDate = finishDate.ToString("yyyy-M-d");
+            var searchFinishDate = finishDate.ToString("yyyy-M-d");
             var searchCode = dictionaryCurrencies.FirstOrDefault(x => x.Key == codeCurrency).Value;
 
             ////https://www.nbrb.by/API/ExRates/Rates/Dynamics/190?startDate=2016-6-1&endDate=2016-6-30 
 
-            var request = "https://www.nbrb.by/API/ExRates/Rates/Dynamics/" + searchCode + "?startDate=" + searchFirstDate + "&endDate=" + searchfinishDate;
-            return await httpClient.GetFromJsonAsync<List<Rate>>(request);
+            var request = "https://www.nbrb.by/API/ExRates/Rates/Dynamics/" + searchCode + "?startDate=" + searchFirstDate + "&endDate=" + searchFinishDate;
+            return await httpClient.GetFromJsonAsync<List<ShortRate>>(request);
         }
     }
 }
