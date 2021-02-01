@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Astreiko.Homework9.Nbrb.@by.API_Client;
 using Astreiko.Homework9.Nbrb.@by.API_Client.Models;
 using Astreiko.Homework9.Nbrb.@by.FileClient;
@@ -54,7 +55,7 @@ namespace Astreiko.Homework9.Nbrb.by.UI
             fIleService = new FIleService();
         }
 
-        public void ToDo()
+        public async void ToDo()
         {
             while (true)
             {
@@ -88,7 +89,7 @@ namespace Astreiko.Homework9.Nbrb.by.UI
 
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("-------List currencies-------");
-                ShowCurrencies(apiClient.GetShortCurrencies(countCurrency));
+                ShowCurrencies(await apiClient.GetShortCurrenciesAsync(), countCurrency);
                 Console.WriteLine("--------------");
 
                 Console.ForegroundColor = ConsoleColor.Magenta;
@@ -103,16 +104,14 @@ namespace Astreiko.Homework9.Nbrb.by.UI
                 switch (typeSelectDates)
                 {
                     case TypeSelectDates.OneDate:
-                        checkedRate = apiClient.GetRates(DateTime.Parse(enteredDate), enteredCode);
+                        checkedRate = await apiClient.GetRatesAsync(DateTime.Parse(enteredDate), enteredCode);
                         ShowRate(checkedRate);
                         SaveFile(null);
                         break;
                     case TypeSelectDates.PeriodDate:
-                        var resultRates = apiClient.GetRates(DateTime.Parse(enteredFirstDate),
-                            DateTime.Parse(enteredFinishDate), enteredCode);
-                        checkListShortRates = resultRates.listShortRate;
-                        ShowRates(checkListShortRates);
-                        SaveFile(resultRates.codeCurrency);
+                        var listShortRate = await apiClient.GetRatesAsync(DateTime.Parse(enteredFirstDate), DateTime.Parse(enteredFinishDate), enteredCode);
+                        ShowRates(listShortRate);
+                        SaveFile(enteredCode);
                         break;
                 }
                 Console.ResetColor();
@@ -143,7 +142,7 @@ namespace Astreiko.Homework9.Nbrb.by.UI
             Console.WriteLine();
             Console.Write($"Enter path (default C:\\temp): ");
 
-            var enteredPath = Console.ReadLine().Trim();
+            var enteredPath = Console.ReadLine()?.Trim();
             var workPath = String.IsNullOrEmpty(enteredPath) != true ? enteredPath : "C:\\Temp";
 
             switch (typeSelectDates)
@@ -235,9 +234,9 @@ namespace Astreiko.Homework9.Nbrb.by.UI
             }
         }
 
-        private void ShowCurrencies(List<ShortCurrency> listCurrencies)
+        private void ShowCurrencies(List<ShortCurrency> listCurrencies, int countCurrencies)
         {
-            foreach (var currency in listCurrencies)
+            foreach (var currency in listCurrencies.Take(countCurrencies > 0 ? countCurrencies : listCurrencies.Count))
             {
                 Console.WriteLine($"Code currency - {currency.Code}, abbreviation - {currency.Abbreviation}, name - {currency.Name}.");
             }
