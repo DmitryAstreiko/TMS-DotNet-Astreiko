@@ -46,30 +46,19 @@ namespace Astreiko.Homework9.Nbrb.by.API_Client
         /// 
         public async Task<List<ShortCurrency>> GetShortCurrenciesAsync()
         {
-            List<ShortCurrency> vRes = new List<ShortCurrency>();
+            var listCurrencies = (await GetAllCurrenciesAsync()).ToList();
 
-            try
-            { var listCurrencies = (await GetAllCurrenciesAsync()).ToList();
+            CreateDictionaryCurrencies(listCurrencies);
 
-                CreateDictionaryCurrencies(listCurrencies);
-
-                return listCurrencies.Where(x => x.Cur_DateEnd > DateTime.Now)
-                    .OrderBy(y => y.Cur_Code)
-                    .Select(c => new ShortCurrency()
-                    {
-                        Name = c.Cur_Name,
-                        Abbreviation = c.Cur_Abbreviation,
-                        Code = c.Cur_Code
-                    })
-                    .ToList();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"{e.StackTrace}, {e.StackTrace}");
-
-                return vRes;
-            }
-           
+            return listCurrencies.Where(x => x.Cur_DateEnd > DateTime.Now)
+                .OrderBy(y => y.Cur_Code)
+                .Select(c => new ShortCurrency()
+                {
+                    Name = c.Cur_Name,
+                    Abbreviation = c.Cur_Abbreviation,
+                    Code = c.Cur_Code
+                })
+                .ToList();                       
         }
 
         /// <summary>
@@ -109,17 +98,7 @@ namespace Astreiko.Homework9.Nbrb.by.API_Client
         /// <param name="forDate">Date currency</param>
         /// <param name="codeCurrency">Code currency</param> 
         /// <returns>Rate</returns>
-        public async Task<Rate> GetRatesAsync(DateTime forDate, int codeCurrency)
-        {
-            try
-            {
-                return await GetRateOnDateAsync(forDate, codeCurrency);
-            }
-            catch
-            {
-                return null;
-            }
-        }
+        public async Task<Rate> GetRatesAsync(DateTime forDate, int codeCurrency) => await GetRateOnDateAsync(forDate, codeCurrency);
 
         /// <summary>
         /// Get list short rates
@@ -128,17 +107,7 @@ namespace Astreiko.Homework9.Nbrb.by.API_Client
         /// <param name="finishDate">Finish date</param>
         /// <param name="codeCurrency">Code currency</param>
         /// <returns>List short rate</returns>
-        public async Task<List<ShortRate>> GetRatesAsync(DateTime startDate, DateTime finishDate, int codeCurrency)
-        {
-            try
-            {
-                return await GetRatesOnPeriodAsync(startDate, finishDate, codeCurrency);
-            }
-            catch
-            {
-                return null;
-            }
-        }
+        public async Task<List<ShortRate>> GetRatesAsync(DateTime startDate, DateTime finishDate, int codeCurrency) => await GetRatesOnPeriodAsync(startDate, finishDate, codeCurrency);
 
         /// <summary>
         /// Task for get list rates
