@@ -92,6 +92,7 @@ namespace Astreiko.Homework9.Nbrb.by.UI
                 ShowCurrencies(await apiClient.GetShortCurrenciesAsync(), countCurrency);
                 Console.WriteLine("--------------");
 
+
                 Console.ForegroundColor = ConsoleColor.Magenta;
                 enteredCode = GetCode();
                 Console.WriteLine($"Entered code - {enteredCode}");
@@ -234,7 +235,7 @@ namespace Astreiko.Homework9.Nbrb.by.UI
             }
         }
 
-        private void ShowCurrencies(List<ShortCurrency> listCurrencies, int countCurrencies)
+        private void ShowCurrencies(List<Currency> listCurrencies, int countCurrencies)
         {
             foreach (var currency in listCurrencies.Take(countCurrencies > 0 ? countCurrencies : listCurrencies.Count))
             {
@@ -312,7 +313,7 @@ namespace Astreiko.Homework9.Nbrb.by.UI
             {
                 Console.Write($"Enter code: ");
 
-                if (int.TryParse(Console.ReadLine()?.Trim(), out var selectcode)) return selectcode;
+                if (int.TryParse(Console.ReadLine().Trim(), out var selectCode)) return selectCode;
 
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Enter correct code. ");

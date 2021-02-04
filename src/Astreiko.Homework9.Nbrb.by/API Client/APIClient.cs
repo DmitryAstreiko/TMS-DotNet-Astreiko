@@ -15,12 +15,11 @@ namespace Astreiko.Homework9.Nbrb.by.API_Client
         /// </summary>
         private Dictionary<int, int> dictionaryCurrencies;
 
-        private static HttpClient httpClient;
+        private static HttpClient httpClient = new HttpClient();
 
         public APIClient()
         {
             dictionaryCurrencies = new Dictionary<int, int>();
-            httpClient = new HttpClient();
         }
 
         /// <summary>
@@ -35,7 +34,7 @@ namespace Astreiko.Homework9.Nbrb.by.API_Client
             //string responseBody = await response.Content.ReadAsStringAsync();
 
             //return JsonConvert.DeserializeObject<List<Currencies>>(responseBody);
-            
+
             return await httpClient.GetFromJsonAsync<List<Currency>>("https://www.nbrb.by/api/exrates/currencies");
         }
 
@@ -44,32 +43,21 @@ namespace Astreiko.Homework9.Nbrb.by.API_Client
         /// </summary>
         /// <returns>list short currencies</returns>
         /// 
-        public async Task<List<ShortCurrency>> GetShortCurrenciesAsync()
+        public async Task<List<Currency>> GetShortCurrenciesAsync()
         {
-            List<ShortCurrency> vRes = new List<ShortCurrency>();
+            var listCurrencies = (await GetAllCurrenciesAsync()).ToList();
 
-            try
-            { var listCurrencies = (await GetAllCurrenciesAsync()).ToList();
+            if (dictionaryCurrencies.Count == 0) CreateDictionaryCurrencies(listCurrencies);
 
-                CreateDictionaryCurrencies(listCurrencies);
-
-                return listCurrencies.Where(x => x.Cur_DateEnd > DateTime.Now)
-                    .OrderBy(y => y.Cur_Code)
-                    .Select(c => new ShortCurrency()
-                    {
-                        Name = c.Cur_Name,
-                        Abbreviation = c.Cur_Abbreviation,
-                        Code = c.Cur_Code
-                    })
-                    .ToList();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"{e.StackTrace}, {e.StackTrace}");
-
-                return vRes;
-            }
-           
+            return listCurrencies.Where(x => x.Date > DateTime.Now)
+                .OrderBy(y => y.Code)
+                .Select(c => new Currency()
+                {
+                    Name = c.Name,
+                    Abbreviation = c.Abbreviation,
+                    Code = c.Code
+                })
+                .ToList();
         }
 
         /// <summary>
@@ -80,27 +68,10 @@ namespace Astreiko.Homework9.Nbrb.by.API_Client
         {
             dictionaryCurrencies.Clear();
 
-            foreach (var currency in listCurrencies.Where(x => x.Cur_DateEnd > DateTime.Now))
+            foreach (var currency in listCurrencies.Where(x => x.Date > DateTime.Now))
             {
-                dictionaryCurrencies.Add(currency.Cur_Code, currency.Cur_ID);
+                dictionaryCurrencies.Add(currency.Code, currency.InternalID);
             }
-        }
-
-        /// <summary>
-        /// Task for get Rates
-        /// </summary>
-        /// <param name="forDate">Date currency</param>
-        /// <param name="codeCurrency">Code currency</param>
-        /// <returns>Task</returns>
-        private async Task<Rate> GetRateOnDateAsync(DateTime forDate, int codeCurrency)
-        {
-            CreateDictionaryCurrencies((await GetAllCurrenciesAsync()).ToList());
-
-            var searchDate = forDate.ToString("yyyy-M-d");
-            var searchCode = dictionaryCurrencies.FirstOrDefault(x => x.Key == codeCurrency).Value;
-
-            var request = "https://www.nbrb.by/api/exrates/rates/" + searchCode + "?ondate=" + searchDate;
-            return await httpClient.GetFromJsonAsync<Rate>(request);
         }
 
         /// <summary>
@@ -111,14 +82,13 @@ namespace Astreiko.Homework9.Nbrb.by.API_Client
         /// <returns>Rate</returns>
         public async Task<Rate> GetRatesAsync(DateTime forDate, int codeCurrency)
         {
-            try
-            {
-                return await GetRateOnDateAsync(forDate, codeCurrency);
-            }
-            catch
-            {
-                return null;
-            }
+            if (dictionaryCurrencies.Count == 0) CreateDictionaryCurrencies((await GetAllCurrenciesAsync()).ToList());
+
+            var searchDate = forDate.ToString("yyyy-M-d");
+            var searchCode = dictionaryCurrencies.FirstOrDefault(x => x.Key == codeCurrency).Value;
+
+            var request = "https://www.nbrb.by/api/exrates/rates/" + searchCode + "?ondate=" + searchDate;
+            return await httpClient.GetFromJsonAsync<Rate>(request);
         }
 
         /// <summary>
@@ -130,26 +100,7 @@ namespace Astreiko.Homework9.Nbrb.by.API_Client
         /// <returns>List short rate</returns>
         public async Task<List<ShortRate>> GetRatesAsync(DateTime startDate, DateTime finishDate, int codeCurrency)
         {
-            try
-            {
-                return await GetRatesOnPeriodAsync(startDate, finishDate, codeCurrency);
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Task for get list rates
-        /// </summary>
-        /// <param name="startDate">Start date</param>
-        /// <param name="finishDate">Finish date</param>
-        /// <param name="codeCurrency">Code currency</param>
-        /// <returns>Task</returns>
-        private async Task<List<ShortRate>> GetRatesOnPeriodAsync(DateTime startDate, DateTime finishDate, int codeCurrency)
-        {
-            CreateDictionaryCurrencies((await GetAllCurrenciesAsync()).ToList());
+            if (dictionaryCurrencies.Count == 0) CreateDictionaryCurrencies((await GetAllCurrenciesAsync()).ToList());
 
             var searchFirstDate = startDate.ToString("yyyy-M-d");
             var searchFinishDate = finishDate.ToString("yyyy-M-d");
@@ -158,5 +109,6 @@ namespace Astreiko.Homework9.Nbrb.by.API_Client
             var request = "https://www.nbrb.by/API/ExRates/Rates/Dynamics/" + searchCode + "?startDate=" + searchFirstDate + "&endDate=" + searchFinishDate;
             return await httpClient.GetFromJsonAsync<List<ShortRate>>(request);
         }
+
     }
 }
