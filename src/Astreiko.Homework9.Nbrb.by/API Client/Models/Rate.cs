@@ -7,7 +7,7 @@ namespace Astreiko.Homework9.Nbrb.by.API_Client.Models
         /// <summary>
         /// Internal code (внутренний код)
         /// </summary>
-        public int CurID { get; set; }
+        public int Cur_ID { get; set; }
 
         /// <summary>
         /// Вate on which the course is requested (дата, на которую запрашивается курс)
