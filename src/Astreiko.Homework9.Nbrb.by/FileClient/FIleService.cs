@@ -10,16 +10,14 @@ namespace Astreiko.Homework9.Nbrb.by.FileClient
 {
     public class FIleService : IFileService
     {
-        public async Task SaveAsync<T>(string path, T inputData, int enteredCode)
+        public async Task SaveAsync<T>(string path, T inputData)
         {
-            var fullPathFile = Path.Combine(path, $"{enteredCode}_{DateTime.Now.ToShortDateString()}.txt");
-
-            using (FileStream fs = new FileStream(fullPathFile, FileMode.OpenOrCreate))
+            using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
             {
                 await JsonSerializer.SerializeAsync(fs, inputData);
                 Thread.Sleep(100);
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Info saved to file.");
+                //Console.WriteLine("Info saved to file.");
                 Console.ResetColor();
                 Console.WriteLine();
             }

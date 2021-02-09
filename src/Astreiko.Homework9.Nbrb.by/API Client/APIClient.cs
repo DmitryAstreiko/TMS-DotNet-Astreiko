@@ -43,7 +43,7 @@ namespace Astreiko.Homework9.Nbrb.by.API_Client
         /// </summary>
         /// <returns>list short currencies</returns>
         /// 
-        public async Task<List<Currency>> GetShortCurrenciesAsync()
+        public async Task<List<Currency>> GetCurrenciesAsync()
         {
             var listCurrencies = (await GetAllCurrenciesAsync()).ToList();
 

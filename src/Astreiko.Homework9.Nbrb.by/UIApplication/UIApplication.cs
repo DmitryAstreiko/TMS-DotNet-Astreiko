@@ -91,7 +91,7 @@ namespace Astreiko.Homework9.Nbrb.by.UI
 
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("-------List currencies-------");
-                ShowCurrencies(await apiClient.GetShortCurrenciesAsync(), countCurrency);
+                ShowCurrencies(await apiClient.GetCurrenciesAsync(), countCurrency);
                 Console.WriteLine("--------------");
 
                 Thread.Sleep(2000);
@@ -131,9 +131,10 @@ namespace Astreiko.Homework9.Nbrb.by.UI
                 Console.Write($"Enter path (default C:\\temp): ");
 
                 var enteredPath = Console.ReadLine()?.Trim();
-                var workPath = String.IsNullOrEmpty(enteredPath) != true ? enteredPath : "C:\\Temp";
+                var workPathTemp = String.IsNullOrEmpty(enteredPath) != true ? enteredPath : "C:\\Temp";
+                var workPath = Path.Combine(workPathTemp, $"{enteredCode}_{DateTime.Now.ToShortDateString()}.txt");
 
-                await fIleService.SaveAsync(workPath, data, enteredCode);
+                await fIleService.SaveAsync(workPath, data);
             }
             Console.WriteLine("--------------");
         }
