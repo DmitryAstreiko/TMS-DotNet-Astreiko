@@ -27,11 +27,11 @@ namespace Astreiko.Homework8
                 {
                     //Task.Run(shop.CheckQueueCustomers); ;
 
-                    var thread = new Thread(shop.CheckQueueCustomers);
-                    thread.Start();
-                    thread.IsBackground = false;
+                    new Thread(shop.CheckQueueCustomers).Start();
 
-                    new Thread(shop.StartVisitorsGenerator).Start();
+                    var thread = new Thread(shop.StartVisitorsGenerator);
+                    thread.IsBackground = false;
+                    thread.Start();
 
                     Console.WriteLine();
 
