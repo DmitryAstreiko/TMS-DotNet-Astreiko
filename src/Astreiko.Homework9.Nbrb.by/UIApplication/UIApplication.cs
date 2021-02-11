@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using Astreiko.Homework9.Nbrb.@by.API_Client;
 using Astreiko.Homework9.Nbrb.@by.API_Client.Models;
 using Astreiko.Homework9.Nbrb.@by.FileClient;
@@ -46,7 +48,7 @@ namespace Astreiko.Homework9.Nbrb.by.UI
 
         private Rate checkedRate;
 
-        private List<ShortRate> checkListShortRates;
+        //private List<ShortRate> checkListShortRates;
 
         public UIApplication()
         {
@@ -89,9 +91,10 @@ namespace Astreiko.Homework9.Nbrb.by.UI
 
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("-------List currencies-------");
-                ShowCurrencies(await apiClient.GetShortCurrenciesAsync(), countCurrency);
+                ShowCurrencies(await apiClient.GetCurrenciesAsync(), countCurrency);
                 Console.WriteLine("--------------");
 
+                Thread.Sleep(2000);
                 Console.ForegroundColor = ConsoleColor.Magenta;
                 enteredCode = GetCode();
                 Console.WriteLine($"Entered code - {enteredCode}");
@@ -106,59 +109,36 @@ namespace Astreiko.Homework9.Nbrb.by.UI
                     case TypeSelectDates.OneDate:
                         checkedRate = await apiClient.GetRatesAsync(DateTime.Parse(enteredDate), enteredCode);
                         ShowRate(checkedRate);
-                        SaveFile(null);
+                        SaveFile(checkedRate, enteredCode);
                         break;
                     case TypeSelectDates.PeriodDate:
                         var listShortRate = await apiClient.GetRatesAsync(DateTime.Parse(enteredFirstDate), DateTime.Parse(enteredFinishDate), enteredCode);
                         ShowRates(listShortRate);
-                        SaveFile(enteredCode);
+                        SaveFile(listShortRate, enteredCode);
                         break;
                 }
                 Console.ResetColor();
+                Thread.Sleep(3000);
             }
         }
 
-        private void SaveFile(int? codeCurrency)
+        private async void SaveFile<T>(T data, int enteredCode)
         {
             if (NeedSaveToFile())
             {
-                if (!ShowPathToSaveFile(codeCurrency))
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Error save file");
-                    Console.ResetColor();
-                }
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine();
+                Console.Write($"Enter path (default C:\\temp): ");
+
+                var enteredPath = Console.ReadLine()?.Trim();
+                var workPathTemp = String.IsNullOrEmpty(enteredPath) != true ? enteredPath : "C:\\Temp";
+                var workPath = Path.Combine(workPathTemp, $"{enteredCode}_{DateTime.Now.ToShortDateString()}.txt");
+
+                await fIleService.SaveAsync(workPath, data);
             }
             Console.WriteLine("--------------");
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        private bool ShowPathToSaveFile(int? codeCurrency)
-        {
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine();
-            Console.Write($"Enter path (default C:\\temp): ");
-
-            var enteredPath = Console.ReadLine()?.Trim();
-            var workPath = String.IsNullOrEmpty(enteredPath) != true ? enteredPath : "C:\\Temp";
-
-            switch (typeSelectDates)
-            {
-                case TypeSelectDates.OneDate:
-                    if (checkedRate is null) return false;
-                    else return fIleService.SaveFile(workPath, checkedRate);
-                case TypeSelectDates.PeriodDate:
-                    if (checkListShortRates.Count == 0) return false;
-                    else return fIleService.SaveFile(workPath, checkListShortRates, codeCurrency);
-                default:
-                    return false;
-            }
-            //return typeSelectDates == TypeSelectDates.OneDate ? fIleService.SaveFile(workPath, checkedRate) : fIleService.SaveFile(workPath, checkListShortRates, codeCurrency);
-        }
-
+        
         /// <summary>
         /// Check to need save to file
         /// </summary>
@@ -234,7 +214,7 @@ namespace Astreiko.Homework9.Nbrb.by.UI
             }
         }
 
-        private void ShowCurrencies(List<ShortCurrency> listCurrencies, int countCurrencies)
+        private void ShowCurrencies(List<Currency> listCurrencies, int countCurrencies)
         {
             foreach (var currency in listCurrencies.Take(countCurrencies > 0 ? countCurrencies : listCurrencies.Count))
             {
@@ -303,16 +283,17 @@ namespace Astreiko.Homework9.Nbrb.by.UI
         }
 
         /// <summary>
-        /// Check correctly code
+        /// Get code
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Code</returns>
         private int GetCode()
         {
             while (true)
             {
+                Thread.Sleep(2000);
                 Console.Write($"Enter code: ");
-
-                if (int.TryParse(Console.ReadLine()?.Trim(), out var selectcode)) return selectcode;
+                
+                if (int.TryParse(Console.ReadLine()?.Trim(), out var selectCode)) return selectCode;
 
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Enter correct code. ");
