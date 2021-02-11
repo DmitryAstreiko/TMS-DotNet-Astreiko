@@ -7,6 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Astreiko.Homework3", "src\A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Astreiko.Homework2", "src\Astreiko.Homework2\Astreiko.Homework2.csproj", "{05088D13-8C17-48E0-8E97-16A68BFFACBF}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Astreiko.Homework8", "src\Astreiko.Homework8\Astreiko.Homework8.csproj", "{287FB9FF-6095-4E05-AACC-5CFBE7FAD2E5}"
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Astreiko.Homework6", "src\Astreiko.Homework6\Astreiko.Homework6.csproj", "{02DB595D-3B7E-4875-BB0D-5DEF489F088E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "test6-delegate_event", "src\test6-delegate_event\test6-delegate_event.csproj", "{67BFB58E-976A-479B-A39E-99F6A9A7B474}"
@@ -33,6 +34,10 @@ Global
 		{05088D13-8C17-48E0-8E97-16A68BFFACBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05088D13-8C17-48E0-8E97-16A68BFFACBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05088D13-8C17-48E0-8E97-16A68BFFACBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{287FB9FF-6095-4E05-AACC-5CFBE7FAD2E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{287FB9FF-6095-4E05-AACC-5CFBE7FAD2E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{287FB9FF-6095-4E05-AACC-5CFBE7FAD2E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{287FB9FF-6095-4E05-AACC-5CFBE7FAD2E5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{02DB595D-3B7E-4875-BB0D-5DEF489F088E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{02DB595D-3B7E-4875-BB0D-5DEF489F088E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02DB595D-3B7E-4875-BB0D-5DEF489F088E}.Release|Any CPU.ActiveCfg = Release|Any CPU
