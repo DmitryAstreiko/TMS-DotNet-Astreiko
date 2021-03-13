@@ -71,8 +71,27 @@
         </div>
     </div>
 <script type="text/javascript">
-    
-    let firstN = document.getElementById('first_name');
+    //-------------variant2 ----------below----------------------------------
+    let allValidators = [
+        new FieldValidator("first_name", [FieldValidator.Required, FieldValidator.RegExp("/[a-z]/")]),
+        new FieldValidator("last_name", [FieldValidator.Required, FieldValidator.RegExp("/[a-zA-Z]?/")]),
+        new FieldValidator("password", [FieldValidator.Required, FieldValidator.RegExp("/[0-9]/g")]),
+        //new FieldValidator("accept", FieldValidator.Required)
+    ];
+
+    window.onload = function() {
+        allValidators.forEach(validator => validator.initialize());
+    }
+
+    function validate(evt) {
+        allValidators.forEach(validator => validator.validate());
+        return !allValidators.some(validator => !validator.isValid())
+    }
+
+    //-------------variant2 ----------allow----------------------------------
+
+    //-------------variant 1------below----------------------------------
+    /*let firstN = document.getElementById('first_name');
     let lastN = document.getElementById('last_name');
     let pass = document.getElementById('password');
     let messageFirstNameValidate = document.getElementById("message-firstname-validate");
@@ -296,7 +315,7 @@
         else {
             return false;
         }
-    }
+    }*/
 
 </script>
 </body>

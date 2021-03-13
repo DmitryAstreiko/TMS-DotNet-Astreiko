@@ -175,6 +175,12 @@ h3.header-validate {
   content: " - There are some mistakes.";
 }
 
+.error {
+  margin-left: 10px;
+  font-size: 0.8em;
+  color: red;
+}
+
 .style1 .content, .style4 .content {
   position: relative;
 }
