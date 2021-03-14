@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- https://www.w3schools.com/css/css_intro.asp -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Trirong">
+    <script type="text/javascript" src="all.js"></script>
+</head>
+<body>
+    <div class="validate-content">        
+        <form id="formValid" class="form-validate" onsubmit="return validate();">
+            <div>
+                <h3 class="header-validate">Registration information</h3>
+            </div>
+
+            <div>
+                <label for="first_name">First Name:</label> 
+                <label for="first_name" class="error-text" id="error-firstName"></label>
+                <input class="text-validate" type="text" name="first_name" id="first_name" placeholder="First name"/>
+            </div>
+            
+            <div>
+                <label for="last_name">Last Name:</label>
+                <label for="last_name" class="error-text" id="error-lastName"></label>
+                <input class="text-validate" type="text" name="last_name" id="last_name" placeholder="Last name"/>
+            </div>
+
+            <div>
+                <label for="password">Password:</label>
+                <label for="password" class="error-text" id="error-password"></label>
+                <input class="text-validate" type="password" name="password" id="password" placeholder="Password"/>
+            </div>
+
+            <div>
+                <label for="accept">Accept terms and conditions.</label>
+                <input class="checkbox-validate" type="checkbox" name="accept" id="accept"/>
+                <label for="checkbox" class="error-text" id="error-accept"></label>
+            </div>
+
+            <div class="buttons-validate">
+                <input type="submit" class="button-validate" value="Submit" />
+                <a href="index.html" class="button-validate">Cancel</a>
+
+            </div>
+            
+        </form>
+        <div>
+            <div class="messages-validate" id="message-firstname-validate">
+                <h3>Selected first name must contain the following:</h3>                
+                <p id="firstUpperName" class="invalid-validate">Only first <b>capital (uppercase)</b> letter</p>
+                <p id="someLowerName" class="invalid-validate">Second and other letters only <b>lowercase</b></p>
+            </div>
+        </div>
+        <div>
+            <div class="messages-validate" id="message-lastname-validate">
+                <h3>Selected last name must contain the following:</h3>                
+                <p id="lastNotUseSpecSymbol" class="invalid-validate">Don`t use special symbol, numbers, <b>only english</b> letters</p>
+            </div>
+        </div>
+        <div>
+            <div class="messages-validate" id="message-password-validate">
+                <h3>Password must contain the following:</h3>
+                <p id="capitalPass" class="invalid-validate">Minimum <b>one capital (uppercase)</b> letter</p>
+                <p id="numberPass" class="invalid-validate">Minimum <b>one number</b></p>
+                <p id="lengthPass" class="invalid-validate">Minimum <b>8 characters</b></p>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript">
+    //-------------variant2 ----------below----------------------------------
+    let allValidators = [
+        new FieldValidator("first_name", [FieldValidator.Required, FieldValidator.RegExp(/[a-z]/)]),
+        new FieldValidator("last_name", [FieldValidator.Required, FieldValidator.RegExp(/[a-zA-Z]?/)]),
+        new FieldValidator("password", [FieldValidator.Required, FieldValidator.RegExp(/[0-9]/g)]),
+        //new FieldValidator("accept", FieldValidator.Required)
+    ];
+
+    window.onload = function() {
+        allValidators.forEach(validator => validator.initialize());
+    }
+
+    function validate(evt) {
+        allValidators.forEach(validator => validator.validate());
+        return !allValidators.some(validator => !validator.isValid())
+    }
+
+    //-------------variant2 ----------allow----------------------------------
+
+    //-------------variant 1------below----------------------------------
+    /*let firstN = document.getElementById('first_name');
+    let lastN = document.getElementById('last_name');
+    let pass = document.getElementById('password');
+    let messageFirstNameValidate = document.getElementById("message-firstname-validate");
+    let messageLastNameValidate = document.getElementById("message-lastname-validate");
+    let messagePasswordValidate = document.getElementById("message-password-validate");
+    let lengthPass = document.getElementById("lengthPass");
+    let numbers = /[0-9]/g;
+    let numberPass = document.getElementById("numberPass");
+    let upperCaseLetters = /[A-Z]/g;
+    let upperCaseLettersReverse = /[^A-Z]/g;
+    let lowerCaseLetters = /[a-z]/g;
+    let lowerCaseLettersReverse = /[^a-z]/g;
+    let specSimbolLetters = /[^a-zA-Z]/g;
+    let capitalPass = document.getElementById("capitalPass");
+    let firstUpperName = document.getElementById("firstUpperName");
+    let someLowerName = document.getElementById("someLowerName");
+    let lastNotUseSpecSymbol = document.getElementById("lastNotUseSpecSymbol");
+    let errorPassword = document.getElementById("error-password");
+    let errorFirstName = document.getElementById("error-firstName");
+    let errorLastName = document.getElementById("error-lastName");
+    let accept = document.getElementById("accept");
+    let errorAccept = document.getElementById("error-accept");
+
+    class CheckValuePassword {  
+        checkMaxLength(newPass) {
+            if (newPass.value.length >= 8) {
+                return true;
+            }
+        }
+
+        checkExistNumber(newPass) {
+            if (newPass.value.match(numbers)) {
+                return true;
+            }
+        }
+
+        checkUpperCase(newPass) {
+            if (newPass.value.match(upperCaseLetters)) { 
+                return true;
+            } 
+        }
+    }
+
+    const classCheckPass = new CheckValuePassword();
+
+    class CheckValueFirstName {
+        checkSomeLower(newFName) {
+            if (newFName.match(lowerCaseLetters)) {
+                return true;
+            }
+        }
+
+        checkFirstUpper(newName) {
+            if ((newName.length > 0) && (newName[0] !== undefined) && (newName[0].match(upperCaseLetters))) {
+            return true;
+            }
+        }
+    }
+
+    const classCheckFirstName = new CheckValueFirstName();
+
+    class CheckValueLastName {
+        checkAllLettersWithoutSpecSimbols(newName) {
+            if (newName.value.match(specSimbolLetters)) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    }
+
+    const classCheckLastName = new CheckValueLastName();
+
+    function hiddenAllMessages() {
+        messageFirstNameValidate.style.display = "none";
+        messagePasswordValidate.style.display = "none";
+        messageLastNameValidate.style.display = "none";
+    }
+
+    firstN.onfocus = () => {
+        messageFirstNameValidate.style.display = "block";
+        messagePasswordValidate.style.display = "none";
+        messageLastNameValidate.style.display = "none";
+        errorFirstName.style.display = "none";
+    }
+    firstN.onblur = () => {
+        hiddenAllMessages();
+    }
+    
+    lastN.onfocus = () => {
+        messageLastNameValidate.style.display = "block";
+        messageFirstNameValidate.style.display = "none";
+        messagePasswordValidate.style.display = "none";
+        errorLastName.style.display = "none";
+    }
+    lastN.onblur = () => {
+        hiddenAllMessages();
+    }
+    
+    pass.onfocus = () => {
+        messageFirstNameValidate.style.display = "none";
+        messagePasswordValidate.style.display = "block";
+        messageLastNameValidate.style.display = "none";
+        errorPassword.style.display = "none"
+    }
+    pass.onblur = () => {
+        hiddenAllMessages();
+    }
+
+    firstN.onkeyup = () => {        
+        let inputString = firstN.value;
+        let smallInputString;
+        
+        if (inputString.length > 1) {
+            let smallInputString = inputString.slice(1, inputString.length);
+
+            //if (smallInputString.match(lowerCaseLettersReverse)) {
+            if (classCheckFirstName.checkSomeLower(smallInputString)) {
+                    someLowerName.classList.remove("invalid-validate");
+                    someLowerName.classList.add("valid-validate");
+                }
+            else {
+                someLowerName.classList.remove("valid-validate");
+                someLowerName.classList.add("invalid-validate");                
+            }
+        }
+        else {
+            someLowerName.classList.remove("valid-validate");
+            someLowerName.classList.add("invalid-validate");     
+        }
+
+        //if ((inputString.length > 0) && (inputString[0] !== undefined) && (inputString[0].match(upperCaseLetters))) {
+        if (classCheckFirstName.checkFirstUpper(inputString)) {
+            firstUpperName.classList.remove("invalid-validate");
+            firstUpperName.classList.add("valid-validate");  
+        }
+        else {
+            firstUpperName.classList.add("invalid-validate");
+            firstUpperName.classList.remove("valid-validate");   
+        }       
+    }
+
+    lastN.onkeyup = () => {
+        //if (inputString.value.match(specSimbolLetters)) {
+        if (classCheckLastName.checkAllLettersWithoutSpecSimbols(lastN)) {
+            lastNotUseSpecSymbol.classList.remove("valid-validate");
+            lastNotUseSpecSymbol.classList.add("invalid-validate");
+            }
+        else {
+            lastNotUseSpecSymbol.classList.remove("invalid-validate");
+            lastNotUseSpecSymbol.classList.add("valid-validate");  
+        }
+    }
+
+    pass.onkeyup = () => {  
+        //if (pass.value.match(/\b\w{8,}\b/g)) {
+        if (classCheckPass.checkMaxLength(pass)) {
+            lengthPass.classList.remove("invalid-validate");
+            lengthPass.classList.add("valid-validate");
+        }
+        else {
+            lengthPass.classList.remove("valid-validate");
+            lengthPass.classList.add("invalid-validate");
+        }
+
+        //if (pass.value.match(numbers)) {  
+        if (classCheckPass.checkExistNumber(pass)) {
+            numberPass.classList.remove("invalid-validate");
+            numberPass.classList.add("valid-validate");
+        } else {
+            numberPass.classList.remove("valid-validate");
+            numberPass.classList.add("invalid-validate");
+        }
+
+        //if (pass.value.match(upperCaseLetters)) {  
+        if (classCheckPass.checkUpperCase(pass) === true) {
+            capitalPass.classList.remove("invalid-validate");
+            capitalPass.classList.add("valid-validate");
+        } else {
+            capitalPass.classList.remove("valid-validate");
+            capitalPass.classList.add("invalid-validate");
+        }
+    }    
+
+    accept.onclick = () => {
+        errorAccept.style.display = "none";
+    }
+
+    function validate(evt) {
+        let res = true;
+
+        console.log(classCheckFirstName.checkFirstUpper(firstN.value));
+        console.log(classCheckFirstName.checkSomeLower(firstN.value));
+        console.log(classCheckFirstName.checkFirstUpper(firstN.value) && classCheckFirstName.checkSomeLower(firstN.value));
+
+        if ((classCheckFirstName.checkFirstUpper(firstN.value) && classCheckFirstName.checkSomeLower(firstN.value)) !== true) {
+            errorFirstName.style.display = "inline";
+            res = false;
+        }
+
+        if ((lastN.value.length === 0) || (classCheckLastName.checkAllLettersWithoutSpecSimbols(lastN) === true)) {
+            errorLastName.style.display = "inline";
+            res = false;
+        }
+
+        if ((classCheckPass.checkExistNumber(pass) && classCheckPass.checkMaxLength(pass) && classCheckPass.checkUpperCase(pass)) !== true) {  
+            errorPassword.style.display = "inline";
+            res = false;
+        }       
+
+        if (!accept.checked) {
+            errorAccept.style.display = "inline";
+            res = false;
+        }
+
+        if (res) {
+            alert("Information sent.")
+            return true;
+        }
+        else {
+            return false;
+        }
+    }*/
+
+</script>
+</body>
+</html>
