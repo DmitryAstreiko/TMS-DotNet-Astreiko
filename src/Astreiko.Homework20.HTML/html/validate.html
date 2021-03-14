@@ -8,11 +8,10 @@
     <title>Document</title>
     <link rel="stylesheet" href="style.css">    
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Trirong">
-    <script type="text/javascript" src="fieldValidator.js"></script>
 </head>
 <body>
     <div class="validate-content">        
-        <form id="formValid" class="form-validate" onsubmit="return validate();">
+        <form id="formValid" class="form-validate">
             <div>
                 <h3 class="header-validate">Registration information</h3>
             </div>
@@ -70,8 +69,10 @@
             </div>
         </div>
     </div>
-<script type="text/javascript">
+<script type="module">
     //-------------variant2 ----------below----------------------------------
+    import { FieldValidator } from './fieldValidator.js';
+
     let allValidators = [
         new FieldValidator("first_name", [FieldValidator.Required, FieldValidator.RegExp("/[a-z]/")]),
         new FieldValidator("last_name", [FieldValidator.Required, FieldValidator.RegExp("/[a-zA-Z]?/")]),
@@ -81,6 +82,7 @@
 
     window.onload = function() {
         allValidators.forEach(validator => validator.initialize());
+        document.getElementById("formValid").onsubmit = () => validate();
     }
 
     function validate(evt) {

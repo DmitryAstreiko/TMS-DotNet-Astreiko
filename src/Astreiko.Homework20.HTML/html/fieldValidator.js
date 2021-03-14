@@ -1,4 +1,3 @@
-FieldValidator = (function() {
     function RequiredValidator(element) {
         switch(element.type) {
             case 'text':
@@ -71,5 +70,4 @@ FieldValidator = (function() {
         }
     }
 
-    return FieldValidator;
-})()
+    export {FieldValidator}
