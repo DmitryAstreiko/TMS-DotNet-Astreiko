@@ -1,0 +1,21 @@
+{
+  "name": "html",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "nodemon": "^2.0.7",
+    "webpack": "^5.25.1"
+  },
+  "devDependencies": {
+    "jasmine": "^3.6.4",
+    "babel": "^6.23.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "build": "babel src ...",
+    "test": "jasmine"
+  },
+  "author": "",
+  "license": "ISC"
+}
