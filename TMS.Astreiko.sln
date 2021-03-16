@@ -21,6 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Astreiko.Homework7", "src\T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Astreiko.Homework4", "src\Astreiko.Homework4\Astreiko.Homework4.csproj", "{65B22FBE-1F02-4048-BAE8-D9B4EF8A74BE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactMininBase", "src\ReactMininBase\ReactMininBase.csproj", "{081EF730-A1B8-4D01-9A8C-34022E68401C}"
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodeJSProject", "src\NodeJSProject\NodeJSProject.csproj", "{C08B4099-7F0F-4C4D-8E25-4F761B01A053}"
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Astreiko.Homework9.Nbrb.by", "src\Astreiko.Homework9.Nbrb.by\Astreiko.Homework9.Nbrb.by.csproj", "{F6A1AD98-2531-4666-AC75-808EE7580F14}"
 EndProject
@@ -90,6 +91,10 @@ Global
 		{65B22FBE-1F02-4048-BAE8-D9B4EF8A74BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{65B22FBE-1F02-4048-BAE8-D9B4EF8A74BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{65B22FBE-1F02-4048-BAE8-D9B4EF8A74BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{081EF730-A1B8-4D01-9A8C-34022E68401C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{081EF730-A1B8-4D01-9A8C-34022E68401C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{081EF730-A1B8-4D01-9A8C-34022E68401C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{081EF730-A1B8-4D01-9A8C-34022E68401C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C08B4099-7F0F-4C4D-8E25-4F761B01A053}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C08B4099-7F0F-4C4D-8E25-4F761B01A053}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C08B4099-7F0F-4C4D-8E25-4F761B01A053}.Release|Any CPU.ActiveCfg = Release|Any CPU
