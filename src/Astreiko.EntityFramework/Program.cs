@@ -21,7 +21,7 @@ namespace Astreiko.EntityFramework
             //        JOIN [dbo].[Students] s on s.[StudentId] = h.[NewStudentId]
             //        GROUP BY s.[Name]");
 
-            var shc = cont.Set<StudentHomeworksCount>().ToArrayAsync().Result;
+            //var shc = cont.Set<StudentHomeworksCount>().ToArrayAsync().Result;
         }
     }
 }
